@@ -6,11 +6,19 @@ export const setCurrentUser = (user) => {
 };
 
 export const login = (credentials) => {
+  console.log(credentials);
   return (dispatch) => {
-    return fetch("http://www.localhost:3001/api/v1", {
+    return fetch("http://localhost:3000 /api/v1/login", {
       method: "POST",
-      headers: { "CONTENT-TYPE": "application/json" },
-      body: JSON.stringify({ username: "BobbyUser", password: "password" }),
-    });
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    })
+      .then((r) => r.json())
+      .then((response) =>
+        console.log("DKJLNGDSA", dispatch(setCurrentUser(response)))
+      )
+      .catch((err) => err);
   };
 };

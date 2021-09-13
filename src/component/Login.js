@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { updateLoginForm } from "../actions/loginForm";
-import { login } from "../actions/currentUser";
+import { login } from "../actions/currentUser.js";
 
-const Login = ({ loginFormData, updateLoginForm }) => {
+const Login = ({ loginFormData, updateLoginForm, login }) => {
   const handleClick = (e) => {
     e.preventDefault();
     login(loginFormData);
@@ -19,25 +19,23 @@ const Login = ({ loginFormData, updateLoginForm }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleClick}>
-        <input
-          type="text"
-          placeholder="Username: "
-          value={loginFormData.username}
-          name="username"
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="Password: "
-          value={loginFormData.password}
-          name="password"
-          onChange={handleInputChange}
-        />
-        <input type="submit" value="Log In" />
-      </form>
-    </div>
+    <form onSubmit={handleClick}>
+      <input
+        type="text"
+        placeholder="Username: "
+        value={loginFormData.username}
+        name="username"
+        onChange={handleInputChange}
+      />
+      <input
+        type="text"
+        placeholder="Password: "
+        value={loginFormData.password}
+        name="password"
+        onChange={handleInputChange}
+      />
+      <input type="submit" value="Log In" />
+    </form>
   );
 };
 
