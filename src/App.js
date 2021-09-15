@@ -1,9 +1,8 @@
 import "./App.css";
 import React, { Component } from "react";
-import Login from "./component/Login";
 import { connect } from "react-redux";
 import { getCurrentUser } from "./actions/currentUser";
-import Logout from "./component/Logout";
+import Nav from "./components/Nav";
 
 class App extends Component {
   componentDidMount() {
@@ -11,7 +10,7 @@ class App extends Component {
   }
 
   render() {
-    return this.props.currentUser ? <Logout /> : <Login />;
+    return <Nav />;
   }
 }
 
