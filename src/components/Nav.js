@@ -4,7 +4,12 @@ import Logout from "./Logout";
 import { connect } from "react-redux";
 
 const Nav = ({ currentUser }) => {
-  return <div>{currentUser ? <Logout /> : <Login />}</div>;
+  return (
+    <div className="NavBar">
+      {currentUser ? <p>Welcome {currentUser.name}</p> : ""}
+      {currentUser ? <Logout /> : <Login />}
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
