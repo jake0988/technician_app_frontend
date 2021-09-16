@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getCurrentUser } from "./actions/currentUser";
 import Nav from "./components/Nav";
+import MainContainer from "./components/MainContainer";
 
 class App extends Component {
   componentDidMount() {
@@ -10,7 +11,12 @@ class App extends Component {
   }
 
   render() {
-    return <Nav />;
+    return (
+      <div className="App">
+        <Nav />
+        <MainContainer />
+      </div>
+    );
   }
 }
 

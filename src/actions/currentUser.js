@@ -1,6 +1,6 @@
 import { resetLoginForm } from "./loginForm";
 
-export const setCurrentUser = (user) => {
+const setCurrentUser = (user) => {
   return {
     type: "SET_CURRENT_USER",
     user,
@@ -63,7 +63,7 @@ export const getCurrentUser = () => {
 export const logout = () => {
   return (dispatch) => {
     dispatch(clearCurrentUser());
-    return fetch("http://localhost:3001/api/v1/logout", {
+    return fetch("http://localhost:3001/api/v1/delete", {
       credentials: "include",
       method: "DELETE",
     });
