@@ -1,4 +1,6 @@
+import { customerList } from "./customerList";
 import { resetLoginForm } from "./loginForm";
+import { renderCustomers } from "./renderCustomers";
 
 const setCurrentUser = (user) => {
   return {
@@ -29,7 +31,7 @@ export const login = (credentials) => {
         if (response.error) {
           alert(response.error);
         } else {
-          dispatch(setCurrentUser(response));
+          dispatch(setCurrentUser(response.data.attributes));
           dispatch(resetLoginForm());
         }
       })
@@ -48,14 +50,14 @@ export const getCurrentUser = () => {
       },
     })
       .then((r) => r.json())
-      .then((response) => {
-        if (response.error) {
-          alert(response.error);
+      .then((user) => {
+        if (user.error) {
+          alert(user.error);
         } else {
-          dispatch(setCurrentUser(response));
+          dispatch(setCurrentUser(user.data.attributes));
+          dispatch(customerList());
         }
       })
-
       .catch(console.log);
   };
 };
