@@ -1,12 +1,16 @@
 import { customerList } from "./customerList";
 import { resetLoginForm } from "./loginForm";
-import { renderCustomers } from "./renderCustomers";
+import { resetSignupForm } from "./resetSignupForm";
 
 const setCurrentUser = (user) => {
   return {
     type: "SET_CURRENT_USER",
     user,
   };
+};
+
+export const signupUser = (signupFormData) => {
+  return { type: "NEW_USER_SIGNUP", signupFormData };
 };
 
 export const clearCurrentUser = () => {
@@ -16,7 +20,6 @@ export const clearCurrentUser = () => {
 };
 
 export const login = (credentials) => {
-  console.log(credentials);
   return (dispatch) => {
     return fetch("http://localhost:3001/api/v1/login", {
       credentials: "include",
@@ -69,5 +72,30 @@ export const logout = () => {
       credentials: "include",
       method: "DELETE",
     });
+  };
+};
+
+export const signup = (credentials) => {
+  return (dispatch) => {
+    const userInfo = {
+      user: credentials,
+    };
+    return fetch("http://localhost:3001/api/v1/signup", {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(userInfo),
+    })
+      .then((resp) => resp.json())
+      .then((user) => {
+        if (user.errors) {
+          alert(user.errors);
+        } else {
+          dispatch(setCurrentUser(user.data.attributes));
+          dispatch(resetSignupForm());
+        }
+      });
   };
 };
