@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import Signup from "./components/Signup";
 import { customerList } from "./actions/customerList";
 
 class App extends Component {
@@ -21,9 +22,9 @@ class App extends Component {
       <Router>
         <div className="App">
           <Nav />
-          <MainContainer />
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
+          <Route exact path="/signup" component={Signup} />
         </div>
       </Router>
     );
