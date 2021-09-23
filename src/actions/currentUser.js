@@ -19,6 +19,12 @@ export const clearCurrentUser = () => {
   };
 };
 
+export const clearCurrentCustomers = () => {
+  return {
+    type: "CLEAR_CUSTOMERS",
+  };
+};
+
 export const login = (credentials) => {
   return (dispatch) => {
     return fetch("http://localhost:3001/api/v1/login", {
@@ -68,6 +74,7 @@ export const getCurrentUser = () => {
 export const logout = () => {
   return (dispatch) => {
     dispatch(clearCurrentUser());
+    dispatch(clearCurrentCustomers());
     return fetch("http://localhost:3001/api/v1/delete", {
       credentials: "include",
       method: "DELETE",

@@ -9,7 +9,8 @@ import { withRouter } from "react-router";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Signup from "./components/Signup";
-import { customerList } from "./actions/customerList";
+import { Home } from "./components/Home";
+import CustomerList from "./components/CustomerList";
 
 class App extends Component {
   componentDidMount() {
@@ -18,10 +19,17 @@ class App extends Component {
   }
 
   render() {
+    const { loggedIn } = this.props;
     return (
       <Router>
         <div className="App">
           <Nav />
+          <MainContainer />
+          <Route
+            exact
+            path="/"
+            render={() => (loggedIn ? <CustomerList /> : <Home />)}
+          />
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/signup" component={Signup} />
@@ -31,9 +39,9 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ currentUser }) => {
+const mapStateToProps = (state) => {
   return {
-    currentUser,
+    loggedIn: !!state.currentUser,
   };
 };
 

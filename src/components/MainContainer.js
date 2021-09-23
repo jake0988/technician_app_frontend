@@ -1,11 +1,11 @@
 import React from "react";
-import CustomerList from "./CustomerList";
+import Customer from "./Customer";
 
 const MainContainer = () => {
   return (
     <div>
       <div className="Main">
-        <CustomerList />
+        <Customer />
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 import React from "react";
-import Link from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Customer = (customer, { name }) => {
+const Customer = ({ id, name }) => {
   return (
     <div>
-      {/* <li key={<Link to={"/customers/${customer.id}"} />} name={name}></li> */}
+      <p key={id}>{name}</p>
     </div>
   );
 };
