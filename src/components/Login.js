@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import { updateLoginForm } from "../actions/loginForm";
 import { login } from "../actions/currentUser.js";
 
-const Login = ({ loginFormData, updateLoginForm, login }) => {
+const Login = ({ loginFormData, updateLoginForm, login, history }) => {
   const handleClick = (e) => {
     e.preventDefault();
-    login(loginFormData);
+    login(loginFormData, history);
   };
 
   const handleInputChange = (event) => {

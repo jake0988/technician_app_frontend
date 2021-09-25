@@ -25,7 +25,7 @@ export const clearCurrentCustomers = () => {
   };
 };
 
-export const login = (credentials) => {
+export const login = (credentials, history) => {
   return (dispatch) => {
     return fetch("http://localhost:3001/api/v1/login", {
       credentials: "include",
@@ -42,6 +42,7 @@ export const login = (credentials) => {
         } else {
           dispatch(setCurrentUser(response.data.attributes));
           dispatch(resetLoginForm());
+          history.push("users/" + response.data.attributes.id);
         }
       })
 
@@ -82,7 +83,7 @@ export const logout = () => {
   };
 };
 
-export const signup = (credentials) => {
+export const signup = (credentials, history) => {
   return (dispatch) => {
     const userInfo = {
       user: credentials,
@@ -102,6 +103,7 @@ export const signup = (credentials) => {
         } else {
           dispatch(setCurrentUser(user.data.attributes));
           dispatch(resetSignupForm());
+          history.push("/users/" + user.data.attributes.id);
         }
       });
   };

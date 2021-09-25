@@ -1,14 +1,6 @@
 import React from "react";
-import Customer from "./Customer";
+import AddCustomerForm from "./AddCustomerForm";
 
-const MainContainer = () => {
-  return (
-    <div>
-      <div className="Main">
-        <Customer />
-      </div>
-    </div>
-  );
-};
+const MainContainer = () => {};
 
 export default MainContainer;
