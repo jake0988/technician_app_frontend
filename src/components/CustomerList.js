@@ -1,16 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 import { customerList } from "../actions/customerList";
-import Customer from "./Customer";
+import CustomerCard from "./CustomerCard";
 import { Link } from "react-router-dom";
 
 const CustomerList = (props) => {
   // debugger;
   const customerCard =
     props.customers.length > 0
-      ? props.customers.map((customer) => (
+      ? props.customers.map((customer, index) => (
           <p key={customer.id}>
-            <Customer id={customer.id} name={customer.name} />
+            {index + 1}. {customer.name}
             <Link to={`/customers/${customer.id}`}>
               {customer.attributes.name}
             </Link>
