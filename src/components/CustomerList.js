@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { customerList } from "../actions/customerList";
-import CustomerCard from "./CustomerCard";
 import { Link } from "react-router-dom";
 
 const CustomerList = (props) => {

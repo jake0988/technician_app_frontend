@@ -6,10 +6,10 @@ const resetCustomerForm = () => {
   };
 };
 
-const newCustomer = (name) => {
+const newCustomer = (formData) => {
   return {
     type: "CREATE_NEW_CUSTOMER",
-    formData: name,
+    formData,
   };
 };
 
@@ -35,12 +35,15 @@ export const customerList = () => {
   };
 };
 
-export const createCustomer = (name, userId, history) => {
+export const createCustomer = (formData, userId, history) => {
+  // debugger;
   const customerInfo = {
-    customer: {
-      name,
-      user_id: userId,
-    },
+    name: formData.name,
+    address: formData.address,
+    email: formData.email,
+    phone_number: formData.phone_number,
+    number_of_pianos: formData.number_of_pianos,
+    user_id: userId,
   };
   // debugger;
   return (dispatch) => {
@@ -54,8 +57,8 @@ export const createCustomer = (name, userId, history) => {
         body: JSON.stringify(customerInfo),
       })
         .then((resp) => resp.json())
-        .then((customer) => dispatch(newCustomer(name))),
-      dispatch(resetCustomerForm(), history.push("/"))
+        .then((customer) => dispatch(newCustomer(customerInfo))),
+      dispatch(resetCustomerForm(), history.push("/customers"))
     );
   };
 };

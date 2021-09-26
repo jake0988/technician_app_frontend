@@ -1,6 +1,6 @@
-export const newCustomer = (name) => {
+export const newCustomer = (formData) => {
   return {
     type: "CREATE_NEW_CUSTOMER",
-    formData: name,
+    formData,
   };
 };

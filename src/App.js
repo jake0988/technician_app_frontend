@@ -14,6 +14,7 @@ import CustomerList from "./components/CustomerList";
 import AddCustomerForm from "./components/AddCustomerForm";
 import NavBar from "./components/NavBar";
 import CustomerCard from "./components/CustomerCard";
+import { PianoCard } from "./components/PianoCard";
 
 class App extends Component {
   componentDidMount() {
@@ -25,20 +26,35 @@ class App extends Component {
     const { loggedIn } = this.props;
     return (
       <div className="App">
+        {loggedIn ? <NavBar /> : <Home />}
         <Switch>
+          <Route exact path="/users/:id/customers" component={CustomerList} />
+          <Route
+            exact
+            path={"/users/:id/customers/new"}
+            component={AddCustomerForm}
+          />
+
+          <Route exact path="/pianos" component={CustomerList} />
+          <Route
+            exact
+            path="/user/:id/customers/:id"
+            render={(props) => {
+              const customer = this.props.customers.find(
+                (customer) => customer.id === props.match.params.id
+              );
+              return customer ? (
+                <CustomerCard customer={customer} {...props} />
+              ) : (
+                <p>Customer list is empty.</p>
+              );
+            }}
+          />
+
           <Route
             exact
             path="/users/:id"
             render={() => (loggedIn ? <NavBar /> : <Home />)}
-          />
-
-          <Route exact path="/customers/new" component={AddCustomerForm} />
-          <Route exact path="/customers" component={CustomerList} />
-          <Route exact path="/customers/:id" component={CustomerCard} />
-          <Route
-            exact
-            path="/"
-            render={() => (loggedIn ? <Nav /> : <Home />)}
           />
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
@@ -52,6 +68,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     loggedIn: !!state.currentUser,
+    customers: state.customers,
   };
 };
 

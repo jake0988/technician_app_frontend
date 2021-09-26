@@ -7,6 +7,10 @@ const AddCustomerForm = ({
   formData,
   createCustomer,
   name,
+  address,
+  email,
+  number_of_pianos,
+  phone_number,
   updateCustomerForm,
   userId,
   history,
@@ -31,15 +35,51 @@ const AddCustomerForm = ({
         onChange={handleChange}
       />
       <input type="submit" value="Add Customer" />
+      <input
+        type="text"
+        value={address}
+        name="address"
+        placeholder="Address"
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        value={email}
+        name="email"
+        placeholder="Email"
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        value={phone_number}
+        name="phone_number"
+        placeholder="Phone Number"
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        value={number_of_pianos}
+        name="number_of_pianos"
+        placeholder="Number Of Pianos"
+        onChange={handleChange}
+      />
+      <input type="submit" value="Add Customer" />
     </form>
   );
 };
 
 const mapStateToProps = (state) => {
   const userId = state.currentUser ? state.currentUser.id : null;
-  const { name } = state.addCustomerForm;
+  const { name, address, email, phone_number, number_of_pianos } =
+    state.addCustomerForm;
   return {
-    formData: name,
+    formData: {
+      name,
+      address,
+      email,
+      phone_number,
+      number_of_pianos,
+    },
     userId,
   };
 };

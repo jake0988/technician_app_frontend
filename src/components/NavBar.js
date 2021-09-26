@@ -8,10 +8,18 @@ import { NavLink } from "react-router-dom";
 const NavBar = ({ currentUser }) => {
   return (
     <div className="NavBar">
-      <NavLink exact activeClassName="active" to="/customers">
+      <NavLink
+        exact
+        activeClassName="active"
+        to={`users/${currentUser.id}/customers`}
+      >
         Customer List |
       </NavLink>
-      <NavLink exact activeClassName="active" to="/customers/new">
+      <NavLink
+        exact
+        activeClassName="active"
+        to={`users/${currentUser.id}/customers/new`}
+      >
         Add A Customer
       </NavLink>
       {currentUser ? <p>Welcome {currentUser.name}</p> : ""}
