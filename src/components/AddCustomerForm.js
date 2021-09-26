@@ -27,42 +27,44 @@ const AddCustomerForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={name}
-        name="name"
-        placeholder="Customer Name"
-        onChange={handleChange}
-      />
-      <input type="submit" value="Add Customer" />
-      <input
-        type="text"
-        value={address}
-        name="address"
-        placeholder="Address"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        value={email}
-        name="email"
-        placeholder="Email"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        value={phone_number}
-        name="phone_number"
-        placeholder="Phone Number"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        value={number_of_pianos}
-        name="number_of_pianos"
-        placeholder="Number Of Pianos"
-        onChange={handleChange}
-      />
+      <p>
+        <input
+          type="text"
+          value={name}
+          name="name"
+          placeholder="Customer Name"
+          onChange={handleChange}
+        />
+      </p>
+
+      <p>
+        <input
+          type="tel"
+          value={phone_number}
+          name="phone_number"
+          placeholder="Phone Number"
+          onChange={handleChange}
+        />
+      </p>
+      <p>
+        <input
+          type="email"
+          value={email}
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+      </p>
+      <p>
+        <input
+          type="text"
+          size="75"
+          value={address}
+          name="address"
+          placeholder="Address"
+          onChange={handleChange}
+        />
+      </p>
       <input type="submit" value="Add Customer" />
     </form>
   );

@@ -10,7 +10,9 @@ const CustomerList = (props) => {
       ? props.customers.map((customer, index) => (
           <p key={customer.id}>
             {index + 1}. {customer.name}
-            <Link to={`/customers/${customer.id}`}>
+            <Link
+              to={`/users/${props.currentUser.id}/customers/${customer.id}`}
+            >
               {customer.attributes.name}
             </Link>
           </p>
