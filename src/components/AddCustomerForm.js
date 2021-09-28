@@ -9,7 +9,6 @@ const AddCustomerForm = ({
   name,
   address,
   email,
-  number_of_pianos,
   phone_number,
   updateCustomerForm,
   userId,

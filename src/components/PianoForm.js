@@ -1,37 +1,78 @@
 import React from "react";
 import { connect } from "react-redux";
+import { updatePianoForm } from "../actions/updatePianoForm.js";
+import { addPiano } from "../actions/addPiano.js";
 
-const PianoForm = () => {
+const PianoForm = ({
+  updatePianoForm,
+  updateFormData,
+  addPiano,
+  currentUser,
+  currentCustomer,
+  history,
+  make,
+  model,
+  year,
+  notes,
+  serial,
+}) => {
   const handleChange = (event) => {
-    return event;
+    const { name, value } = event.target;
+    const updateFormInfo = {
+      ...updateFormData,
+      [name]: value,
+    };
+    return updatePianoForm(updateFormInfo, history);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    const submitFormData = {
+      updateFormData,
+      userId: currentUser,
+      customerId: currentCustomer,
+    };
+    addPiano(submitFormData);
   };
   return (
     <form onSubmit={handleSubmit}>
       <label for="make">Make</label>
-      <input type="text" value={handleChange} name="make" />
+      <input type="text" onChange={handleChange} value={make} name="make" />
       <label for="model">Model</label>
-      <input type="text" value={handleChange} name="model" />
+      <input type="text" onChange={handleChange} value={model} name="model" />
       <label for="serial">Serial</label>
-      <input type="text" value={handleChange} name="serial" />
+      <input type="text" onChange={handleChange} value={serial} name="serial" />
       <label for="year">Year</label>
-      <input type="text" value={handleChange} name="year" />
+      <input type="text" onChange={handleChange} value={year} name="year" />
       <label for="notes">Notes</label>
       <input
         type="textarea"
+        onChange={handleChange}
         rows="8"
         cols="50"
-        value={handleChange}
+        value={notes}
         name="notes"
       />
-      <input type="submit">Add Piano</input>
+      <input type="submit" value="Add Piano" />
     </form>
   );
 };
 
 const mapStateToProps = (state) => {
-  return state;
+  const { make, model, year, notes, serial } = state.updatePianoForm;
+  return {
+    currentUser: state.currentUser.id,
+    currentCustomer: state.currentCustomer.id,
+    updateFormData: state.updatePianoForm,
+    formData: {
+      make,
+      model,
+      year,
+      notes,
+      serial,
+    },
+  };
 };
-export default connect(mapStateToProps)(PianoForm);
+export default connect(mapStateToProps, { updatePianoForm, addPiano })(
+  PianoForm
+);

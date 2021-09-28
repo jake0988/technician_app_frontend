@@ -7,7 +7,11 @@ const initialState = {
 const signupForm = (state = initialState, action) => {
   switch (action.type) {
     case "UPDATE_SIGNUP_FORM":
-      return action.formData;
+      const updateState = {
+        ...state,
+        [action.formData.name]: action.formData.value,
+      };
+      return updateState;
     case "CLEAR_SIGNUP_FORM":
       return initialState;
     default:

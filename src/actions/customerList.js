@@ -13,9 +13,9 @@ const newCustomer = (formData) => {
   };
 };
 
-export const customerList = () => {
+export const customerList = (userId) => {
   return (dispatch) => {
-    return fetch("http://localhost:3001/api/v1/customers", {
+    return fetch(`http://localhost:3001/api/v1/users/${userId}/customers`, {
       credentials: "include",
       method: "GET",
       headers: {
@@ -47,18 +47,41 @@ export const createCustomer = (formData, userId, history) => {
   };
   // debugger;
   return (dispatch) => {
-    return (
-      fetch("http://localhost:3001/api/v1/customers", {
-        credentials: "include",
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(customerInfo),
-      })
-        .then((resp) => resp.json())
-        .then((customer) => dispatch(newCustomer(customerInfo))),
-      dispatch(resetCustomerForm(), history.push("/customers"))
-    );
+    return fetch("http://localhost:3001/api/v1/customers", {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(customerInfo),
+    })
+      .then((resp) => resp.json())
+      .then((customer) => {
+        // dispatch(newCustomer(customerInfo));
+        dispatch(customerList());
+        dispatch(resetCustomerForm());
+        history.push(`/users/${userId}/customers`);
+      });
   };
 };
+
+// const getCustomerList = (userId) => {
+//   return (dispatch) => {
+//     fetch(`http://localhost:3000/users/${userId}/customers`, {
+//       credentials: "include",
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     })
+//       .then((resp) => resp.json())
+//       .then((customers) => {
+//         if (customers.error) {
+//           alert(customers.error);
+//         } else {
+//           dispatch(renderCustomers(customers.data.attributes))
+//         }
+//       })
+//       .catch(console.log);
+//   };
+// };

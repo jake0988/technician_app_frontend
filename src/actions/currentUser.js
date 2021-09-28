@@ -65,7 +65,7 @@ export const getCurrentUser = () => {
           alert(user.error);
         } else {
           dispatch(setCurrentUser(user.data.attributes));
-          dispatch(customerList());
+          dispatch(customerList(user.data.attributes.id));
         }
       })
       .catch(console.log);

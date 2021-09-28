@@ -14,15 +14,31 @@ import NavBar from "./components/NavBar";
 import CustomerCard from "./components/CustomerCard";
 import { PianoList } from "./components/PianoList";
 import PianoForm from "./components/PianoForm";
+import currentCustomer from "./reducers/currentCustomer";
+import { PianoCard } from "./components/PianoCard";
 
 class App extends Component {
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     currentCustomer: {
+  //       id: "",
+  //       name: "",
+  //     },
+  //   };
+  // }
+
   componentDidMount() {
     this.props.getCurrentUser();
     // this.props.customerList();
   }
 
+  // handleCurrentCustomer = (id, name) => {
+  //   this.setState((id, name) => ({ ...currentCustomer, name: name, id: id }));
+  // };
+
   render() {
-    const { loggedIn } = this.props;
+    const { loggedIn, pianos } = this.props;
     return (
       <div className="App">
         {loggedIn ? <NavBar location={this.props.location} /> : <Home />}
@@ -47,7 +63,18 @@ class App extends Component {
           />
           <Route
             exact
-            path="/user/:id/customers/:id"
+            path="/users/:id/customers/:id/pianos/:id"
+            render={(props) => {
+              const piano = pianos.find(
+                (piano) => piano.id === props.match.params.id
+              );
+
+              return <PianoCard piano={piano} {...props} />;
+            }}
+          />
+          <Route
+            exact
+            path="/users/:id/customers/:id"
             render={(props) => {
               const customer = this.props.customers.find(
                 (customer) => customer.id === props.match.params.id
@@ -73,7 +100,10 @@ const mapStateToProps = (state) => {
   return {
     loggedIn: !!state.currentUser,
     customers: state.customers,
+    pianos: state.pianos,
   };
 };
 
-export default withRouter(connect(mapStateToProps, { getCurrentUser })(App));
+export default withRouter(
+  connect(mapStateToProps, { getCurrentUser, currentCustomer })(App)
+);

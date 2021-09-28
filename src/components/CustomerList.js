@@ -2,18 +2,33 @@ import React from "react";
 import { connect } from "react-redux";
 import { customerList } from "../actions/customerList";
 import { Link } from "react-router-dom";
+import { currentCustomer } from "../actions/currentCustomer";
 
-const CustomerList = (props) => {
+const CustomerList = (props, { customerList }) => {
   // debugger;
+  const handleClick = (customer) => {
+    const currentCustomerData = {
+      id: customer.attributes.id,
+      name: customer.attributes.name,
+    };
+    props.dispatch({ customerList }(currentCustomerData));
+  };
+
   const customerCard =
     props.customers.length > 0
-      ? props.customers.map((customer, index) => (
+      ? props.customers.map((customer) => (
           <p key={customer.id}>
-            {index + 1}. {customer.name}
+            {customer.id}. {customer.name}
             <Link
               to={`/users/${props.currentUser.id}/customers/${customer.id}`}
+              onClick={() => handleClick(customer)}
             >
-              {customer.attributes.name}
+              {customer.name ? (
+                customer.attributes.name
+              ) : (
+                <span>.No customer name rendered</span>
+              )}
+              )
             </Link>
           </p>
         ))
@@ -26,4 +41,6 @@ const mapStateToProps = ({ customers, currentUser }) => ({
   currentUser,
 });
 
-export default connect(mapStateToProps, { customerList })(CustomerList);
+export default connect(mapStateToProps, { customerList, currentCustomer })(
+  CustomerList
+);
