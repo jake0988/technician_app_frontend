@@ -45,8 +45,7 @@ const PianoForm = ({
       <label for="year">Year</label>
       <input type="text" onChange={handleChange} value={year} name="year" />
       <label for="notes">Notes</label>
-      <input
-        type="textarea"
+      <textarea
         onChange={handleChange}
         rows="8"
         cols="50"

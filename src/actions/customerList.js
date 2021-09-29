@@ -66,6 +66,7 @@ export const createCustomer = (formData, userId, history) => {
 };
 
 export const patchCustomerInfo = (formData) => {
+  const { userId, customerId } = formData;
   return (dispatch) => {
     return fetch(
       `http://localhost:3000/api/v1/users/${userId}/customers/${customerId}`,
