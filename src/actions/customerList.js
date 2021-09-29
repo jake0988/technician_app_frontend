@@ -6,6 +6,13 @@ const resetCustomerForm = () => {
   };
 };
 
+const editCustomerInfo = (customerData) => {
+  return {
+    type: "EDIT_CUSTOMER_INFO",
+    customerData,
+  };
+};
+
 export const customerList = (userId) => {
   return (dispatch) => {
     return fetch(`http://localhost:3001/api/v1/users/${userId}/customers`, {
@@ -54,6 +61,30 @@ export const createCustomer = (formData, userId, history) => {
         dispatch(customerList());
         dispatch(resetCustomerForm());
         history.push(`/users/${userId}/customers`);
+      });
+  };
+};
+
+export const patchCustomerInfo = (formData) => {
+  return (dispatch) => {
+    return fetch(
+      `http://localhost:3000/api/v1/users/${userId}/customers/${customerId}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        header: {
+          "Content-Type": "application/json",
+        },
+        body: formData,
+      }
+    )
+      .then((resp) => resp.json())
+      .then((customer) => {
+        if (customer.error) {
+          alert(customer.error);
+        } else {
+          dispatch(editCustomerInfo(customer.data));
+        }
       });
   };
 };

@@ -98,8 +98,8 @@ export const signup = (credentials, history) => {
     })
       .then((resp) => resp.json())
       .then((user) => {
-        if (user.errors) {
-          alert(user.errors);
+        if (user.error) {
+          alert(user.error);
         } else {
           dispatch(setCurrentUser(user.data.attributes));
           dispatch(resetSignupForm());
