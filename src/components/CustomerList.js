@@ -4,35 +4,36 @@ import { customerList } from "../actions/customerList";
 import { Link } from "react-router-dom";
 import { currentCustomer } from "../actions/currentCustomer";
 
-const CustomerList = (props, { customerList }) => {
-  // debugger;
+const CustomerList = (props) => {
   const handleClick = (customer) => {
     const currentCustomerData = {
       id: customer.attributes.id,
       name: customer.attributes.name,
     };
-    props.dispatch({ customerList }(currentCustomerData));
+    props.currentCustomer(currentCustomerData);
   };
 
   const customerCard =
-    props.customers.length > 0
-      ? props.customers.map((customer) => (
-          <p key={customer.id}>
-            {customer.id}. {customer.name}
-            <Link
-              to={`/users/${props.currentUser.id}/customers/${customer.id}`}
-              onClick={() => handleClick(customer)}
-            >
-              {customer.name ? (
-                customer.attributes.name
-              ) : (
-                <span>.No customer name rendered</span>
-              )}
-              )
-            </Link>
-          </p>
-        ))
-      : null;
+    props.customers.length > 0 ? (
+      props.customers.map((customer, index) => (
+        <p key={customer.attributes.id}>
+          <Link
+            to={`/users/${props.currentUser.id}/customers/${customer.attributes.id}`}
+            onClick={() => handleClick(customer)}
+          >
+            {customer.attributes ? (
+              <span>
+                {index + 1}. {customer.attributes.name}
+              </span>
+            ) : (
+              <span>.No customer name rendered</span>
+            )}
+          </Link>
+        </p>
+      ))
+    ) : (
+      <h2>No Customers In Database</h2>
+    );
   return customerCard;
 };
 

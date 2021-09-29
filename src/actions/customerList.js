@@ -6,13 +6,6 @@ const resetCustomerForm = () => {
   };
 };
 
-const newCustomer = (formData) => {
-  return {
-    type: "CREATE_NEW_CUSTOMER",
-    formData,
-  };
-};
-
 export const customerList = (userId) => {
   return (dispatch) => {
     return fetch(`http://localhost:3001/api/v1/users/${userId}/customers`, {
@@ -47,7 +40,7 @@ export const createCustomer = (formData, userId, history) => {
   };
   // debugger;
   return (dispatch) => {
-    return fetch("http://localhost:3001/api/v1/customers", {
+    return fetch(`http://localhost:3001/api/v1/users/${userId}/customers`, {
       credentials: "include",
       method: "POST",
       headers: {
@@ -64,24 +57,3 @@ export const createCustomer = (formData, userId, history) => {
       });
   };
 };
-
-// const getCustomerList = (userId) => {
-//   return (dispatch) => {
-//     fetch(`http://localhost:3000/users/${userId}/customers`, {
-//       credentials: "include",
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     })
-//       .then((resp) => resp.json())
-//       .then((customers) => {
-//         if (customers.error) {
-//           alert(customers.error);
-//         } else {
-//           dispatch(renderCustomers(customers.data.attributes))
-//         }
-//       })
-//       .catch(console.log);
-//   };
-// };

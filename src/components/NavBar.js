@@ -4,7 +4,6 @@ import Logout from "./Logout";
 import Signup from "./Signup";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { currentCustomer } from "../actions/currentCustomer";
 
 const NavBar = ({ currentUser, currentCustomer, location }) => {
   return (
@@ -40,9 +39,12 @@ const NavBar = ({ currentUser, currentCustomer, location }) => {
             to={`/users/${currentUser.id}/customers/${currentCustomer.id}/pianos/new`}
           >
             Add Piano
-          </NavLink>{" "}
+          </NavLink>
         </p>
-      ) : null}
+      ) : (
+        <p>Select a customer from customer list to add customers</p>
+      )}
+
       {currentUser ? (
         <Logout />
       ) : (

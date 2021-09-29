@@ -62,8 +62,8 @@ const mapStateToProps = (state) => {
   const { make, model, year, notes, serial } = state.updatePianoForm;
   return {
     currentUser: state.currentUser.id,
-    currentCustomer: state.currentCustomer.id,
     updateFormData: state.updatePianoForm,
+    currentCustomer: state.currentCustomer.id,
     formData: {
       make,
       model,

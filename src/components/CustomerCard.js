@@ -6,7 +6,7 @@ const CustomerCard = (props) => {
   return (
     <span>
       Name: {name} Address: {address} Phone Number: {phone_number} email:{" "}
-      {email} Number Of Pianos: {number_of_pianos}
+      {email} Number Of Pianos: {parseInt(number_of_pianos).length}
     </span>
   );
 };
