@@ -36,6 +36,11 @@ const NavBar = ({ currentUser, currentCustomer, location }) => {
         <p>
           Customer Name: {currentCustomer.name}{" "}
           <NavLink
+            to={`/users/${currentUser.id}/customers/${currentCustomer.id}/edit`}
+          >
+            <button className="button">Edit Customer</button>
+          </NavLink>
+          <NavLink
             to={`/users/${currentUser.id}/customers/${currentCustomer.id}/pianos/new`}
           >
             Add Piano

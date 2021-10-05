@@ -1,4 +1,11 @@
-import { renderCustomers } from "./renderCustomers";
+import { getPianos } from "./addPiano";
+
+export const renderCustomers = (customers) => {
+  return {
+    type: "RENDER_CUSTOMERS",
+    customers,
+  };
+};
 
 const resetCustomerForm = () => {
   return {
@@ -7,6 +14,7 @@ const resetCustomerForm = () => {
 };
 
 const editCustomerInfo = (customerData) => {
+  debugger;
   return {
     type: "EDIT_CUSTOMER_INFO",
     customerData,
@@ -29,6 +37,9 @@ export const customerList = (userId) => {
           alert(customers.error);
         } else {
           dispatch(renderCustomers(customers.data));
+          customers.data.forEach((customer) => {
+            dispatch(getPianos(userId, customer.id));
+          });
         }
       })
       .catch(console.log);
@@ -37,6 +48,10 @@ export const customerList = (userId) => {
 
 export const createCustomer = (formData, userId, history) => {
   // debugger;
+  const customerId = formData.id;
+  const customerFormPatchInfo = {
+    customer: formData,
+  };
   const customerInfo = {
     name: formData.name,
     address: formData.address,
@@ -44,17 +59,20 @@ export const createCustomer = (formData, userId, history) => {
     phone_number: formData.phone_number,
     number_of_pianos: formData.number_of_pianos,
     user_id: userId,
+    id: formData.id,
   };
-  // debugger;
   return (dispatch) => {
-    return fetch(`http://localhost:3001/api/v1/users/${userId}/customers`, {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(customerInfo),
-    })
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(customerInfo),
+      }
+    )
       .then((resp) => resp.json())
       .then((customer) => {
         // dispatch(newCustomer(customerInfo));
@@ -65,18 +83,28 @@ export const createCustomer = (formData, userId, history) => {
   };
 };
 
-export const patchCustomerInfo = (formData) => {
-  const { userId, customerId } = formData;
+export const patchCustomerInfo = (formData, userId, history, customerId) => {
   return (dispatch) => {
+    const customerEditData = {
+      customer: {
+        name: formData.name,
+        id: formData.id,
+        address: formData.address,
+        email: formData.email,
+        phone_number: formData.phone_number,
+        user_id: formData.user_id,
+      },
+    };
+    debugger;
     return fetch(
-      `http://localhost:3000/api/v1/users/${userId}/customers/${customerId}`,
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
       {
         credentials: "include",
         method: "PATCH",
         header: {
           "Content-Type": "application/json",
         },
-        body: formData,
+        body: JSON.stringify(customerEditData),
       }
     )
       .then((resp) => resp.json())

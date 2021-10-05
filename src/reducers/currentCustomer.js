@@ -1,6 +1,10 @@
 const initialState = {
   id: "",
   name: "",
+  address: "",
+  email: "",
+  phone_number: "",
+  number_of_pianos: "",
 };
 
 export default (state = initialState, action) => {

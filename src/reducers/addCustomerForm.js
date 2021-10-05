@@ -1,5 +1,8 @@
 const initialState = {
   name: "",
+  address: "",
+  email: "",
+  phone_number: "",
 };
 
 export default (state = initialState, action) => {
@@ -11,6 +14,8 @@ export default (state = initialState, action) => {
         ...state,
         [action.formData.name]: action.formData.value,
       };
+    case "SET_CUSTOMER_FORM_FOR_EDIT":
+      return action.customerFormData;
     default:
       return state;
   }

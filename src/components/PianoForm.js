@@ -22,7 +22,7 @@ const PianoForm = ({
       ...updateFormData,
       [name]: value,
     };
-    return updatePianoForm(updateFormInfo, history);
+    return updatePianoForm(updateFormInfo);
   };
 
   const handleSubmit = (event) => {
@@ -32,7 +32,7 @@ const PianoForm = ({
       userId: currentUser,
       customerId: currentCustomer,
     };
-    addPiano(submitFormData);
+    addPiano(submitFormData, history);
   };
   return (
     <form onSubmit={handleSubmit}>

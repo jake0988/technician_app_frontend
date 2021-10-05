@@ -5,6 +5,13 @@ export const addPianoForm = (formData) => {
   };
 };
 
+export const renderPianos = (pianos) => {
+  return {
+    type: "RENDER_PIANOS",
+    pianos,
+  };
+};
+
 const clearPianoForm = () => {
   return {
     type: "CLEAR_PIANO_FORM",
@@ -40,9 +47,35 @@ export const addPiano = (credentials, history) => {
         } else {
           dispatch(addPianoForm(piano.data.attributes));
           dispatch(clearPianoForm());
+
           history.push(
-            `/users/${credentials.userId}/customer/${credentials.customerId}/pianos/${piano.data.attributes.id}`
+            `/users/${credentials.userId}/customers/${credentials.customerId}/pianos`
           );
+        }
+      })
+
+      .catch((errors) => console.log(errors));
+  };
+};
+
+export const getPianos = (user, customer) => {
+  return (dispatch) => {
+    return fetch(
+      `http://localhost:3001/api/v1/users/${user}/customers/${customer}/pianos`,
+      {
+        credentials: "include",
+        method: "get",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+      .then((resp) => resp.json())
+      .then((pianos) => {
+        if (pianos.errors) {
+          alert(pianos.errors);
+        } else {
+          dispatch(renderPianos(pianos.data));
         }
       })
 

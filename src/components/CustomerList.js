@@ -5,12 +5,11 @@ import { Link } from "react-router-dom";
 import { currentCustomer } from "../actions/currentCustomer";
 
 const CustomerList = (props) => {
-  const handleClick = (customer) => {
-    const currentCustomerData = {
-      id: customer.attributes.id,
-      name: customer.attributes.name,
-    };
-    props.currentCustomer(currentCustomerData);
+  const handleClick = (id) => {
+    const customerData = props.customers.find(
+      (customer) => customer.attributes.id === id
+    );
+    props.currentCustomer(customerData.attributes);
   };
 
   const customerCard =
@@ -18,8 +17,10 @@ const CustomerList = (props) => {
       props.customers.map((customer, index) => (
         <p key={customer.attributes.id}>
           <Link
+            onClick={() =>
+              handleClick(customer.attributes.id, customer.attributes.name)
+            }
             to={`/users/${props.currentUser.id}/customers/${customer.attributes.id}`}
-            onClick={() => handleClick(customer)}
           >
             {customer.attributes ? (
               <span>
