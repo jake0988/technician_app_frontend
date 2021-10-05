@@ -5,21 +5,20 @@ import { connect } from "react-redux";
 import { setCustomerFormForEdit } from "../actions/updateCustomerForm";
 
 class EditCustomerFormWrapper extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.props.setCustomerFormForEdit(this.props.currentCustomer);
-  // }
+  componentDidMount() {
+    this.props.setCustomerFormForEdit(this.props.currentCustomer);
+  }
+
+  handleSubmit = (formData) => {
+    const customerId = this.props.currentCustomer.id;
+    const { patchCustomerInfo, history, userId } = this.props;
+    patchCustomerInfo(...formData, userId, history, customerId);
+  };
 
   render() {
-    const handleSubmit = (formData) => {
-      const customerId = this.props.currentCustomer.id;
-      const { patchCustomerInfo, history, userId } = this.props;
-      patchCustomerInfo(formData, userId, history, customerId);
-    };
-
     return (
       <div>
-        <CustomerForm editMode handleSubmit={handleSubmit} />
+        <CustomerForm editMode handleSubmit={this.handleSubmit} />
       </div>
     );
   }
