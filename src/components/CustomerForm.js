@@ -6,8 +6,8 @@ import { createCustomer } from "../actions/customerList";
 const CustomerForm = ({
   handleSubmit,
   formData,
-
   updateCustomerForm,
+  editMode,
 }) => {
   const { name, address, email, phone_number } = formData;
 
@@ -66,15 +66,17 @@ const CustomerForm = ({
           onChange={handleChange}
         />
       </p>
-      <input type="submit" value="Add Customer" />
+      {editMode ? (
+        <input type="submit" value="Edit Customer" />
+      ) : (
+        <input type="submit" value="Add Customer" />
+      )}
     </form>
   );
 };
 
 const mapStateToProps = (state) => {
   const userId = state.currentUser ? state.currentUser.id : null;
-  // const { name, address, email, phone_number, number_of_pianos } =
-  //   state.addCustomerForm;
 
   return {
     customers: state.customers,

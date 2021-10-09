@@ -15,7 +15,7 @@ const NavBar = ({ currentUser, currentCustomer, location }) => {
           background: "blue",
           color: "white",
         }}
-        to={`/users/${currentUser.id}/customers`}
+        to={`/customers`}
       >
         Customer List |
       </NavLink>
@@ -26,7 +26,7 @@ const NavBar = ({ currentUser, currentCustomer, location }) => {
           background: "blue",
           color: "white",
         }}
-        to={`/users/${currentUser.id}/customers/new`}
+        to={`/customers/new`}
       >
         Add A Customer
       </NavLink>
@@ -35,16 +35,10 @@ const NavBar = ({ currentUser, currentCustomer, location }) => {
       {currentCustomer ? (
         <p>
           Customer Name: {currentCustomer.name}{" "}
-          <NavLink
-            to={`/users/${currentUser.id}/customers/${currentCustomer.id}/edit`}
-          >
+          <NavLink to={`/customers/${currentCustomer.id}/edit`}>
             <button className="button">Edit Customer</button>
           </NavLink>
-          <NavLink
-            to={`/users/${currentUser.id}/customers/${currentCustomer.id}/pianos/new`}
-          >
-            Add Piano
-          </NavLink>
+          <NavLink to={`/pianos/new`}>Add Piano</NavLink>
         </p>
       ) : (
         <p>Select a customer from customer list to add customers</p>

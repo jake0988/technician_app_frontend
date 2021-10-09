@@ -12,7 +12,12 @@ class EditCustomerFormWrapper extends React.Component {
   handleSubmit = (formData) => {
     const customerId = this.props.currentCustomer.id;
     const { patchCustomerInfo, history, userId } = this.props;
-    patchCustomerInfo(...formData, userId, history, customerId);
+    const newFormData = {
+      ...formData,
+      customerId: customerId,
+      userId: this.props.userId,
+    };
+    patchCustomerInfo(newFormData, userId, history, customerId);
   };
 
   render() {

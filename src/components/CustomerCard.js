@@ -1,7 +1,7 @@
 import React from "react";
 
 const CustomerCard = (props) => {
-  const { name, address, phone_number, email, id } = props.customer.attributes;
+  const { name, address, phone_number, email, id } = props.customer;
 
   const pianoList = props.pianos.filter(
     (piano) => piano.attributes.customer_id === id
