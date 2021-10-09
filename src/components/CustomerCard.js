@@ -1,14 +1,19 @@
 import React from "react";
 
 const CustomerCard = (props) => {
-  const { name, address, phone_number, email, number_of_pianos } =
-    props.customer.attributes;
+  const { name, address, phone_number, email, id } = props.customer;
+
+  const pianoList = props.pianos.filter(
+    (piano) => piano.attributes.customer_id === id
+  );
+  const length = pianoList.length;
+
   return (
-    <span>
+    <div className="customerCard">
+      {" "}
       Name: {name} Address: {address} Phone Number: {phone_number} email:{" "}
-      {email} Number Of Pianos: {number_of_pianos}
-    </span>
+      {email} Number Of Pianos: {length}
+    </div>
   );
 };
-
 export default CustomerCard;

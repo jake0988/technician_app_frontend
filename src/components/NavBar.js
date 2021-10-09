@@ -5,8 +5,7 @@ import Signup from "./Signup";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-const NavBar = ({ currentUser, location }) => {
-  debugger;
+const NavBar = ({ currentUser, currentCustomer, location }) => {
   return (
     <div className="NavBar">
       <NavLink
@@ -16,7 +15,7 @@ const NavBar = ({ currentUser, location }) => {
           background: "blue",
           color: "white",
         }}
-        to={`/users/${currentUser.id}/customers`}
+        to={`/customers`}
       >
         Customer List |
       </NavLink>
@@ -27,12 +26,24 @@ const NavBar = ({ currentUser, location }) => {
           background: "blue",
           color: "white",
         }}
-        to={`/users/${currentUser.id}/customers/new`}
+        to={`/customers/new`}
       >
         Add A Customer
       </NavLink>
 
       {currentUser ? <p>Welcome {currentUser.name}</p> : ""}
+      {currentCustomer ? (
+        <p>
+          Customer Name: {currentCustomer.name}{" "}
+          <NavLink to={`/customers/${currentCustomer.id}/edit`}>
+            <button className="button">Edit Customer</button>
+          </NavLink>
+          <NavLink to={`/pianos/new`}>Add Piano</NavLink>
+        </p>
+      ) : (
+        <p>Select a customer from customer list to add customers</p>
+      )}
+
       {currentUser ? (
         <Logout />
       ) : (
@@ -47,6 +58,7 @@ const NavBar = ({ currentUser, location }) => {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.currentUser,
+    currentCustomer: state.currentCustomer,
   };
 };
 

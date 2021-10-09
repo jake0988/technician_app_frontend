@@ -1,4 +1,11 @@
-import { renderCustomers } from "./renderCustomers";
+import { getPianos } from "./addPiano";
+
+export const renderCustomers = (customers) => {
+  return {
+    type: "RENDER_CUSTOMERS",
+    customers,
+  };
+};
 
 const resetCustomerForm = () => {
   return {
@@ -6,16 +13,16 @@ const resetCustomerForm = () => {
   };
 };
 
-const newCustomer = (formData) => {
+const editCustomerInfo = (customerData) => {
   return {
-    type: "CREATE_NEW_CUSTOMER",
-    formData,
+    type: "EDIT_CUSTOMER_INFO",
+    customerData,
   };
 };
 
-export const customerList = () => {
+export const customerList = (userId) => {
   return (dispatch) => {
-    return fetch("http://localhost:3001/api/v1/customers", {
+    return fetch(`http://localhost:3001/api/v1/users/${userId}/customers`, {
       credentials: "include",
       method: "GET",
       headers: {
@@ -29,6 +36,9 @@ export const customerList = () => {
           alert(customers.error);
         } else {
           dispatch(renderCustomers(customers.data));
+          customers.data.forEach((customer) => {
+            dispatch(getPianos(userId, customer.id));
+          });
         }
       })
       .catch(console.log);
@@ -36,29 +46,69 @@ export const customerList = () => {
 };
 
 export const createCustomer = (formData, userId, history) => {
-  // debugger;
-  const customerInfo = {
-    name: formData.name,
-    address: formData.address,
-    email: formData.email,
-    phone_number: formData.phone_number,
-    number_of_pianos: formData.number_of_pianos,
-    user_id: userId,
-  };
-  // debugger;
+  // const customerId = formData.id;
+  // const customerFormPatchInfo = {
+  //   customer: formData,
+  // };
+  // const customerInfo = {
+  //   name: formData.name,
+  //   address: formData.address,
+  //   email: formData.email,
+  //   phone_number: formData.phone_number,
+  //   user_id: userId,
+  // };
   return (dispatch) => {
-    return (
-      fetch("http://localhost:3001/api/v1/customers", {
+    return fetch(`http://localhost:3001/api/v1/users/${userId}/customers/`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((resp) => resp.json())
+      .then((customer) => {
+        // dispatch(newCustomer(customerInfo));
+        dispatch(customerList());
+        dispatch(resetCustomerForm());
+        history.push(`/users/${userId}/customers`);
+      });
+  };
+};
+
+export const patchCustomerInfo = (formData, userId, history, customerId) => {
+  return (dispatch) => {
+    const customerEditData = {
+      customer: {
+        id: customerId,
+        name: formData.name,
+        address: formData.address,
+        email: formData.email,
+        phone_number: formData.phone_number,
+        user_id: formData.user_id,
+      },
+    };
+    const e = { name: "adsf", address: "asdfad" };
+    const formDataJsonString = JSON.stringify(e);
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
+      {
         credentials: "include",
-        method: "POST",
+        method: "PATCH",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(customerInfo),
-      })
-        .then((resp) => resp.json())
-        .then((customer) => dispatch(newCustomer(customerInfo))),
-      dispatch(resetCustomerForm(), history.push("/customers"))
-    );
+        body: JSON.stringify(customerEditData),
+      }
+    )
+      .then((resp) => resp.json())
+      .then((customer) => {
+        if (customer.error) {
+          alert(customer.error);
+        } else {
+          dispatch(editCustomerInfo(customer.data.attributes));
+          history.push(`/users/${userId}/customers/${customerId}}`);
+        }
+      });
   };
 };

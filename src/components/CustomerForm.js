@@ -3,30 +3,31 @@ import { connect } from "react-redux";
 import { updateCustomerForm } from "../actions/updateCustomerForm";
 import { createCustomer } from "../actions/customerList";
 
-const AddCustomerForm = ({
+const CustomerForm = ({
+  handleSubmit,
   formData,
-  createCustomer,
-  name,
-  address,
-  email,
-  number_of_pianos,
-  phone_number,
   updateCustomerForm,
-  userId,
-  history,
+  editMode,
 }) => {
+  const { name, address, email, phone_number } = formData;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     updateCustomerForm(name, value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    createCustomer(formData, userId, history);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   createCustomer(formData, userId, history);
+  // };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(formData);
+      }}
+    >
       <p>
         <input
           type="text"
@@ -65,27 +66,25 @@ const AddCustomerForm = ({
           onChange={handleChange}
         />
       </p>
-      <input type="submit" value="Add Customer" />
+      {editMode ? (
+        <input type="submit" value="Edit Customer" />
+      ) : (
+        <input type="submit" value="Add Customer" />
+      )}
     </form>
   );
 };
 
 const mapStateToProps = (state) => {
   const userId = state.currentUser ? state.currentUser.id : null;
-  const { name, address, email, phone_number, number_of_pianos } =
-    state.addCustomerForm;
+
   return {
-    formData: {
-      name,
-      address,
-      email,
-      phone_number,
-      number_of_pianos,
-    },
+    customers: state.customers,
+    formData: state.addCustomerForm,
     userId,
   };
 };
 
 export default connect(mapStateToProps, { createCustomer, updateCustomerForm })(
-  AddCustomerForm
+  CustomerForm
 );
