@@ -48,9 +48,7 @@ export const addPiano = (credentials, history) => {
           dispatch(addPianoForm(piano.data.attributes));
           dispatch(clearPianoForm());
 
-          history.push(
-            `/users/${credentials.userId}/customers/${credentials.customerId}/pianos`
-          );
+          history.push("/pianos");
         }
       })
 

@@ -4,19 +4,18 @@ import { connect } from "react-redux";
 import { getCurrentUser } from "./actions/currentUser";
 import { Switch, Route, Link, matchPath } from "react-router-dom";
 import { withRouter } from "react-router";
-import Login from "./components/Login";
-import Logout from "./components/Logout";
-import Signup from "./components/Signup";
+import Login from "./components/users/Login.js";
+import Logout from "./components/users/Logout";
+import Signup from "./components/users/Signup";
 import { Home } from "./components/Home";
-import CustomerList from "./components/CustomerList";
-import CustomerForm from "./components/CustomerForm";
+import CustomerList from "./components/customers/presentation/CustomerList";
 import NavBar from "./components/NavBar";
-import CustomerCard from "./components/CustomerCard";
-import PianoForm from "./components/PianoForm";
-import currentCustomer from "./reducers/currentCustomer";
-import { PianoList } from "./components/PianoList";
-import EditCustomerFormWrapper from "./components/EditCustomerFormWrapper";
-import AddCustomerFormWrapper from "./components/AddCustomerFormWrapper";
+import CustomerCard from "./components/customers/presentation/CustomerCard";
+import PianoForm from "./components/pianos/PianoForm";
+import { setCurrentCustomer } from "./actions/setCurrentCustomer";
+import { PianoList } from "./components/pianos/PianoList";
+import EditCustomerFormWrapper from "./components/customers/container/EditCustomerFormWrapper";
+import AddCustomerFormWrapper from "./components/customers/container/AddCustomerFormWrapper";
 
 class App extends Component {
   componentDidMount() {
@@ -29,7 +28,6 @@ class App extends Component {
   // };
 
   render() {
-    debugger;
     // const getParams = (pathname) => {
     //   const matchProfile = matchPath(pathname, {
     //     path: `/users/${this.props.userId}/customers/:customerId`,
@@ -39,8 +37,19 @@ class App extends Component {
     const { loggedIn } = this.props;
     return (
       <div className="App">
-        {loggedIn ? <NavBar location={this.props.location} /> : <Home />}
+        {loggedIn ? <NavBar history={this.props.history} /> : <Home />}
         <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => {
+              <Home
+                {...props}
+                loggedIn={this.props.loggedIn}
+                customers={this.props.customers}
+              />;
+            }}
+          />
           <Route exact path="/customers" component={CustomerList} />
           <Route
             exact
@@ -60,21 +69,30 @@ class App extends Component {
             path="/customers/:id"
             render={(props) => {
               const customer = this.props.customers.find(
-                (customer) => customer.attributes.id === props.match.params.id
+                (customer) => customer.id === props.match.params.id
               );
-              const pianos = this.props.pianos;
               return customer ? (
-                <CustomerCard customer={customer} {...props} pianos={pianos} />
+                <CustomerCard
+                  customer={customer}
+                  {...props}
+                  pianos={this.props.pianos}
+                />
               ) : (
-                <p>Customer list is empty.</p>
+                <p>Customer Card is empty.</p>
               );
             }}
           />
           <Route
             exact
             path="/customers/:id/edit"
-            render={(props) => <EditCustomerFormWrapper {...props} />}
+            render={(props) => {
+              const customer = this.props.customers.find(
+                (customer) => customer.id === props.match.params.id
+              );
+              return <EditCustomerFormWrapper {...props} customer={customer} />;
+            }}
           />
+
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/signup" component={Signup} />
@@ -94,5 +112,5 @@ const mapStateToProps = (state, ownprops) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getCurrentUser, currentCustomer })(App)
+  connect(mapStateToProps, { getCurrentUser, setCurrentCustomer })(App)
 );

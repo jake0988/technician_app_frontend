@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updatePianoForm } from "../actions/updatePianoForm.js";
-import { addPiano } from "../actions/addPiano.js";
+import { updatePianoForm } from "../../actions/updatePianoForm";
+import { addPiano } from "../../actions/addPiano.js";
 
 const PianoForm = ({
   updatePianoForm,

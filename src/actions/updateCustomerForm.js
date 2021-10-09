@@ -1,9 +1,9 @@
 export const setCustomerFormForEdit = (customer) => {
   const customerFormData = {
-    name: customer.name,
-    phone_number: customer.phone_number,
-    email: customer.email,
-    address: customer.address,
+    name: customer.attributes.name,
+    phone_number: customer.attributes.phone_number,
+    email: customer.attributes.email,
+    address: customer.attributes.address,
   };
   return {
     type: "SET_CUSTOMER_FORM_FOR_EDIT",

@@ -1,15 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import { customerList } from "../actions/customerList";
+import { customerList } from "../../../actions/customerList";
 import { Link } from "react-router-dom";
-import { currentCustomer } from "../actions/currentCustomer";
+import { setCurrentCustomer } from "../../../actions/setCurrentCustomer";
 
 const CustomerList = (props) => {
   const handleClick = (id) => {
     const customerData = props.customers.find(
       (customer) => customer.attributes.id === id
     );
-    props.currentCustomer(customerData.attributes);
+    props.setCurrentCustomer(customerData.attributes);
   };
 
   const customerCard =
@@ -20,7 +20,7 @@ const CustomerList = (props) => {
             onClick={() =>
               handleClick(customer.attributes.id, customer.attributes.name)
             }
-            to={`/users/${props.currentUser.id}/customers/${customer.attributes.id}`}
+            to={`/customers/${customer.attributes.id}`}
           >
             {customer.attributes ? (
               <span>
@@ -43,6 +43,6 @@ const mapStateToProps = ({ customers, currentUser }) => ({
   currentUser,
 });
 
-export default connect(mapStateToProps, { customerList, currentCustomer })(
+export default connect(mapStateToProps, { customerList, setCurrentCustomer })(
   CustomerList
 );

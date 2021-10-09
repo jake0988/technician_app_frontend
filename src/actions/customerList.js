@@ -7,13 +7,13 @@ export const renderCustomers = (customers) => {
   };
 };
 
-const resetCustomerForm = () => {
+export const resetCustomerForm = () => {
   return {
     type: "RESET_CUSTOMER_FORM",
   };
 };
 
-const editCustomerInfo = (customerData) => {
+export const editCustomerInfo = (customerData) => {
   return {
     type: "EDIT_CUSTOMER_INFO",
     customerData,
@@ -32,8 +32,8 @@ export const customerList = (userId) => {
       .then((res) => res.json())
       .then((customers) => {
         // dispatch(renderCustomers(customers.data));
-        if (customers.error) {
-          alert(customers.error);
+        if (customers.errors) {
+          alert(customers.errors);
         } else {
           dispatch(renderCustomers(customers.data));
           customers.data.forEach((customer) => {
@@ -46,17 +46,7 @@ export const customerList = (userId) => {
 };
 
 export const createCustomer = (formData, userId, history) => {
-  // const customerId = formData.id;
-  // const customerFormPatchInfo = {
-  //   customer: formData,
-  // };
-  // const customerInfo = {
-  //   name: formData.name,
-  //   address: formData.address,
-  //   email: formData.email,
-  //   phone_number: formData.phone_number,
-  //   user_id: userId,
-  // };
+  console.log("CUSTOMER STUFF", formData);
   return (dispatch) => {
     return fetch(`http://localhost:3001/api/v1/users/${userId}/customers/`, {
       credentials: "include",
@@ -68,15 +58,20 @@ export const createCustomer = (formData, userId, history) => {
     })
       .then((resp) => resp.json())
       .then((customer) => {
-        // dispatch(newCustomer(customerInfo));
-        dispatch(customerList());
-        dispatch(resetCustomerForm());
-        history.push(`/users/${userId}/customers`);
-      });
+        if (customer.errors) {
+          alert(customer.errors);
+        } else {
+          dispatch(customerList());
+          dispatch(resetCustomerForm());
+          history.push(`/customers`);
+        }
+      })
+      .catch(console.log());
   };
 };
 
 export const patchCustomerInfo = (formData, userId, history, customerId) => {
+  console.log("IN PATCH", { customerId });
   return (dispatch) => {
     const customerEditData = {
       customer: {
@@ -88,8 +83,6 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
         user_id: formData.user_id,
       },
     };
-    const e = { name: "adsf", address: "asdfad" };
-    const formDataJsonString = JSON.stringify(e);
     return fetch(
       `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
       {
@@ -103,11 +96,12 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
     )
       .then((resp) => resp.json())
       .then((customer) => {
-        if (customer.error) {
-          alert(customer.error);
+        if (customer.errors) {
+          alert(customer.errors);
         } else {
-          dispatch(editCustomerInfo(customer.data.attributes));
-          history.push(`/users/${userId}/customers/${customerId}}`);
+          dispatch(editCustomerInfo(customer.data));
+          // dispatch(resetCustomerForm());
+          history.push(`/customers/${customer.data.id}`);
         }
       });
   };

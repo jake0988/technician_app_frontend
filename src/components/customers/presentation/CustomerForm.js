@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateCustomerForm } from "../actions/updateCustomerForm";
-import { createCustomer } from "../actions/customerList";
+import { updateCustomerForm } from "../../../actions/updateCustomerForm";
+import { createCustomer } from "../../../actions/customerList";
 
 const CustomerForm = ({
   handleSubmit,
@@ -69,7 +69,7 @@ const CustomerForm = ({
       {editMode ? (
         <input type="submit" value="Edit Customer" />
       ) : (
-        <input type="submit" value="Add Customer" />
+        <input type="submit" value="Create Customer" />
       )}
     </form>
   );

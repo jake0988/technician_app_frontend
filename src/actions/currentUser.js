@@ -1,8 +1,25 @@
 import { customerList } from "./customerList";
-import { resetLoginForm } from "./loginForm";
-import { resetSignupForm } from "./resetSignupForm";
 
-const setCurrentUser = (user) => {
+export const updateSignupForm = (formData) => {
+  return {
+    type: "UPDATE_SIGNUP_FORM",
+    formData,
+  };
+};
+
+export const resetSignupForm = () => {
+  return {
+    type: "CLEAR_SIGNUP_FORM",
+  };
+};
+
+export const resetLoginForm = () => {
+  return {
+    type: "RESET_LOGIN_FORM",
+  };
+};
+
+export const setCurrentUser = (user) => {
   return {
     type: "SET_CURRENT_USER",
     user,

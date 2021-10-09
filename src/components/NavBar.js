@@ -1,13 +1,20 @@
 import React from "react";
-import Login from "./Login";
-import Logout from "./Logout";
-import Signup from "./Signup";
+import Login from "./users/Login";
+import Logout from "./users/Logout";
+import Signup from "./users/Signup";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-const NavBar = ({ currentUser, currentCustomer, location }) => {
+const NavBar = ({ currentUser, currentCustomer, history }) => {
   return (
     <div className="NavBar">
+      {currentUser ? (
+        <Logout />
+      ) : (
+        <div>
+          <Login /> <Signup />{" "}
+        </div>
+      )}
       <NavLink
         exact
         activeClassName="active"
@@ -42,14 +49,6 @@ const NavBar = ({ currentUser, currentCustomer, location }) => {
         </p>
       ) : (
         <p>Select a customer from customer list to add customers</p>
-      )}
-
-      {currentUser ? (
-        <Logout />
-      ) : (
-        <div>
-          <Login /> <Signup />{" "}
-        </div>
       )}
     </div>
   );

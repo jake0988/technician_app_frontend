@@ -8,7 +8,7 @@ export default (state = [], action) => {
       return state.concat(action.formData);
     case "EDIT_CUSTOMER_INFO":
       return state.map((customer) =>
-        customer.id === action.customerData.id ? action.customerdata : customer
+        customer.id === action.customerData.id ? action.customerData : customer
       );
     default:
       return state;
