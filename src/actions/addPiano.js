@@ -20,11 +20,11 @@ const clearPianoForm = () => {
 
 export const addPiano = (credentials, history) => {
   const pianoFormInfo = {
-    make: credentials.updateFormData.make,
-    model: credentials.updateFormData.model,
-    serial: credentials.updateFormData.serial,
-    notes: credentials.updateFormData.notes,
-    year: credentials.updateFormData.year,
+    make: credentials.formData.make,
+    model: credentials.formData.model,
+    serial: credentials.formData.serial,
+    notes: credentials.formData.notes,
+    year: credentials.formData.year,
     user_id: credentials.userId,
     customer_id: credentials.customerId,
   };
@@ -47,8 +47,7 @@ export const addPiano = (credentials, history) => {
         } else {
           dispatch(addPianoForm(piano.data.attributes));
           dispatch(clearPianoForm());
-
-          history.push("/pianos");
+          history.push(`/pianos/${piano.data.attributes.id}`);
         }
       })
 

@@ -1,31 +1,27 @@
 import React from "react";
-import Login from "./users/Login";
-import Logout from "./users/Logout";
 import { Link } from "react-router-dom";
-import CustomerCard from "./customers/presentation/CustomerCard";
+import Login from "./users/Login";
+import Signup from "./users/Signup";
 
-export const Home = ({ loggedIn, customers }) => {
-  return (
-    <div>
-      {!loggedIn ? (
-        <h2>
-          Welcome, please <Link to="/signup">Sign Up</Link> or{" "}
-          <Link to="/login">Login</Link>
-        </h2>
-      ) : null}
-      {customers ? (
-        <ul>
-          {customers.map((customer) => {
-            return (
-              <li>
-                <Link to={`/customers/${customer.id}`} />
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p>No customers in database </p>
-      )}
-    </div>
+export const Home = ({ customers, loggedIn }) => {
+  // const { customers } = props;
+  const customerCard = !loggedIn ? (
+    <h2>
+      Welcome, please <Link to="/signup" onClick={() => <Signup />}></Link> or{" "}
+      <Link to="/login" onClick={() => <Login />}>
+        Login
+      </Link>
+    </h2>
+  ) : customers ? (
+    customers.map((customer, index) => (
+      <li key={customer.id}>
+        <Link to={`/customers/${customer.id}`}>
+          {index + 1}. {customer.attributes.name}
+        </Link>
+      </li>
+    ))
+  ) : (
+    <p>No customers in database </p>
   );
+  return <div>{customerCard}</div>;
 };

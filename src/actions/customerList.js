@@ -20,6 +20,13 @@ export const editCustomerInfo = (customerData) => {
   };
 };
 
+export const destroyCustomerSuccess = (customerId) => {
+  return {
+    type: "DESTROY_CUSTOMER_SUCCESS",
+    customerId,
+  };
+};
+
 export const customerList = (userId) => {
   return (dispatch) => {
     return fetch(`http://localhost:3001/api/v1/users/${userId}/customers`, {
@@ -46,7 +53,7 @@ export const customerList = (userId) => {
 };
 
 export const createCustomer = (formData, userId, history) => {
-  console.log("CUSTOMER STUFF", formData);
+  const createCustomerSuccess = { ...formData, user_id: userId };
   return (dispatch) => {
     return fetch(`http://localhost:3001/api/v1/users/${userId}/customers/`, {
       credentials: "include",
@@ -54,7 +61,7 @@ export const createCustomer = (formData, userId, history) => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(createCustomerSuccess),
     })
       .then((resp) => resp.json())
       .then((customer) => {
@@ -71,7 +78,6 @@ export const createCustomer = (formData, userId, history) => {
 };
 
 export const patchCustomerInfo = (formData, userId, history, customerId) => {
-  console.log("IN PATCH", { customerId });
   return (dispatch) => {
     const customerEditData = {
       customer: {
@@ -104,5 +110,22 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
           history.push(`/customers/${customer.data.id}`);
         }
       });
+  };
+};
+
+export const destroyCustomer = (customerId, userId) => {
+  return (dispatch) => {
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/destroy`,
+      {
+        credentials: "include",
+        method: "DELETE",
+        header: {
+          "Content-Type": "json/application",
+        },
+      }
+    )
+      .then((resp) => resp.json())
+      .then((resp) => destroyCustomerSuccess(customerId));
   };
 };

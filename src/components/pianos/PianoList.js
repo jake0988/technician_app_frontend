@@ -1,13 +1,18 @@
 import React from "react";
-import { PianoCard } from "./PianoCard";
+import { Link } from "react-router-dom";
 
-export const PianoList = (props, { pianos }) => {
+export const PianoList = ({ pianos }) => {
   let renderPianos;
-  if (pianos) {
+  if (pianos !== []) {
     renderPianos = pianos.map((piano) => {
-      <li key={piano.id}>
-        <PianoCard piano={props.piano} />
-      </li>;
+      const { model, make, id } = piano.attributes;
+      return (
+        <li key={id}>
+          <Link to={`/pianos/${id}`}>
+            <span>Model: {model}</span> <span>Make: {make}</span>
+          </Link>
+        </li>
+      );
     });
   }
   return pianos ? <ul>{renderPianos}</ul> : null;

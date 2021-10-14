@@ -3,21 +3,20 @@ import { connect } from "react-redux";
 import CustomerForm from "../presentation/CustomerForm";
 import { createCustomer } from "../../../actions/customerList";
 import { resetCustomerForm } from "../../../actions/customerList";
+import { clearCurrentCustomer } from "../../../actions/setCurrentCustomer";
 
 class AddCustomerFormWrapper extends Component {
   handleSubmit = (formData) => {
     const customerId = this.props.currentCustomer.id;
     const { history, userId } = this.props;
-    console.log("Form data", formData);
     const newFormData = {
       ...formData,
-      customerId: customerId,
-      userId: this.props.userId,
     };
     this.props.createCustomer(newFormData, userId, history);
   };
 
   render() {
+    this.props.clearCurrentCustomer();
     return (
       <div>
         <CustomerForm handleSubmit={this.handleSubmit} />
@@ -34,6 +33,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { createCustomer, resetCustomerForm })(
-  AddCustomerFormWrapper
-);
+export default connect(mapStateToProps, {
+  createCustomer,
+  resetCustomerForm,
+  clearCurrentCustomer,
+})(AddCustomerFormWrapper);

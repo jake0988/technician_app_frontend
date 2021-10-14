@@ -1,13 +1,14 @@
 import React from "react";
 
-export const PianoCard = (props) => {
+export const PianoCard = ({ piano }) => {
+  const { make, model, year, serial, notes } = piano.attributes;
   return (
     <div className="PianoCard">
-      <p>Make: {props.piano.make}</p>
-      <p>Model: {props.model}</p>
-      <p>Year: {props.year}</p>
-      <p>Serial: {props.serial}</p>
-      <p>Notes: {props.notes}</p>
+      <p>Make: {make}</p>
+      <p>Model: {model}</p>
+      <p>Year: {year}</p>
+      <p>Serial: {serial}</p>
+      <p>Notes: {notes}</p>
     </div>
   );
 };

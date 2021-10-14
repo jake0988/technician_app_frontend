@@ -1,13 +1,12 @@
 import "./App.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getCurrentUser } from "./actions/currentUser";
-import { Switch, Route, Link, matchPath } from "react-router-dom";
+import { getCurrentUser, setCurrentUser } from "./actions/currentUser";
+import { Switch, Route } from "react-router-dom";
 import { withRouter } from "react-router";
 import Login from "./components/users/Login.js";
 import Logout from "./components/users/Logout";
 import Signup from "./components/users/Signup";
-import { Home } from "./components/Home";
 import CustomerList from "./components/customers/presentation/CustomerList";
 import NavBar from "./components/NavBar";
 import CustomerCard from "./components/customers/presentation/CustomerCard";
@@ -16,38 +15,34 @@ import { setCurrentCustomer } from "./actions/setCurrentCustomer";
 import { PianoList } from "./components/pianos/PianoList";
 import EditCustomerFormWrapper from "./components/customers/container/EditCustomerFormWrapper";
 import AddCustomerFormWrapper from "./components/customers/container/AddCustomerFormWrapper";
+import MainContainer from "./components/MainContainer";
+import { PianoCard } from "./components/pianos/PianoCard";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 class App extends Component {
   componentDidMount() {
     this.props.getCurrentUser();
-    // this.props.customerList();
   }
 
-  // handleCurrentCustomer = (id, name) => {
-  //   this.setState((id, name) => ({ ...currentCustomer, name: name, id: id }));
-  // };
-
   render() {
-    // const getParams = (pathname) => {
-    //   const matchProfile = matchPath(pathname, {
-    //     path: `/users/${this.props.userId}/customers/:customerId`,
-    //   });
-    //   return (matchProfile && matchProfile.params) || {};
-    // };
     const { loggedIn } = this.props;
     return (
       <div className="App">
-        {loggedIn ? <NavBar history={this.props.history} /> : <Home />}
+        {loggedIn ? <NavBar history={this.props.history} /> : null}
         <Switch>
           <Route
             exact
             path="/"
             render={(props) => {
-              <Home
-                {...props}
-                loggedIn={this.props.loggedIn}
-                customers={this.props.customers}
-              />;
+              const select = this.props.currentCustomer ? false : true;
+              return (
+                <MainContainer
+                  {...props}
+                  loggedIn={this.props.loggedIn}
+                  customers={this.props.customers}
+                  select={select}
+                />
+              );
             }}
           />
           <Route exact path="/customers" component={CustomerList} />
@@ -58,23 +53,17 @@ class App extends Component {
           />
           <Route
             exact
-            path="/pianos"
-            render={(props) => {
-              <PianoList pianos={props} />;
-            }}
-          />
-          <Route exact path="/pianos/new" component={PianoForm} />
-          <Route
-            exact
             path="/customers/:id"
             render={(props) => {
               const customer = this.props.customers.find(
                 (customer) => customer.id === props.match.params.id
               );
+
               return customer ? (
                 <CustomerCard
                   customer={customer}
                   {...props}
+                  setCurrentCustomer={this.props.setCurrentCustomer}
                   pianos={this.props.pianos}
                 />
               ) : (
@@ -92,7 +81,31 @@ class App extends Component {
               return <EditCustomerFormWrapper {...props} customer={customer} />;
             }}
           />
-
+          <Route
+            exact
+            path="/pianos"
+            render={(props) => {
+              return (
+                <PianoList
+                  pianos={props}
+                  currentUser={this.props.currentUser}
+                  currentCustomer={this.props.currentCustomer}
+                />
+              );
+            }}
+          />
+          <Route exact path="/pianos/new" component={PianoForm} />
+          <Route
+            exact
+            path="/pianos/:id"
+            render={(props) => {
+              const piano = this.props.pianos.find(
+                (piano) => piano.id === props.match.params.id
+              );
+              return piano ? <PianoCard piano={piano} /> : null;
+            }}
+          />
+          )}
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/signup" component={Signup} />
@@ -102,7 +115,7 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state, ownprops) => {
+const mapStateToProps = (state) => {
   return {
     loggedIn: !!state.currentUser,
     customers: state.customers,
