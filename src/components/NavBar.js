@@ -6,8 +6,15 @@ import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { destroyCustomer } from "../actions/customerList";
+import { destroyPiano } from "../actions/addPiano";
 
-const NavBar = ({ currentUser, currentCustomer, history, destroyCustomer }) => {
+const NavBar = ({
+  currentUser,
+  currentCustomer,
+  history,
+  destroyCustomer,
+  currentPiano,
+}) => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="dark">
       <Container>
@@ -69,12 +76,31 @@ const NavBar = ({ currentUser, currentCustomer, history, destroyCustomer }) => {
               <button
                 className="button"
                 onClick={() =>
-                  destroyCustomer(currentCustomer.id, currentUser.id)
+                  destroyCustomer(currentCustomer.id, currentUser.id, history)
                 }
               >
                 Delete Customer
               </button>
             </div>
+            {currentPiano ? (
+              <div className="col-sm-6">
+                <NavLink to={`/pianos/new`}>Add Piano</NavLink>
+                <button
+                  className="button"
+                  onClick={() =>
+                    destroyPiano(
+                      currentUser.id,
+                      currentCustomer.id,
+                      currentPiano.id,
+                      history
+                    )
+                  }
+                >
+                  Delete Piano
+                </button>{" "}
+                :
+              </div>
+            ) : null}
             <div className="col-sm-6">
               <NavLink to={`/pianos/new`}>Add Piano</NavLink>
             </div>
@@ -89,6 +115,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.currentUser,
     currentCustomer: state.currentCustomer,
+    currentPiano: state.currentPiano,
   };
 };
 

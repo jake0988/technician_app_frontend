@@ -6,6 +6,11 @@ export default (state = [], action) => {
       return action.pianos;
     case "CLEAR_PIANOS":
       return (state = []);
+    case "DELETE_PIANO":
+      const piano = state.find(
+        (piano) => piano.attributes.id === action.pianoId
+      );
+      return { ...state.slice(0, piano), ...state.slice(piano, 1) };
     default:
       return state;
   }

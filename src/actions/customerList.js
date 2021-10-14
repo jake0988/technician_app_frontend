@@ -113,10 +113,10 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
   };
 };
 
-export const destroyCustomer = (customerId, userId) => {
+export const destroyCustomer = (customerId, userId, history) => {
   return (dispatch) => {
     return fetch(
-      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/destroy`,
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
       {
         credentials: "include",
         method: "DELETE",
@@ -126,6 +126,13 @@ export const destroyCustomer = (customerId, userId) => {
       }
     )
       .then((resp) => resp.json())
-      .then((resp) => destroyCustomerSuccess(customerId));
+      .then((resp) => {
+        dispatch(
+          destroyCustomerSuccess(customerId),
+          customerList(userId),
+
+          history.push(`/customers`)
+        );
+      });
   };
 };

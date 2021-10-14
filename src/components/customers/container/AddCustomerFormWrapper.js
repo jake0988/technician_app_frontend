@@ -7,7 +7,6 @@ import { clearCurrentCustomer } from "../../../actions/setCurrentCustomer";
 
 class AddCustomerFormWrapper extends Component {
   handleSubmit = (formData) => {
-    const customerId = this.props.currentCustomer.id;
     const { history, userId } = this.props;
     const newFormData = {
       ...formData,
@@ -18,7 +17,7 @@ class AddCustomerFormWrapper extends Component {
   render() {
     this.props.clearCurrentCustomer();
     return (
-      <div>
+      <div className="AddCustomerFormWrapper">
         <CustomerForm handleSubmit={this.handleSubmit} />
       </div>
     );

@@ -1,9 +1,9 @@
-export const addPianoForm = (formData) => {
-  return {
-    type: "ADD_PIANO",
-    formData,
-  };
-};
+// export const addPianoForm = (formData) => {
+//   return {
+//     type: "ADD_PIANO",
+//     formData,
+//   };
+// };
 
 export const renderPianos = (pianos) => {
   return {
@@ -15,6 +15,21 @@ export const renderPianos = (pianos) => {
 const clearPianoForm = () => {
   return {
     type: "CLEAR_PIANO_FORM",
+  };
+};
+
+const deletePiano = (pianoId) => {
+  return {
+    type: "DELETE_PIANO",
+    pianoId,
+  };
+};
+
+export const setCurrentPiano = (pianoData) => {
+  console.log("IN ACTION", pianoData);
+  return {
+    type: "ADD_CURRENT_PIANO",
+    pianoData,
   };
 };
 
@@ -45,12 +60,11 @@ export const addPiano = (credentials, history) => {
         if (piano.errors) {
           alert(piano.errors);
         } else {
-          dispatch(addPianoForm(piano.data.attributes));
-          dispatch(clearPianoForm());
+          dispatch(getPianos(credentials.userId, credentials.customerId));
           history.push(`/pianos/${piano.data.attributes.id}`);
+          dispatch(clearPianoForm());
         }
       })
-
       .catch((errors) => console.log(errors));
   };
 };
@@ -77,5 +91,23 @@ export const getPianos = (user, customer) => {
       })
 
       .catch((errors) => console.log(errors));
+  };
+};
+
+export const destroyPiano = (userId, customerId, pianoId, history) => {
+  return (dispatch) => {
+    dispatch(deletePiano(pianoId));
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`,
+      {
+        credential: "include",
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((resp) => resp.json())
+      .then((resp) => history.push(`customers/${customerId}`));
   };
 };

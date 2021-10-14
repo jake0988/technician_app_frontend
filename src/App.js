@@ -17,6 +17,7 @@ import EditCustomerFormWrapper from "./components/customers/container/EditCustom
 import AddCustomerFormWrapper from "./components/customers/container/AddCustomerFormWrapper";
 import MainContainer from "./components/MainContainer";
 import { PianoCard } from "./components/pianos/PianoCard";
+import { setCurrentPiano } from "./actions/addPiano";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 class App extends Component {
@@ -53,12 +54,21 @@ class App extends Component {
           />
           <Route
             exact
+            path="/customers/:id/edit"
+            render={(props) => {
+              const customer = this.props.customers.find(
+                (customer) => customer.id === props.match.params.id
+              );
+              return <EditCustomerFormWrapper {...props} customer={customer} />;
+            }}
+          />
+          <Route
+            exact
             path="/customers/:id"
             render={(props) => {
               const customer = this.props.customers.find(
                 (customer) => customer.id === props.match.params.id
               );
-
               return customer ? (
                 <CustomerCard
                   customer={customer}
@@ -69,16 +79,6 @@ class App extends Component {
               ) : (
                 <p>Customer Card is empty.</p>
               );
-            }}
-          />
-          <Route
-            exact
-            path="/customers/:id/edit"
-            render={(props) => {
-              const customer = this.props.customers.find(
-                (customer) => customer.id === props.match.params.id
-              );
-              return <EditCustomerFormWrapper {...props} customer={customer} />;
             }}
           />
           <Route
@@ -102,10 +102,14 @@ class App extends Component {
               const piano = this.props.pianos.find(
                 (piano) => piano.id === props.match.params.id
               );
-              return piano ? <PianoCard piano={piano} /> : null;
+              return piano ? (
+                <PianoCard
+                  piano={piano}
+                  setCurrentPiano={this.props.setCurrentPiano}
+                />
+              ) : null;
             }}
           />
-          )}
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/signup" component={Signup} />
@@ -125,5 +129,9 @@ const mapStateToProps = (state) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getCurrentUser, setCurrentCustomer })(App)
+  connect(mapStateToProps, {
+    getCurrentUser,
+    setCurrentCustomer,
+    setCurrentPiano,
+  })(App)
 );
