@@ -1,25 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updatePianoForm } from "../actions/updatePianoForm.js";
-import { addPiano } from "../actions/addPiano.js";
+import { updatePianoForm } from "../../actions/updatePianoForm";
+import { addPiano } from "../../actions/addPiano.js";
 
 const PianoForm = ({
   updatePianoForm,
-  updateFormData,
+  formData,
   addPiano,
   currentUser,
   currentCustomer,
   history,
-  make,
-  model,
-  year,
-  notes,
-  serial,
 }) => {
+  const { make, model, year, notes, serial } = formData;
   const handleChange = (event) => {
     const { name, value } = event.target;
     const updateFormInfo = {
-      ...updateFormData,
+      ...formData,
       [name]: value,
     };
     return updatePianoForm(updateFormInfo);
@@ -28,7 +24,7 @@ const PianoForm = ({
   const handleSubmit = (event) => {
     event.preventDefault();
     const submitFormData = {
-      updateFormData,
+      formData,
       userId: currentUser,
       customerId: currentCustomer,
     };
@@ -36,16 +32,36 @@ const PianoForm = ({
   };
   return (
     <form onSubmit={handleSubmit}>
-      <label for="make">Make</label>
-      <input type="text" onChange={handleChange} value={make} name="make" />
-      <label for="model">Model</label>
-      <input type="text" onChange={handleChange} value={model} name="model" />
-      <label for="serial">Serial</label>
-      <input type="text" onChange={handleChange} value={serial} name="serial" />
-      <label for="year">Year</label>
-      <input type="text" onChange={handleChange} value={year} name="year" />
-      <label for="notes">Notes</label>
+      <input
+        type="text"
+        placeholder="make"
+        onChange={handleChange}
+        value={make}
+        name="make"
+      />
+      <input
+        type="text"
+        placeholder="model"
+        onChange={handleChange}
+        value={model}
+        name="model"
+      />
+      <input
+        type="text"
+        placeholder="serial"
+        onChange={handleChange}
+        value={serial}
+        name="serial"
+      />
+      <input
+        type="text"
+        placeholder="year"
+        onChange={handleChange}
+        value={year}
+        name="year"
+      />
       <textarea
+        placeholder="notes"
         onChange={handleChange}
         rows="8"
         cols="50"
@@ -58,18 +74,10 @@ const PianoForm = ({
 };
 
 const mapStateToProps = (state) => {
-  const { make, model, year, notes, serial } = state.updatePianoForm;
   return {
     currentUser: state.currentUser.id,
-    updateFormData: state.updatePianoForm,
+    formData: state.updatePianoForm,
     currentCustomer: state.currentCustomer.id,
-    formData: {
-      make,
-      model,
-      year,
-      notes,
-      serial,
-    },
   };
 };
 export default connect(mapStateToProps, { updatePianoForm, addPiano })(

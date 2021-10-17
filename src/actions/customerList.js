@@ -1,4 +1,4 @@
-import { getPianos } from "./addPiano";
+import { clearCurrentCustomer } from "./currentCustomer";
 
 export const renderCustomers = (customers) => {
   return {
@@ -7,16 +7,23 @@ export const renderCustomers = (customers) => {
   };
 };
 
-const resetCustomerForm = () => {
+export const resetCustomerForm = () => {
   return {
     type: "RESET_CUSTOMER_FORM",
   };
 };
 
-const editCustomerInfo = (customerData) => {
+export const editCustomerInfo = (customerData) => {
   return {
     type: "EDIT_CUSTOMER_INFO",
     customerData,
+  };
+};
+
+export const destroyCustomerSuccess = (customerId) => {
+  return {
+    type: "DESTROY_CUSTOMER_SUCCESS",
+    customerId,
   };
 };
 
@@ -32,13 +39,13 @@ export const customerList = (userId) => {
       .then((res) => res.json())
       .then((customers) => {
         // dispatch(renderCustomers(customers.data));
-        if (customers.error) {
-          alert(customers.error);
+        if (customers.errors) {
+          alert(customers.errors);
         } else {
           dispatch(renderCustomers(customers.data));
-          customers.data.forEach((customer) => {
-            dispatch(getPianos(userId, customer.id));
-          });
+          // customers.data.forEach((customer) => {
+          //   dispatch(getPianos(userId, customer.id));
+          // });
         }
       })
       .catch(console.log);
@@ -46,17 +53,7 @@ export const customerList = (userId) => {
 };
 
 export const createCustomer = (formData, userId, history) => {
-  // const customerId = formData.id;
-  // const customerFormPatchInfo = {
-  //   customer: formData,
-  // };
-  // const customerInfo = {
-  //   name: formData.name,
-  //   address: formData.address,
-  //   email: formData.email,
-  //   phone_number: formData.phone_number,
-  //   user_id: userId,
-  // };
+  const createCustomerSuccess = { ...formData, user_id: userId };
   return (dispatch) => {
     return fetch(`http://localhost:3001/api/v1/users/${userId}/customers/`, {
       credentials: "include",
@@ -64,15 +61,19 @@ export const createCustomer = (formData, userId, history) => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(createCustomerSuccess),
     })
       .then((resp) => resp.json())
       .then((customer) => {
-        // dispatch(newCustomer(customerInfo));
-        dispatch(customerList());
-        dispatch(resetCustomerForm());
-        history.push(`/users/${userId}/customers`);
-      });
+        if (customer.errors) {
+          alert(customer.errors);
+        } else {
+          dispatch(customerList());
+          dispatch(resetCustomerForm());
+          history.push(`/customers`);
+        }
+      })
+      .catch(console.log());
   };
 };
 
@@ -88,8 +89,6 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
         user_id: formData.user_id,
       },
     };
-    const e = { name: "adsf", address: "asdfad" };
-    const formDataJsonString = JSON.stringify(e);
     return fetch(
       `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
       {
@@ -103,12 +102,40 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
     )
       .then((resp) => resp.json())
       .then((customer) => {
-        if (customer.error) {
-          alert(customer.error);
+        if (customer.errors) {
+          alert(customer.errors);
         } else {
-          dispatch(editCustomerInfo(customer.data.attributes));
-          history.push(`/users/${userId}/customers/${customerId}}`);
+          dispatch(editCustomerInfo(customer.data));
+          // dispatch(resetCustomerForm());
+          history.push(`/customers/${customer.data.id}`);
         }
       });
+  };
+};
+
+export const destroyCustomer = (userId, customerId, history) => {
+  return (dispatch) => {
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
+      {
+        credentials: "include",
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((r) => r.json())
+      .then((resp) => {
+        if (resp.errors) {
+          alert(resp.errors);
+        } else {
+          console.log("HISTORY", history);
+          dispatch(clearCurrentCustomer());
+          dispatch(destroyCustomerSuccess(customerId));
+          history.push(`/customers`);
+        }
+      })
+      .catch(console.log);
   };
 };

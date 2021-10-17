@@ -1,9 +1,9 @@
-export const addPianoForm = (formData) => {
-  return {
-    type: "ADD_PIANO",
-    formData,
-  };
-};
+// export const addPianoForm = (formData) => {
+//   return {
+//     type: "ADD_PIANO",
+//     formData,
+//   };
+// };
 
 export const renderPianos = (pianos) => {
   return {
@@ -18,13 +18,27 @@ const clearPianoForm = () => {
   };
 };
 
+const deletePiano = (pianoId) => {
+  return {
+    type: "DELETE_PIANO",
+    pianoId,
+  };
+};
+
+export const setCurrentPiano = (pianoData) => {
+  return {
+    type: "ADD_CURRENT_PIANO",
+    pianoData,
+  };
+};
+
 export const addPiano = (credentials, history) => {
   const pianoFormInfo = {
-    make: credentials.updateFormData.make,
-    model: credentials.updateFormData.model,
-    serial: credentials.updateFormData.serial,
-    notes: credentials.updateFormData.notes,
-    year: credentials.updateFormData.year,
+    make: credentials.formData.make,
+    model: credentials.formData.model,
+    serial: credentials.formData.serial,
+    notes: credentials.formData.notes,
+    year: credentials.formData.year,
     user_id: credentials.userId,
     customer_id: credentials.customerId,
   };
@@ -45,15 +59,11 @@ export const addPiano = (credentials, history) => {
         if (piano.errors) {
           alert(piano.errors);
         } else {
-          dispatch(addPianoForm(piano.data.attributes));
+          dispatch(getPianos(credentials.userId, credentials.customerId));
+          history.push(`/pianos/${piano.data.attributes.id}`);
           dispatch(clearPianoForm());
-
-          history.push(
-            `/users/${credentials.userId}/customers/${credentials.customerId}/pianos`
-          );
         }
       })
-
       .catch((errors) => console.log(errors));
   };
 };
@@ -80,5 +90,47 @@ export const getPianos = (user, customer) => {
       })
 
       .catch((errors) => console.log(errors));
+  };
+};
+
+export const getUserPianos = (user) => {
+  return (dispatch) => {
+    return fetch(`http://localhost:3001/api/v1/users/${user}/pianos`, {
+      credentials: "include",
+      method: "get",
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((pianos) => {
+        if (pianos.errors) {
+          alert(pianos.errors);
+        } else {
+          dispatch(renderPianos(pianos.data));
+        }
+      })
+
+      .catch((errors) => console.log(errors));
+  };
+};
+
+export const destroyPiano = (userId, customerId, pianoId, history) => {
+  return (dispatch) => {
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos/${pianoId}`,
+      {
+        credential: "include",
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((resp) => resp.json())
+      .then((resp) => {
+        dispatch(deletePiano(pianoId));
+        history.push(`customers/${customerId}`);
+      });
   };
 };

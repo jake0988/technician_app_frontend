@@ -1,20 +1,32 @@
 import React from "react";
-import CustomerForm from "./CustomerForm";
-import { patchCustomerInfo } from "../actions/customerList";
+import CustomerForm from "../presentation/CustomerForm";
+import { patchCustomerInfo } from "../../../actions/customerList";
 import { connect } from "react-redux";
-import { setCustomerFormForEdit } from "../actions/updateCustomerForm";
+import { setCustomerFormForEdit } from "../../../actions/updateCustomerForm";
+import { resetCustomerForm } from "../../../actions/customerList";
 
 class EditCustomerFormWrapper extends React.Component {
   componentDidMount() {
-    this.props.setCustomerFormForEdit(this.props.currentCustomer);
+    this.props.customer &&
+      this.props.setCustomerFormForEdit(this.props.customer);
+  }
+
+  componentDidUpdate(previousProps) {
+    this.props.customer &&
+      !previousProps.customer &&
+      this.props.setCustomerFormForEdit(this.props.customer);
+  }
+
+  componentWillUnmount() {
+    this.props.resetCustomerForm();
   }
 
   handleSubmit = (formData) => {
-    const customerId = this.props.currentCustomer.id;
+    const customerId = this.props.customer.attributes.id;
     const { patchCustomerInfo, history, userId } = this.props;
     const newFormData = {
       ...formData,
-      customerId: customerId,
+      customerId: this.props.customer.attributes.id,
       userId: this.props.userId,
     };
     patchCustomerInfo(newFormData, userId, history, customerId);
@@ -40,4 +52,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   patchCustomerInfo,
   setCustomerFormForEdit,
+  resetCustomerForm,
 })(EditCustomerFormWrapper);

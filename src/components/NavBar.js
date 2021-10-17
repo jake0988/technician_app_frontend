@@ -1,57 +1,70 @@
 import React from "react";
-import Login from "./Login";
-import Logout from "./Logout";
-import Signup from "./Signup";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { Navbar, Nav, Container } from "react-bootstrap";
+import { destroyCustomer } from "../actions/customerList";
+import { UserNav } from "./users/UserNav";
+import { Row, Col } from "react-bootstrap";
+import { ArrowLeft } from "react-bootstrap-icons";
 
-const NavBar = ({ currentUser, currentCustomer, location }) => {
+const NavBar = ({
+  currentUser,
+  currentCustomer,
+  history,
+  destroyCustomer,
+  currentPiano,
+  pianos,
+  customers,
+}) => {
   return (
-    <div className="NavBar">
-      <NavLink
-        exact
-        activeClassName="active"
-        activeStyle={{
-          background: "blue",
-          color: "white",
-        }}
-        to={`/customers`}
-      >
-        Customer List |
-      </NavLink>
-      <NavLink
-        exact
-        activeClassName="active"
-        activeStyle={{
-          background: "blue",
-          color: "white",
-        }}
-        to={`/customers/new`}
-      >
-        Add A Customer
-      </NavLink>
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="dark">
+      <Container fluid>
+        {history.goBack ? (
+          <ArrowLeft
+            color="royalblue"
+            size={40}
+            onClick={() => history.goBack()}
+          />
+        ) : null}
 
-      {currentUser ? <p>Welcome {currentUser.name}</p> : ""}
-      {currentCustomer ? (
-        <p>
-          Customer Name: {currentCustomer.name}{" "}
-          <NavLink to={`/customers/${currentCustomer.id}/edit`}>
-            <button className="button">Edit Customer</button>
+        <NavLink
+          exact
+          activeClassName="active"
+          activeStyle={{
+            background: "blue",
+            color: "white",
+          }}
+          to={`/`}
+        >
+          Home
+        </NavLink>
+        {customers.length > 0 ? (
+          <NavLink
+            exact
+            activeClassName="active"
+            activeStyle={{
+              background: "blue",
+              color: "white",
+            }}
+            to={`/customers`}
+          >
+            Customer List
           </NavLink>
-          <NavLink to={`/pianos/new`}>Add Piano</NavLink>
-        </p>
-      ) : (
-        <p>Select a customer from customer list to add customers</p>
-      )}
+        ) : null}
 
-      {currentUser ? (
-        <Logout />
-      ) : (
-        <div>
-          <Login /> <Signup />{" "}
-        </div>
-      )}
-    </div>
+        <NavLink
+          exact
+          activeClassName="active"
+          activeStyle={{
+            background: "blue",
+            color: "white",
+          }}
+          to={`/customers/new`}
+        >
+          Add A Customer
+        </NavLink>
+      </Container>
+    </Navbar>
   );
 };
 
@@ -59,7 +72,10 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.currentUser,
     currentCustomer: state.currentCustomer,
+    currentPiano: state.currentPiano,
+    pianos: state.pianos,
+    customers: state.customers,
   };
 };
 
-export default connect(mapStateToProps)(NavBar);
+export default connect(mapStateToProps, { destroyCustomer })(NavBar);

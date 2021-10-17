@@ -8,6 +8,7 @@ import addCustomerForm from "./reducers/addCustomerForm";
 import currentCustomer from "./reducers/currentCustomer";
 import updatePianoForm from "./reducers/updatePianoForm";
 import pianos from "./reducers/pianos";
+import currentPiano from "./reducers/currentPiano";
 
 const reducer = combineReducers({
   currentUser,
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   currentCustomer,
   updatePianoForm,
   pianos,
+  currentPiano,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

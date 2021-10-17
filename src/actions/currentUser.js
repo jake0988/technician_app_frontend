@@ -1,8 +1,26 @@
 import { customerList } from "./customerList";
-import { resetLoginForm } from "./loginForm";
-import { resetSignupForm } from "./resetSignupForm";
+import { getPianos, getUserPianos } from "./addPiano";
 
-const setCurrentUser = (user) => {
+export const updateSignupForm = (formData) => {
+  return {
+    type: "UPDATE_SIGNUP_FORM",
+    formData,
+  };
+};
+
+export const resetSignupForm = () => {
+  return {
+    type: "CLEAR_SIGNUP_FORM",
+  };
+};
+
+export const resetLoginForm = () => {
+  return {
+    type: "RESET_LOGIN_FORM",
+  };
+};
+
+export const setCurrentUser = (user) => {
   return {
     type: "SET_CURRENT_USER",
     user,
@@ -41,6 +59,9 @@ export const login = (credentials, history) => {
           alert(response.error);
         } else {
           dispatch(setCurrentUser(response.data.attributes));
+          console.log("USER ID?", response.data.attributes.id);
+          dispatch(customerList(response.data.attributes.id));
+          dispatch(getUserPianos(response.data.attributes.id));
           dispatch(resetLoginForm());
           history.push("users/" + response.data.attributes.id);
         }
@@ -66,6 +87,7 @@ export const getCurrentUser = () => {
         } else {
           dispatch(setCurrentUser(user.data.attributes));
           dispatch(customerList(user.data.attributes.id));
+          dispatch(getUserPianos(user.data.attributes.id));
         }
       })
       .catch(console.log);
