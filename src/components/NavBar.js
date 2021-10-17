@@ -17,17 +17,28 @@ const NavBar = ({
   customers,
 }) => {
   return (
-    <Container fluid>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="dark">
-        <Nav className="me-auto">
-          {history.goBack ? (
-            <ArrowLeft
-              color="royalblue"
-              size={40}
-              onClick={() => history.goBack()}
-            />
-          ) : null}
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="dark">
+      <Container fluid>
+        {history.goBack ? (
+          <ArrowLeft
+            color="royalblue"
+            size={40}
+            onClick={() => history.goBack()}
+          />
+        ) : null}
 
+        <NavLink
+          exact
+          activeClassName="active"
+          activeStyle={{
+            background: "blue",
+            color: "white",
+          }}
+          to={`/`}
+        >
+          Home
+        </NavLink>
+        {customers.length > 0 ? (
           <NavLink
             exact
             activeClassName="active"
@@ -35,38 +46,25 @@ const NavBar = ({
               background: "blue",
               color: "white",
             }}
-            to={`/`}
+            to={`/customers`}
           >
-            Home
+            Customer List
           </NavLink>
-          {customers.length > 0 ? (
-            <NavLink
-              exact
-              activeClassName="active"
-              activeStyle={{
-                background: "blue",
-                color: "white",
-              }}
-              to={`/customers`}
-            >
-              Customer List
-            </NavLink>
-          ) : null}
+        ) : null}
 
-          <NavLink
-            exact
-            activeClassName="active"
-            activeStyle={{
-              background: "blue",
-              color: "white",
-            }}
-            to={`/customers/new`}
-          >
-            Add A Customer
-          </NavLink>
-        </Nav>
-      </Navbar>
-    </Container>
+        <NavLink
+          exact
+          activeClassName="active"
+          activeStyle={{
+            background: "blue",
+            color: "white",
+          }}
+          to={`/customers/new`}
+        >
+          Add A Customer
+        </NavLink>
+      </Container>
+    </Navbar>
   );
 };
 
