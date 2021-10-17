@@ -3,7 +3,7 @@ const initialState = {
   make: "",
   model: "",
   year: "",
-  image: "",
+  images: "",
   serial: "",
   notes: "",
 };

@@ -4,6 +4,7 @@ const initialState = {
   serial: "",
   notes: "",
   year: "",
+  images: "",
 };
 
 export default (state = initialState, action) => {
