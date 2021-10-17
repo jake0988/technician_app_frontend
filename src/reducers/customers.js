@@ -12,7 +12,7 @@ export default (state = [], action) => {
       );
     case "DESTROY_CUSTOMER_SUCCESS":
       const customer = state.find(
-        (customer) => customer.id === action.customerId
+        (customer) => customer.attributes.id === action.customerId
       );
       return { ...state.slice(0, customer), ...state.slice(customer, 1) };
     default:

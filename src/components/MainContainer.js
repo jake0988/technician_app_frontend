@@ -1,19 +1,8 @@
 import React from "react";
-import { Home } from "./Home";
+import CustomerList from "./customers/presentation/CustomerList";
 
-const MainContainer = (props, { select, loggedIn, customers }) => {
-  const selectText = { select } ? (
-    <p>Select a customer from customer list to edit customers</p>
-  ) : null;
-  const userOptions = { loggedIn } ? null : (
-    <Home props={props} loggedIn={loggedIn} customers={customers} />
-  );
-  return (
-    <div>
-      {selectText}
-      {userOptions}
-    </div>
-  );
+const MainContainer = ({ customers }) => {
+  return <CustomerList customers={customers} />;
 };
 
 export default MainContainer;

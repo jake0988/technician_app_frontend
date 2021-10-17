@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getCurrentUser, setCurrentUser } from "./actions/currentUser";
+import { getCurrentUser } from "./actions/currentUser";
 import { Switch, Route } from "react-router-dom";
 import { withRouter } from "react-router";
 import Login from "./components/users/Login.js";
@@ -11,14 +11,17 @@ import CustomerList from "./components/customers/presentation/CustomerList";
 import NavBar from "./components/NavBar";
 import CustomerCard from "./components/customers/presentation/CustomerCard";
 import PianoForm from "./components/pianos/PianoForm";
-import { setCurrentCustomer } from "./actions/setCurrentCustomer";
+import { setCurrentCustomer } from "./actions/currentCustomer";
 import { PianoList } from "./components/pianos/PianoList";
 import EditCustomerFormWrapper from "./components/customers/container/EditCustomerFormWrapper";
 import AddCustomerFormWrapper from "./components/customers/container/AddCustomerFormWrapper";
-import MainContainer from "./components/MainContainer";
+import { destroyCustomer } from "./actions/customerList";
 import { PianoCard } from "./components/pianos/PianoCard";
 import { setCurrentPiano } from "./actions/addPiano";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import { matchPath } from "react-router";
+import { Home } from "./components/Home";
+import { UserNav } from "./components/users/UserNav";
 
 class App extends Component {
   componentDidMount() {
@@ -27,21 +30,33 @@ class App extends Component {
 
   render() {
     const { loggedIn } = this.props;
+    const piano = this.props.location.pathname.includes("pianos");
+    const customer = this.props.location.pathname.includes("customer");
+
     return (
       <div className="App">
-        {loggedIn ? <NavBar history={this.props.history} /> : null}
+        {loggedIn ? (
+          <NavBar history={this.props.history} piano={piano} />
+        ) : null}
+        {loggedIn ? (
+          <UserNav
+            currentUser={this.props.currentUser}
+            customers={this.props.customers}
+            pianos={this.props.pianos}
+            currentCustomer={this.props.currentCustomer}
+          />
+        ) : null}
         <Switch>
           <Route
             exact
             path="/"
-            render={(props) => {
-              const select = this.props.currentCustomer ? false : true;
+            render={() => {
               return (
-                <MainContainer
-                  {...props}
+                <Home
+                  currentUser={this.props.currentUser}
                   loggedIn={this.props.loggedIn}
                   customers={this.props.customers}
-                  select={select}
+                  pianos={this.props.pianos}
                 />
               );
             }}
@@ -75,6 +90,7 @@ class App extends Component {
                   {...props}
                   setCurrentCustomer={this.props.setCurrentCustomer}
                   pianos={this.props.pianos}
+                  destroyCustomer={this.props.destroyCustomer}
                 />
               ) : (
                 <p>Customer Card is empty.</p>
@@ -104,6 +120,10 @@ class App extends Component {
               );
               return piano ? (
                 <PianoCard
+                  user={this.props.currentUser.id}
+                  customer={this.props.currentCustomer.id}
+                  history={this.props.history}
+                  destroyPiano={this.props.destroyPiano}
                   piano={piano}
                   setCurrentPiano={this.props.setCurrentPiano}
                 />
@@ -125,6 +145,8 @@ const mapStateToProps = (state) => {
     customers: state.customers,
     userId: state.currentUser.id,
     pianos: state.pianos,
+    currentUser: state.currentUser,
+    currentCustomer: state.currentCustomer,
   };
 };
 
@@ -133,5 +155,6 @@ export default withRouter(
     getCurrentUser,
     setCurrentCustomer,
     setCurrentPiano,
+    destroyCustomer,
   })(App)
 );

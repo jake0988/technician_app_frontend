@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import CustomerForm from "../presentation/CustomerForm";
 import { createCustomer } from "../../../actions/customerList";
 import { resetCustomerForm } from "../../../actions/customerList";
-import { clearCurrentCustomer } from "../../../actions/setCurrentCustomer";
+import { clearCurrentCustomer } from "../../../actions/currentCustomer";
 
 class AddCustomerFormWrapper extends Component {
   handleSubmit = (formData) => {

@@ -1,4 +1,4 @@
-import { getPianos } from "./addPiano";
+import { clearCurrentCustomer } from "./currentCustomer";
 
 export const renderCustomers = (customers) => {
   return {
@@ -43,9 +43,9 @@ export const customerList = (userId) => {
           alert(customers.errors);
         } else {
           dispatch(renderCustomers(customers.data));
-          customers.data.forEach((customer) => {
-            dispatch(getPianos(userId, customer.id));
-          });
+          // customers.data.forEach((customer) => {
+          //   dispatch(getPianos(userId, customer.id));
+          // });
         }
       })
       .catch(console.log);
@@ -113,26 +113,29 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
   };
 };
 
-export const destroyCustomer = (customerId, userId, history) => {
+export const destroyCustomer = (userId, customerId, history) => {
   return (dispatch) => {
     return fetch(
       `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
       {
         credentials: "include",
         method: "DELETE",
-        header: {
-          "Content-Type": "json/application",
+        headers: {
+          "Content-Type": "application/json",
         },
       }
     )
-      .then((resp) => resp.json())
+      .then((r) => r.json())
       .then((resp) => {
-        dispatch(
-          destroyCustomerSuccess(customerId),
-          customerList(userId),
-
-          history.push(`/customers`)
-        );
-      });
+        if (resp.errors) {
+          alert(resp.errors);
+        } else {
+          console.log("HISTORY", history);
+          dispatch(clearCurrentCustomer());
+          dispatch(destroyCustomerSuccess(customerId));
+          history.push(`/customers`);
+        }
+      })
+      .catch(console.log);
   };
 };

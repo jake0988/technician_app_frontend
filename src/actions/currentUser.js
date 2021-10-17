@@ -1,4 +1,5 @@
 import { customerList } from "./customerList";
+import { getPianos, getUserPianos } from "./addPiano";
 
 export const updateSignupForm = (formData) => {
   return {
@@ -58,6 +59,9 @@ export const login = (credentials, history) => {
           alert(response.error);
         } else {
           dispatch(setCurrentUser(response.data.attributes));
+          console.log("USER ID?", response.data.attributes.id);
+          dispatch(customerList(response.data.attributes.id));
+          dispatch(getUserPianos(response.data.attributes.id));
           dispatch(resetLoginForm());
           history.push("users/" + response.data.attributes.id);
         }
@@ -83,6 +87,7 @@ export const getCurrentUser = () => {
         } else {
           dispatch(setCurrentUser(user.data.attributes));
           dispatch(customerList(user.data.attributes.id));
+          dispatch(getUserPianos(user.data.attributes.id));
         }
       })
       .catch(console.log);

@@ -26,7 +26,6 @@ const deletePiano = (pianoId) => {
 };
 
 export const setCurrentPiano = (pianoData) => {
-  console.log("IN ACTION", pianoData);
   return {
     type: "ADD_CURRENT_PIANO",
     pianoData,
@@ -94,11 +93,32 @@ export const getPianos = (user, customer) => {
   };
 };
 
+export const getUserPianos = (user) => {
+  return (dispatch) => {
+    return fetch(`http://localhost:3001/api/v1/users/${user}/pianos`, {
+      credentials: "include",
+      method: "get",
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((pianos) => {
+        if (pianos.errors) {
+          alert(pianos.errors);
+        } else {
+          dispatch(renderPianos(pianos.data));
+        }
+      })
+
+      .catch((errors) => console.log(errors));
+  };
+};
+
 export const destroyPiano = (userId, customerId, pianoId, history) => {
   return (dispatch) => {
-    dispatch(deletePiano(pianoId));
     return fetch(
-      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`,
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos/${pianoId}`,
       {
         credential: "include",
         method: "DELETE",
@@ -108,6 +128,9 @@ export const destroyPiano = (userId, customerId, pianoId, history) => {
       }
     )
       .then((resp) => resp.json())
-      .then((resp) => history.push(`customers/${customerId}`));
+      .then((resp) => {
+        dispatch(deletePiano(pianoId));
+        history.push(`customers/${customerId}`);
+      });
   };
 };

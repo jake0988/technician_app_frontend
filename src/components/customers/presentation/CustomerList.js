@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { customerList } from "../../../actions/customerList";
 import { Link } from "react-router-dom";
-import { setCurrentCustomer } from "../../../actions/setCurrentCustomer";
+import { setCurrentCustomer } from "../../../actions/currentCustomer";
 
 const CustomerList = (props) => {
   const customerCard =

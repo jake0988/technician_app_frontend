@@ -15,3 +15,27 @@ code {
 p {
   text-align: left;
 }
+
+.button {
+  border-width: thin;
+}
+
+ol {
+  counter-reset: item;
+}
+
+li {
+  display: block;
+}
+
+li:before {
+  content: counters(item, ".") ". ";
+  counter-increment: item;
+}
+
+.li:nth-child(odd) {
+  background-color: white;
+}
+.li:nth-child(even) {
+  background-color: black;
+}

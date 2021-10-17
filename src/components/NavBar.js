@@ -1,12 +1,11 @@
 import React from "react";
-import Login from "./users/Login";
-import Logout from "./users/Logout";
-import Signup from "./users/Signup";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { destroyCustomer } from "../actions/customerList";
-import { destroyPiano } from "../actions/addPiano";
+import { UserNav } from "./users/UserNav";
+import { Row, Col } from "react-bootstrap";
+import { ArrowLeft } from "react-bootstrap-icons";
 
 const NavBar = ({
   currentUser,
@@ -14,20 +13,20 @@ const NavBar = ({
   history,
   destroyCustomer,
   currentPiano,
+  pianos,
+  customers,
 }) => {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="light" variant="dark">
-      <Container>
+    <Container fluid>
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="dark">
         <Nav className="me-auto">
-          {currentUser ? <span>Welcome {currentUser.name}</span> : ""}
-
-          {currentUser ? (
-            <Logout />
-          ) : (
-            <div>
-              <Login /> <Signup />{" "}
-            </div>
-          )}
+          {history.goBack ? (
+            <ArrowLeft
+              color="royalblue"
+              size={40}
+              onClick={() => history.goBack()}
+            />
+          ) : null}
 
           <NavLink
             exact
@@ -40,18 +39,19 @@ const NavBar = ({
           >
             Home
           </NavLink>
-
-          <NavLink
-            exact
-            activeClassName="active"
-            activeStyle={{
-              background: "blue",
-              color: "white",
-            }}
-            to={`/customers`}
-          >
-            Customer List
-          </NavLink>
+          {customers.length > 0 ? (
+            <NavLink
+              exact
+              activeClassName="active"
+              activeStyle={{
+                background: "blue",
+                color: "white",
+              }}
+              to={`/customers`}
+            >
+              Customer List
+            </NavLink>
+          ) : null}
 
           <NavLink
             exact
@@ -65,49 +65,8 @@ const NavBar = ({
             Add A Customer
           </NavLink>
         </Nav>
-
-        {currentCustomer.name ? (
-          <div className="row">
-            <div className="col-sm-6">
-              Customer Name: {currentCustomer.name}{" "}
-              <NavLink to={`/customers/${currentCustomer.id}/edit`}>
-                <button className="button">Edit Customer</button>
-              </NavLink>
-              <button
-                className="button"
-                onClick={() =>
-                  destroyCustomer(currentCustomer.id, currentUser.id, history)
-                }
-              >
-                Delete Customer
-              </button>
-            </div>
-            {currentPiano ? (
-              <div className="col-sm-6">
-                <NavLink to={`/pianos/new`}>Add Piano</NavLink>
-                <button
-                  className="button"
-                  onClick={() =>
-                    destroyPiano(
-                      currentUser.id,
-                      currentCustomer.id,
-                      currentPiano.id,
-                      history
-                    )
-                  }
-                >
-                  Delete Piano
-                </button>{" "}
-                :
-              </div>
-            ) : null}
-            <div className="col-sm-6">
-              <NavLink to={`/pianos/new`}>Add Piano</NavLink>
-            </div>
-          </div>
-        ) : null}
-      </Container>
-    </Navbar>
+      </Navbar>
+    </Container>
   );
 };
 
@@ -116,6 +75,8 @@ const mapStateToProps = (state) => {
     currentUser: state.currentUser,
     currentCustomer: state.currentCustomer,
     currentPiano: state.currentPiano,
+    pianos: state.pianos,
+    customers: state.customers,
   };
 };
 
