@@ -4,12 +4,17 @@ import { customerList } from "../../../actions/customerList";
 import { Link } from "react-router-dom";
 import { setCurrentCustomer } from "../../../actions/currentCustomer";
 
-const CustomerList = (props) => {
+export const CustomerList = ({
+  userId,
+  customers,
+  customerList,
+  setCurrentCustomer,
+}) => {
   const customerCard =
-    props.customers.length > 0 ? (
-      props.customers.map((customer, index) => (
+    customers.length > 0 ? (
+      customers.map((customer, index) => (
         <p key={customer.attributes.id}>
-          <Link to={`/customers/${customer.attributes.id}`}>
+          <Link to={`/users/${userId}/customers/${customer.attributes.id}`}>
             <span>
               {index + 1}. {customer.attributes.name}
             </span>
@@ -22,11 +27,6 @@ const CustomerList = (props) => {
   return customerCard;
 };
 
-const mapStateToProps = ({ customers, currentUser }) => ({
-  customers,
-  currentUser,
-});
-
-export default connect(mapStateToProps, { customerList, setCurrentCustomer })(
-  CustomerList
-);
+// export default connect(null, { customerList, setCurrentCustomer })(
+//   CustomerList
+// );

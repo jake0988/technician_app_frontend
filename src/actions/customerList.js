@@ -1,4 +1,6 @@
+import { setCurrentCustomer } from "./currentCustomer";
 import { clearCurrentCustomer } from "./currentCustomer";
+import { getPianos } from "./addPiano";
 
 export const renderCustomers = (customers) => {
   return {
@@ -43,6 +45,7 @@ export const customerList = (userId) => {
           alert(customers.errors);
         } else {
           dispatch(renderCustomers(customers.data));
+          dispatch(getPianos(userId));
           // customers.data.forEach((customer) => {
           //   dispatch(getPianos(userId, customer.id));
           // });
@@ -69,8 +72,9 @@ export const createCustomer = (formData, userId, history) => {
           alert(customer.errors);
         } else {
           dispatch(customerList());
+          dispatch(setCurrentCustomer(customer.data));
           dispatch(resetCustomerForm());
-          history.push(`/customers`);
+          history.push(`/users/${userId}/customers/`);
         }
       })
       .catch(console.log());
@@ -107,7 +111,7 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
         } else {
           dispatch(editCustomerInfo(customer.data));
           // dispatch(resetCustomerForm());
-          history.push(`/customers/${customer.data.id}`);
+          history.push(`users/${userId}/customers/${customer.data.id}`);
         }
       });
   };
@@ -115,6 +119,8 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
 
 export const destroyCustomer = (userId, customerId, history) => {
   return (dispatch) => {
+    // debugger;
+
     return fetch(
       `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}`,
       {
@@ -123,17 +129,24 @@ export const destroyCustomer = (userId, customerId, history) => {
         headers: {
           "Content-Type": "application/json",
         },
+        // body: JSON.stringify({ userId, customerId }),
       }
     )
       .then((r) => r.json())
+
       .then((resp) => {
+        dispatch(clearCurrentCustomer());
+        dispatch(destroyCustomerSuccess(customerId));
+        dispatch(customerList(userId));
+        dispatch(getPianos(userId));
+        history.push(`/users/${userId}/customers`);
+        debugger;
         if (resp.errors) {
           alert(resp.errors);
         } else {
-          console.log("HISTORY", history);
-          dispatch(clearCurrentCustomer());
-          dispatch(destroyCustomerSuccess(customerId));
-          history.push(`/customers`);
+          // dispatch(clearCurrentCustomer());
+          // dispatch(destroyCustomerSuccess(customerId));
+          // history.push(`/`);
         }
       })
       .catch(console.log);

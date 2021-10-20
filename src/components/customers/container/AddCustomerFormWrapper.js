@@ -15,7 +15,7 @@ class AddCustomerFormWrapper extends Component {
   };
 
   render() {
-    this.props.clearCurrentCustomer();
+    // this.props.clearCurrentCustomer();
     return (
       <div className="AddCustomerFormWrapper">
         <CustomerForm handleSubmit={this.handleSubmit} />

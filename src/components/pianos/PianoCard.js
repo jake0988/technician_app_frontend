@@ -1,5 +1,6 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import { Figure } from "react-bootstrap";
 
 export const PianoCard = ({
   piano,
@@ -8,10 +9,13 @@ export const PianoCard = ({
   customer,
   history,
   destroyPiano,
+  match,
+  location,
 }) => {
   const { make, model, year, serial, notes, id } = piano.attributes;
   const setPiano = piano.attributes;
   setCurrentPiano(setPiano);
+  debugger;
   return (
     <div className="PianoCard">
       <Table striped bordered hover responsive>
@@ -34,12 +38,23 @@ export const PianoCard = ({
           </tr>
         </tbody>
       </Table>
+      {/* <Figure>
+        <Figure.Image
+          width={171}
+          height={180}
+          alt="171x180"
+          src="holder.js/171x180"
+        />
+      </Figure> */}
       {/* <Link to={`/pianos/${id}/edit`}>
         <button className="button">Edit Piano</button>
       </Link> */}
       <button
         className="button"
-        onClick={() => destroyPiano(user, customer, piano, history)}
+        onClick={(e) => {
+          e.preventDefault();
+          destroyPiano(user, customer, id, history);
+        }}
       >
         Delete Piano
       </button>{" "}

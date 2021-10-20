@@ -7,7 +7,7 @@ import { withRouter } from "react-router";
 import Login from "./components/users/Login.js";
 import Logout from "./components/users/Logout";
 import Signup from "./components/users/Signup";
-import CustomerList from "./components/customers/presentation/CustomerList";
+import { CustomerList } from "./components/customers/presentation/CustomerList";
 import NavBar from "./components/NavBar";
 import CustomerCard from "./components/customers/presentation/CustomerCard";
 import PianoForm from "./components/pianos/PianoForm";
@@ -22,6 +22,8 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { matchPath } from "react-router";
 import { Home } from "./components/Home";
 import { UserNav } from "./components/users/UserNav";
+import { destroyPiano } from "./actions/addPiano";
+import { customerList } from "./actions/customerList";
 
 class App extends Component {
   componentDidMount() {
@@ -61,15 +63,29 @@ class App extends Component {
               );
             }}
           />
-          <Route exact path="/customers" component={CustomerList} />
           <Route
             exact
-            path="/customers/new"
+            path="/users/:user_id/customers"
+            render={(props) => {
+              return (
+                <CustomerList
+                  {...props}
+                  customers={this.props.customers}
+                  userId={this.props.currentUser.id}
+                  customerList={this.props.customerList}
+                  setCurrentCustomer={this.props.setCurrentCustomer}
+                />
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/users/:user_id/customers/new"
             component={AddCustomerFormWrapper}
           />
           <Route
             exact
-            path="/customers/:id/edit"
+            path="/users/:user_id/customers/:id/edit"
             render={(props) => {
               const customer = this.props.customers.find(
                 (customer) => customer.id === props.match.params.id
@@ -79,7 +95,7 @@ class App extends Component {
           />
           <Route
             exact
-            path="/customers/:id"
+            path="/users/:user_id/customers/:id"
             render={(props) => {
               const customer = this.props.customers.find(
                 (customer) => customer.id === props.match.params.id
@@ -99,27 +115,33 @@ class App extends Component {
           />
           <Route
             exact
-            path="/pianos"
+            path="/users/:user_id/customers/:customer_id/pianos/:id"
             render={(props) => {
               return (
                 <PianoList
-                  pianos={props}
-                  currentUser={this.props.currentUser}
-                  currentCustomer={this.props.currentCustomer}
+                  pianos={this.props.pianos}
+                  userId={this.props.currentUser.id}
+                  customerId={this.props.currentCustomer.id}
+                  setCurrentPiano={this.props.setCurrentPiano()}
                 />
               );
             }}
           />
-          <Route exact path="/pianos/new" component={PianoForm} />
           <Route
             exact
-            path="/pianos/:id"
+            path="/users/:user_id/customers/:customer_id/pianos/new"
+            component={PianoForm}
+          />
+          <Route
+            exact
+            path="/users/:user_id/customers/:customer_id/pianos/:id"
             render={(props) => {
               const piano = this.props.pianos.find(
                 (piano) => piano.id === props.match.params.id
               );
               return piano ? (
                 <PianoCard
+                  {...props}
                   user={this.props.currentUser.id}
                   customer={this.props.currentCustomer.id}
                   history={this.props.history}
@@ -156,5 +178,7 @@ export default withRouter(
     setCurrentCustomer,
     setCurrentPiano,
     destroyCustomer,
+    destroyPiano,
+    customerList,
   })(App)
 );

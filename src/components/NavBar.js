@@ -46,7 +46,7 @@ const NavBar = ({
               background: "blue",
               color: "white",
             }}
-            to={`/customers`}
+            to={`/users/${currentUser.id}/customers`}
           >
             Customer List
           </NavLink>
@@ -59,7 +59,7 @@ const NavBar = ({
             background: "blue",
             color: "white",
           }}
-          to={`/customers/new`}
+          to={`/users/${currentUser.id}/customers/new`}
         >
           Add A Customer
         </NavLink>

@@ -1,5 +1,6 @@
 import { customerList } from "./customerList";
 import { getPianos } from "./addPiano";
+import { clearcurrentPiano } from "./addPiano";
 
 export const updateSignupForm = (formData) => {
   return {
@@ -37,9 +38,9 @@ export const clearCurrentUser = () => {
   };
 };
 
-export const clearCurrentCustomers = () => {
+export const clearCurrentCustomer = () => {
   return {
-    type: "CLEAR_CUSTOMERS",
+    type: "CLEAR_CURRENT_CUSTOMER",
   };
 };
 
@@ -97,7 +98,8 @@ export const getCurrentUser = () => {
 export const logout = () => {
   return (dispatch) => {
     dispatch(clearCurrentUser());
-    dispatch(clearCurrentCustomers());
+    dispatch(clearCurrentCustomer());
+    dispatch(clearcurrentPiano());
     return fetch("http://localhost:3001/api/v1/delete", {
       credentials: "include",
       method: "DELETE",

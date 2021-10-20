@@ -20,7 +20,9 @@ export const UserNav = ({
         </Col>
         <Col className="d-flex justify-content-end">
           {currentCustomer.name ? (
-            <Link to={`/pianos/new`}>
+            <Link
+              to={`/users/${currentUser.id}/customers/${currentCustomer.id}/pianos/new`}
+            >
               <button className="button">
                 Add Piano for Customer: {currentCustomer.name}
               </button>

@@ -4,18 +4,25 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 
-const CustomerCard = (props, { destroyCustomer, history }) => {
+const CustomerCard = ({
+  customer,
+  pianos,
+  setCurrentCustomer,
+  destroyCustomer,
+  history,
+  location,
+  match,
+}) => {
   const { name, address, phone_number, email, id, user_id } =
-    props.customer.attributes;
-
-  const pianoList = props.pianos.filter(
+    customer.attributes;
+  const pianoList = pianos.filter(
     (piano) =>
       piano.attributes.customer_id === id &&
       piano.attributes.user_id === user_id
   );
   const length = pianoList.length;
   useEffect(() => {
-    props.setCurrentCustomer(props.customer.attributes, props.history);
+    setCurrentCustomer(customer.attributes, history);
   });
 
   return (
@@ -43,12 +50,15 @@ const CustomerCard = (props, { destroyCustomer, history }) => {
       <ol>
         <PianoList pianos={pianoList} />
       </ol>
-      <Link to={`/customers/${id}/edit`}>
+      <Link to={`users/${user_id}/customers/${id}/edit`}>
         <button className="button">Edit Customer</button>
       </Link>{" "}
       <button
         className="button"
-        onClick={() => destroyCustomer({ user_id }, { id }, history)}
+        onClick={(e) => {
+          e.preventDefault();
+          destroyCustomer(user_id, id, history);
+        }}
       >
         Delete Customer
       </button>
