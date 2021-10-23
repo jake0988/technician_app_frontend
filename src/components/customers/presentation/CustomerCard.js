@@ -10,8 +10,7 @@ const CustomerCard = ({
   setCurrentCustomer,
   destroyCustomer,
   history,
-  location,
-  match,
+  destroyPiano,
 }) => {
   const { name, address, phone_number, email, id, user_id } =
     customer.attributes;
@@ -47,9 +46,15 @@ const CustomerCard = ({
           </tr>
         </tbody>
       </Table>
-      <ol>
-        <PianoList pianos={pianoList} />
-      </ol>
+      <ul>
+        <PianoList
+          pianos={pianoList}
+          userId={user_id}
+          customerId={id}
+          destroyPiano={destroyPiano}
+          history={history}
+        />
+      </ul>
       <Link to={`users/${user_id}/customers/${id}/edit`}>
         <button className="button">Edit Customer</button>
       </Link>{" "}

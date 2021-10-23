@@ -12,10 +12,10 @@ export const PianoCard = ({
   match,
   location,
 }) => {
-  const { make, model, year, serial, notes, id } = piano.attributes;
+  const { customer_id, user_id, make, model, year, serial, notes, id } =
+    piano.attributes;
   const setPiano = piano.attributes;
   setCurrentPiano(setPiano);
-  debugger;
   return (
     <div className="PianoCard">
       <Table striped bordered hover responsive>
@@ -53,7 +53,7 @@ export const PianoCard = ({
         className="button"
         onClick={(e) => {
           e.preventDefault();
-          destroyPiano(user, customer, id, history);
+          destroyPiano(user_id, customer_id, id, history);
         }}
       >
         Delete Piano

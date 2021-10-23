@@ -74,6 +74,8 @@ class App extends Component {
                   userId={this.props.currentUser.id}
                   customerList={this.props.customerList}
                   setCurrentCustomer={this.props.setCurrentCustomer}
+                  destroy={this.props.destroyCustomer}
+                  history={this.props.history}
                 />
               );
             }}
@@ -107,6 +109,7 @@ class App extends Component {
                   setCurrentCustomer={this.props.setCurrentCustomer}
                   pianos={this.props.pianos}
                   destroyCustomer={this.props.destroyCustomer}
+                  destroyPiano={this.props.destroyPiano}
                 />
               ) : (
                 <p>Customer Card is empty.</p>
@@ -115,14 +118,15 @@ class App extends Component {
           />
           <Route
             exact
-            path="/users/:user_id/customers/:customer_id/pianos/:id"
+            path="/users/:user_id/customers/:customer_id/pianos"
             render={(props) => {
               return (
                 <PianoList
                   pianos={this.props.pianos}
                   userId={this.props.currentUser.id}
                   customerId={this.props.currentCustomer.id}
-                  setCurrentPiano={this.props.setCurrentPiano()}
+                  destroyPiano={this.props.destroyPiano}
+                  history={this.props.history}
                 />
               );
             }}

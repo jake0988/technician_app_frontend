@@ -71,8 +71,9 @@ export const createCustomer = (formData, userId, history) => {
         if (customer.errors) {
           alert(customer.errors);
         } else {
-          dispatch(customerList());
+          dispatch(customerList(userId));
           dispatch(setCurrentCustomer(customer.data));
+          dispatch(getPianos(userId));
           dispatch(resetCustomerForm());
           history.push(`/users/${userId}/customers/`);
         }
@@ -135,18 +136,22 @@ export const destroyCustomer = (userId, customerId, history) => {
       .then((r) => r.json())
 
       .then((resp) => {
-        dispatch(clearCurrentCustomer());
-        dispatch(destroyCustomerSuccess(customerId));
-        dispatch(customerList(userId));
-        dispatch(getPianos(userId));
-        history.push(`/users/${userId}/customers`);
-        debugger;
+        // dispatch(clearCurrentCustomer());
+        // // dispatch(destroyCustomerSuccess(customerId));
+        // dispatch(customerList(userId));
+        // dispatch(getPianos(userId));
+        // history.push(`/users/${userId}/customers`);
+        // debugger;
         if (resp.errors) {
           alert(resp.errors);
         } else {
           // dispatch(clearCurrentCustomer());
           // dispatch(destroyCustomerSuccess(customerId));
-          // history.push(`/`);
+          dispatch(clearCurrentCustomer());
+          // dispatch(destroyCustomerSuccess(customerId));
+          dispatch(customerList(userId));
+          dispatch(getPianos(userId));
+          history.push(`/users/${userId}/customers`);
         }
       })
       .catch(console.log);

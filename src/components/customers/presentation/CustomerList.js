@@ -1,14 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
-import { customerList } from "../../../actions/customerList";
 import { Link } from "react-router-dom";
-import { setCurrentCustomer } from "../../../actions/currentCustomer";
+import { DeleteCustomerButton } from "./DeleteCustomerButton";
 
 export const CustomerList = ({
   userId,
   customers,
-  customerList,
-  setCurrentCustomer,
+  destroyCustomer,
+  history,
 }) => {
   const customerCard =
     customers.length > 0 ? (
@@ -16,7 +14,15 @@ export const CustomerList = ({
         <p key={customer.attributes.id}>
           <Link to={`/users/${userId}/customers/${customer.attributes.id}`}>
             <span>
-              {index + 1}. {customer.attributes.name}
+              {index + 1}. {customer.attributes.name}{" "}
+            </span>
+            <span>
+              <DeleteCustomerButton
+                destroyCustomer={destroyCustomer}
+                userId={userId}
+                id={customer.attributes.id}
+                history={history}
+              />
             </span>
           </Link>
         </p>
