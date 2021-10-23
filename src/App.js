@@ -19,7 +19,6 @@ import { destroyCustomer } from "./actions/customerList";
 import { PianoCard } from "./components/pianos/PianoCard";
 import { setCurrentPiano } from "./actions/addPiano";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-import { matchPath } from "react-router";
 import { Home } from "./components/Home";
 import { UserNav } from "./components/users/UserNav";
 import { destroyPiano } from "./actions/addPiano";
@@ -33,7 +32,6 @@ class App extends Component {
   render() {
     const { loggedIn } = this.props;
     const piano = this.props.location.pathname.includes("pianos");
-    const customer = this.props.location.pathname.includes("customer");
 
     return (
       <div className="App">
@@ -74,7 +72,7 @@ class App extends Component {
                   userId={this.props.currentUser.id}
                   customerList={this.props.customerList}
                   setCurrentCustomer={this.props.setCurrentCustomer}
-                  destroy={this.props.destroyCustomer}
+                  destroyCustomer={this.props.destroyCustomer}
                   history={this.props.history}
                 />
               );
