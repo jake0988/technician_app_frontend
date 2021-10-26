@@ -1,12 +1,14 @@
-// export const addPianoForm = (formData) => {
-//   return {
-//     type: "ADD_PIANO",
-//     formData,
-//   };
-// };
+import { customerList } from "./customerList";
+
 export const clearcurrentPiano = () => {
   return {
     type: "CLEAR_CURRENT_PIANO",
+  };
+};
+
+export const clearPianos = () => {
+  return {
+    type: "CLEAR_PIANOS",
   };
 };
 
@@ -20,13 +22,6 @@ export const renderPianos = (pianos) => {
 const clearPianoForm = () => {
   return {
     type: "CLEAR_PIANO_FORM",
-  };
-};
-
-const deletePiano = (pianoId) => {
-  return {
-    type: "DELETE_PIANO",
-    pianoId,
   };
 };
 
@@ -47,7 +42,6 @@ export const addPiano = (credentials, history) => {
     user_id: credentials.userId,
     customer_id: credentials.customerId,
   };
-  console.log(history, "HISTORY");
   return (dispatch) => {
     return fetch(
       `http://localhost:3001/api/v1/users/${credentials.user_id}/customers/${credentials.customer_id}/pianos`,
@@ -66,6 +60,7 @@ export const addPiano = (credentials, history) => {
           alert(piano.errors);
         } else {
           dispatch(getPianos(credentials.userId));
+          dispatch(customerList(credentials.userId));
           dispatch(clearPianoForm());
           history.push(
             `/users/${credentials.userId}/customers/${credentials.customerId}/pianos/`

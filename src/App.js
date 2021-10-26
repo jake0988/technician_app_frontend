@@ -18,7 +18,7 @@ import AddCustomerFormWrapper from "./components/customers/container/AddCustomer
 import { destroyCustomer } from "./actions/customerList";
 import { PianoCard } from "./components/pianos/PianoCard";
 import { setCurrentPiano } from "./actions/addPiano";
-import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { Home } from "./components/Home";
 import { UserNav } from "./components/users/UserNav";
 import { destroyPiano } from "./actions/addPiano";
@@ -71,7 +71,6 @@ class App extends Component {
                   customers={this.props.customers}
                   userId={this.props.currentUser.id}
                   customerList={this.props.customerList}
-                  setCurrentCustomer={this.props.setCurrentCustomer}
                   destroyCustomer={this.props.destroyCustomer}
                   history={this.props.history}
                 />

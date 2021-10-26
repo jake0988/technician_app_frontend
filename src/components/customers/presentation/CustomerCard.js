@@ -22,7 +22,7 @@ const CustomerCard = ({
   const length = pianoList.length;
   useEffect(() => {
     setCurrentCustomer(customer.attributes, history);
-  });
+  }, []);
 
   return (
     <div className="customerCard">
@@ -55,7 +55,7 @@ const CustomerCard = ({
           history={history}
         />
       </ul>
-      <Link to={`users/${user_id}/customers/${id}/edit`}>
+      <Link to={`/users/${user_id}/customers/${id}/edit`}>
         <button className="button">Edit Customer</button>
       </Link>{" "}
       <button

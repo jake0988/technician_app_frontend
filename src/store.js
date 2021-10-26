@@ -22,7 +22,8 @@ const reducer = combineReducers({
   currentPiano,
 });
 
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancer =
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true }) || compose;
 
 const store = createStore(reducer, composeEnhancer(applyMiddleware(thunk)));
 

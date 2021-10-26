@@ -1,6 +1,6 @@
 import { customerList } from "./customerList";
 import { getPianos } from "./addPiano";
-import { clearcurrentPiano } from "./addPiano";
+import { clearcurrentPiano, clearPianos } from "./addPiano";
 
 export const updateSignupForm = (formData) => {
   return {
@@ -18,6 +18,12 @@ export const resetSignupForm = () => {
 export const resetLoginForm = () => {
   return {
     type: "RESET_LOGIN_FORM",
+  };
+};
+
+export const clearCustomers = () => {
+  return {
+    type: "CLEAR_CUSTOMERS",
   };
 };
 
@@ -60,7 +66,6 @@ export const login = (credentials, history) => {
           alert(response.error);
         } else {
           dispatch(setCurrentUser(response.data.attributes));
-          console.log("USER ID?", response.data.attributes.id);
           dispatch(customerList(response.data.attributes.id));
           dispatch(getPianos(response.data.attributes.id));
           dispatch(resetLoginForm());
@@ -99,7 +104,9 @@ export const logout = () => {
   return (dispatch) => {
     dispatch(clearCurrentUser());
     dispatch(clearCurrentCustomer());
+    dispatch(clearCustomers());
     dispatch(clearcurrentPiano());
+    dispatch(clearPianos());
     return fetch("http://localhost:3001/api/v1/delete", {
       credentials: "include",
       method: "DELETE",

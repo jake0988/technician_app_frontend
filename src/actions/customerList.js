@@ -40,15 +40,11 @@ export const customerList = (userId) => {
     })
       .then((res) => res.json())
       .then((customers) => {
-        // dispatch(renderCustomers(customers.data));
         if (customers.errors) {
           alert(customers.errors);
         } else {
           dispatch(renderCustomers(customers.data));
           dispatch(getPianos(userId));
-          // customers.data.forEach((customer) => {
-          //   dispatch(getPianos(userId, customer.id));
-          // });
         }
       })
       .catch(console.log);
@@ -112,7 +108,7 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
         } else {
           dispatch(editCustomerInfo(customer.data));
           // dispatch(resetCustomerForm());
-          history.push(`users/${userId}/customers/${customer.data.id}`);
+          history.push(`/users/${userId}/customers/${customer.data.id}`);
         }
       });
   };
@@ -136,21 +132,12 @@ export const destroyCustomer = (userId, customerId, history) => {
       .then((r) => r.json())
 
       .then((resp) => {
-        // dispatch(clearCurrentCustomer());
-        // // dispatch(destroyCustomerSuccess(customerId));
-        // dispatch(customerList(userId));
-        // dispatch(getPianos(userId));
-        // history.push(`/users/${userId}/customers`);
-        // debugger;
         if (resp.errors) {
           alert(resp.errors);
         } else {
-          // dispatch(clearCurrentCustomer());
-          // dispatch(destroyCustomerSuccess(customerId));
-          dispatch(clearCurrentCustomer());
-          // dispatch(destroyCustomerSuccess(customerId));
           dispatch(customerList(userId));
           dispatch(getPianos(userId));
+          dispatch(clearCurrentCustomer());
           history.push(`/users/${userId}/customers`);
         }
       })
