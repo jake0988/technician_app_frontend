@@ -18,15 +18,21 @@ import AddCustomerFormWrapper from "./components/customers/container/AddCustomer
 import { destroyCustomer } from "./actions/customerList";
 import { PianoCard } from "./components/pianos/PianoCard";
 import { setCurrentPiano } from "./actions/addPiano";
-// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { Home } from "./components/Home";
 import { UserNav } from "./components/users/UserNav";
 import { destroyPiano } from "./actions/addPiano";
 import { customerList } from "./actions/customerList";
+import { addAppointment } from "./actions/appointment";
+import AddAppointmentFormWrapper from "./components/appointments/AddAppointmentFormWrapper";
+import EditAppointmentFormWrapper from "./components/appointments/EditAppointmentFormWrapper";
+import { appointmentsList } from "./actions/appointment";
+import AppointmentCard from "./components/appointments/AppointmentCard";
 
 class App extends Component {
   componentDidMount() {
+    const user = this.props.usersId;
     this.props.getCurrentUser();
+    this.props.appointmentsList(user);
   }
 
   render() {
@@ -57,6 +63,7 @@ class App extends Component {
                   loggedIn={this.props.loggedIn}
                   customers={this.props.customers}
                   pianos={this.props.pianos}
+                  appointments={this.props.appointments}
                 />
               );
             }}
@@ -73,6 +80,11 @@ class App extends Component {
                   customerList={this.props.customerList}
                   destroyCustomer={this.props.destroyCustomer}
                   history={this.props.history}
+                  location={this.props.location}
+                  match={this.props.match}
+                  addAppoinment={this.props.addAppoinment}
+                  setCurrentCustomer={this.props.setCurrentCustomer}
+                  appointments={this.props.appointments}
                 />
               );
             }}
@@ -94,11 +106,50 @@ class App extends Component {
           />
           <Route
             exact
+            path="/users/:user_id/customers/:id/appointments/new"
+            component={AddAppointmentFormWrapper}
+          />
+          <Route
+            exact
+            path="/users/:user_id/appointments/:id/edit"
+            render={(props) => {
+              const appointment = this.props.appointments.find(
+                (appointment) => appointment.id === props.match.params.id
+              );
+              console.log(appointment, "appointment");
+              return (
+                <EditAppointmentFormWrapper
+                  {...props}
+                  appointment={appointment}
+                />
+              );
+            }}
+          />
+          <Route
+            exact
             path="/users/:user_id/customers/:id"
             render={(props) => {
               const customer = this.props.customers.find(
                 (customer) => customer.id === props.match.params.id
               );
+              // const appointments = customer
+              //   ? this.props.appointments.find(
+              //       (appointment) =>
+              //         parseInt(appointment.attributes.customer_id) ===
+              //         parseInt(customer.id)
+              //     )
+              //   : null;
+
+              // let appointments;
+              // if (customer) {
+              //   appointments = (customer) => {
+              //     this.props.appointments.find(
+              //       (appointment) =>
+              //         parseInt(appointment.attributes.customer_id) ===
+              //         parseInt(customer.id)
+              //     );
+              //   };
+              // }
               return customer ? (
                 <CustomerCard
                   customer={customer}
@@ -113,6 +164,23 @@ class App extends Component {
               );
             }}
           />
+
+          <Route
+            exact
+            path="/users/:user_id/customers/:id/appointments"
+            render={(props) => {
+              const customerId = parseInt(props.match.params.id);
+              this.props.setCurrentCustomer(customerId);
+              const appointments = this.props.appointments.filter(
+                (appointment) =>
+                  appointment.attributes.customer_id === parseInt(customerId)
+              );
+
+              // this.props.setCurrentCustomer(this.props.location());
+              return <AppointmentCard appointments={appointments} />;
+            }}
+          />
+
           <Route
             exact
             path="/users/:user_id/customers/:customer_id/pianos"
@@ -166,6 +234,7 @@ const mapStateToProps = (state) => {
   return {
     loggedIn: !!state.currentUser,
     customers: state.customers,
+    appointments: state.appointments,
     userId: state.currentUser.id,
     pianos: state.pianos,
     currentUser: state.currentUser,
@@ -181,5 +250,7 @@ export default withRouter(
     destroyCustomer,
     destroyPiano,
     customerList,
+    addAppointment,
+    appointmentsList,
   })(App)
 );

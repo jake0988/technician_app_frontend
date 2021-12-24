@@ -3,6 +3,7 @@ import { PianoList } from "../../pianos/PianoList";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import { appointmentsList } from "../../../actions/appointment";
 
 const CustomerCard = ({
   customer,
@@ -11,6 +12,7 @@ const CustomerCard = ({
   destroyCustomer,
   history,
   destroyPiano,
+  appointments,
 }) => {
   const { name, address, phone_number, email, id, user_id } =
     customer.attributes;
@@ -24,6 +26,21 @@ const CustomerCard = ({
     setCurrentCustomer(customer.attributes, history);
   }, []);
 
+  // const appointmentIds = Object.values(
+  //   Object.fromEntries(
+  //     Object.entries(appointments).filter(([key]) => key.includes("id"))
+  //   )
+  // );
+  // // debugger;
+  // const appointmentsLink = appointmentIds.map((appointment, index) => (
+  //   <p key={appointment}>
+  //     <Link
+  //       to={`/users/${user_id}/customers/${id}/appointments/${appointment}`}
+  //     >
+  //       Appointment {index + 1}
+  //     </Link>
+  //   </p>
+  // ));
   return (
     <div className="customerCard">
       <Table striped bordered hover responsive>
@@ -46,6 +63,7 @@ const CustomerCard = ({
           </tr>
         </tbody>
       </Table>
+      {/* <div>{appointmentsLink}</div> */}
       <ul>
         <PianoList
           pianos={pianoList}

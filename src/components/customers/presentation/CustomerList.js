@@ -1,14 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { DeleteCustomerButton } from "./DeleteCustomerButton";
+import { AddAppointmentButton } from "./AddAppointmentButton";
 import { Table } from "react-bootstrap";
+import AppointmentCard from "../../appointments/AppointmentCard";
 
 export const CustomerList = ({
   userId,
   customers,
   destroyCustomer,
   history,
+  addAppointment,
+  location,
+  match,
   to,
+  setCurrentCustomer,
 }) => {
   const handleClick = (customer) => {
     history.push(`/users/${userId}/customers/${customer.id}`);
@@ -26,13 +32,32 @@ export const CustomerList = ({
             </tr>
           </thead>
           <tbody>
-            <tr
-              key={customer.attributes.id}
-              onClick={() => handleClick(customer)}
-            >
+            <tr key={customer.attributes.id}>
               <td>{index + 1}</td>
-              <td>{customer.attributes.name}</td>
+              <td className="link" onClick={() => handleClick(customer)}>
+                {customer.attributes.name}{" "}
+              </td>
               <td>{customer.attributes.number_of_pianos}</td>
+              <td>
+                <Link
+                  to={`/users/${userId}/customers/${customer.attributes.id}/appointments`}
+                >
+                  Appointments
+                </Link>
+              </td>
+              <td>
+                <AddAppointmentButton
+                  destroyCustomer={destroyCustomer}
+                  userId={userId}
+                  id={customer.attributes.id}
+                  customer={customer.attributes}
+                  location={location}
+                  match={match}
+                  addAppointment={addAppointment}
+                  history={history}
+                  setCurrentCustomer={setCurrentCustomer}
+                />
+              </td>
               <td>
                 <DeleteCustomerButton
                   destroyCustomer={destroyCustomer}
@@ -67,7 +92,7 @@ export const CustomerList = ({
   return (
     <div className="customerList">
       <p className="text-center">
-        <strong>Click row to view customer's pianos page</strong>
+        <strong>Click name to view customer's pianos page</strong>
       </p>
       <ContentTag>{customerCard}</ContentTag>
     </div>

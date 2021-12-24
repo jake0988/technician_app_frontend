@@ -4,16 +4,17 @@ import Login from "./users/Login";
 import Signup from "./users/Signup";
 import { MyCalendar } from "./MyCalendar";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+import moment, { parseZone } from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { useState, useEffect } from "react";
 
 const localizer = momentLocalizer(moment);
 
 const state = {
   events: [
     {
-      start: moment().toDate(),
-      end: moment().add(1, "days").toDate(),
+      start: moment("11-25-2021", "MM-DD-YYYY").toDate(),
+      end: moment("11-25-2021", "MM-DD-YYYY").add(1, "hours").toDate(),
       title: "Some title",
     },
   ],
@@ -30,7 +31,43 @@ const OneCalendar = (
   />
 );
 
-export const Home = ({ loggedIn }) => {
+export const Home = ({ loggedIn, appointments }) => {
+  // const [appointments, setMyAppointments] = useState({
+  //   events: [
+  //     {
+  //       start: moment("11-25-2021", "MM-DD-YYYY").toDate(),
+  //       end: moment("11-25-2021", "MM-DD-YYYY").add(1, "hours").toDate(),
+  //       title: "Some title",
+  //     },
+  //   ],
+  // });
+  function dateChanger(date) {
+    date = date.split("-");
+    const dateA = date.shift();
+    date.push(dateA);
+    const dateB = date.join("-");
+    return dateB;
+  }
+
+  useEffect(() => {
+    if (appointments !== "0") {
+      state.events = appointments.map((appointment) => ({
+        start: moment(appointment.attributes.date, "YYYY-MM-DD").toDate(),
+        end: moment(appointment.attributes.date).add(1, "hours").toDate(),
+        title: "asdg",
+      }));
+
+      // debugger;
+    }
+  });
+  const appointmentsChanged = function (appointments) {
+    appointments.map((appointment) => {
+      const date = dateChanger(appointment.attributes.date);
+      return (appointment.attributes.date = date);
+    });
+  };
+  // appointmentsChanged(appointments);
+
   const homeRender = !loggedIn ? (
     <h2>
       Welcome, please{" "}

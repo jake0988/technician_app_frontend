@@ -39,3 +39,8 @@ li:before {
 .li:nth-child(even) {
   background-color: black;
 }
+
+.link {
+  color: blue;
+  text-decoration: underline;
+}

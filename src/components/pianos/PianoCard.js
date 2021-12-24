@@ -1,6 +1,7 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { Figure } from "react-bootstrap";
+import { useEffect } from "react";
 
 export const PianoCard = ({
   piano,
@@ -15,7 +16,7 @@ export const PianoCard = ({
   const { customer_id, user_id, make, model, year, serial, notes, id } =
     piano.attributes;
   const setPiano = piano.attributes;
-  setCurrentPiano(setPiano);
+  useEffect(() => setCurrentPiano(setPiano));
   return (
     <div className="PianoCard">
       <Table striped bordered hover responsive>

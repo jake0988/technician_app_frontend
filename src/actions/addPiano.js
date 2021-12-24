@@ -93,28 +93,6 @@ export const getPianos = (user) => {
   };
 };
 
-// export const getUserPianos = (user) => {
-//   return (dispatch) => {
-//     return fetch(`http://localhost:3001/api/v1/users/${user}/pianos`, {
-//       credentials: "include",
-//       method: "get",
-//       headers: {
-//         "Content-type": "application/json",
-//       },
-//     })
-//       .then((resp) => resp.json())
-//       .then((pianos) => {
-//         if (pianos.errors) {
-//           alert(pianos.errors);
-//         } else {
-//           dispatch(renderPianos(pianos.data));
-//         }
-//       })
-
-//       .catch((errors) => console.log(errors));
-//   };
-// };
-
 export const destroyPiano = (userId, customerId, pianoId, history) => {
   return (dispatch) => {
     return fetch(
