@@ -32,7 +32,9 @@ class App extends Component {
   componentDidMount() {
     const user = this.props.usersId;
     this.props.getCurrentUser();
-    this.props.appointmentsList(user);
+    if (this.props.loggedIn) {
+      this.props.appointmentsList(user);
+    }
   }
 
   render() {
@@ -64,6 +66,7 @@ class App extends Component {
                   customers={this.props.customers}
                   pianos={this.props.pianos}
                   appointments={this.props.appointments}
+                  appointmentsList={this.props.appointmentsList}
                 />
               );
             }}

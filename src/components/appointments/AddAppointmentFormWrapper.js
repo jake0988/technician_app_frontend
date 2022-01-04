@@ -7,7 +7,6 @@ import { resetAppointmentForm } from "../../actions/appointment";
 class AddAppointmentFormWrapper extends Component {
   handleSubmit = (formData) => {
     const { history, userId, customerId } = this.props;
-    const newDateFormat = formData.date;
     const newFormData = {
       ...formData,
     };

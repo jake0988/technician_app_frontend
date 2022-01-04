@@ -11,7 +11,7 @@
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-big-calendar": "^0.36.1",
-    "react-bootstrap": "^2.0.0-rc.1",
+    "react-bootstrap": "^2.1.0",
     "react-bootstrap-icons": "^1.5.0",
     "react-bootstrap-table-next": "^4.0.3",
     "react-dom": "^17.0.2",
@@ -21,6 +21,7 @@
     "react-service-worker": "^0.1.1",
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { DeleteCustomerButton } from "./DeleteCustomerButton";
 import { AddAppointmentButton } from "./AddAppointmentButton";
 import { Table } from "react-bootstrap";
-import AppointmentCard from "../../appointments/AppointmentCard";
 
 export const CustomerList = ({
   userId,

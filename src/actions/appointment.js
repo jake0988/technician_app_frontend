@@ -55,7 +55,7 @@ export const addAppointment = (userId, customerId, history, credentials) => {
         } else {
           dispatch(addAppointmentSuccess(appointment.data));
           dispatch(resetAppointmentForm());
-          history.push(`/users/${userId}/customers/`);
+          history.push(`/`);
         }
       })
       .catch(console.log());
@@ -77,7 +77,6 @@ export const appointmentsList = (userId) => {
           alert(appointment.errors);
         } else {
           dispatch(listAppointments(appointment.data));
-
           appointment.data.forEach((app) => {
             const dateAttributes = app.attributes.date;
             const newDate = dateChanger(dateAttributes);

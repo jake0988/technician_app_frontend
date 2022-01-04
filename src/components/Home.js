@@ -31,7 +31,15 @@ const OneCalendar = (
   />
 );
 
-export const Home = ({ loggedIn, appointments }) => {
+export const Home = ({
+  loggedIn,
+  appointments,
+  appointmentsList,
+  currentUser,
+}) => {
+  if (currentUser) {
+    appointmentsList(currentUser);
+  }
   // const [appointments, setMyAppointments] = useState({
   //   events: [
   //     {
