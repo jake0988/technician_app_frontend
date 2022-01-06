@@ -2,10 +2,12 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
-function AppointmentCard({ appointments }) {
-  const [myMap, setMyMap] = useState(appointments);
-  // const appointmentMap = () => (
+function AppointmentCard({ appointments, appointmentsList, userId }) {
+  useEffect(() => appointmentsList(userId), []);
+  const getAppointments = useSelector((state) => state.appointments);
 
   const appointmentList = (
     <Table>
@@ -20,7 +22,7 @@ function AppointmentCard({ appointments }) {
         </tr>
       </thead>
       <tbody>
-        {[...myMap].map((appointment) => (
+        {getAppointments.map((appointment) => (
           <tr>
             <td key={uuidv4(appointment)}>{appointment.attributes.date}</td>
             <td key={uuidv4(appointment)}>

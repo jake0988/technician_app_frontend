@@ -1,5 +1,4 @@
 import "./App.css";
-import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getCurrentUser } from "./actions/currentUser";
 import { Switch, Route } from "react-router-dom";
@@ -27,14 +26,13 @@ import AddAppointmentFormWrapper from "./components/appointments/AddAppointmentF
 import EditAppointmentFormWrapper from "./components/appointments/EditAppointmentFormWrapper";
 import { appointmentsList } from "./actions/appointment";
 import AppointmentCard from "./components/appointments/AppointmentCard";
+import React, { Component } from "react";
 
 class App extends Component {
   componentDidMount() {
     const user = this.props.usersId;
     this.props.getCurrentUser();
-    if (this.props.loggedIn) {
-      this.props.appointmentsList(user);
-    }
+    this.props.appointmentsList(this.props.userId);
   }
 
   render() {
@@ -180,7 +178,13 @@ class App extends Component {
               );
 
               // this.props.setCurrentCustomer(this.props.location());
-              return <AppointmentCard appointments={appointments} />;
+              return (
+                <AppointmentCard
+                  appointments={appointments}
+                  appointmentsList={this.props.appointmentsList}
+                  userId={this.props.userId}
+                />
+              );
             }}
           />
 
