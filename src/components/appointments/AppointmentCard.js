@@ -23,17 +23,13 @@ function AppointmentCard({ appointments, appointmentsList, userId }) {
       </thead>
       <tbody>
         {getAppointments.map((appointment) => (
-          <tr>
-            <td key={uuidv4(appointment)}>{appointment.attributes.date}</td>
-            <td key={uuidv4(appointment)}>
-              {appointment.attributes.initial_a4}
-            </td>
-            <td key={uuidv4(appointment)}>
-              {appointment.attributes.work_done}
-            </td>
-            <td key={uuidv4(appointment)}>{appointment.attributes.hours}</td>
-            <td key={uuidv4(appointment)}>{appointment.attributes.price}</td>
-            <td key={uuidv4(appointment)}>
+          <tr key={uuidv4(appointment.attributes.date)}>
+            <td>{appointment.attributes.date}</td>
+            <td>{appointment.attributes.initial_a4}</td>
+            <td>{appointment.attributes.work_done}</td>
+            <td>{appointment.attributes.hours}</td>
+            <td>{appointment.attributes.price}</td>
+            <td key={uuidv4(appointment.attributes.date)}>
               {appointment.attributes.created_at}
             </td>
           </tr>
