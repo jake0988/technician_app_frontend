@@ -16,7 +16,7 @@ export const PianoCard = ({
   const { customer_id, user_id, make, model, year, serial, notes, id } =
     piano.attributes;
   const setPiano = piano.attributes;
-  useEffect(() => {setCurrentPiano(setPiano)}, []);
+  useEffect(() => setCurrentPiano(setPiano));
   return (
     <div className="PianoCard">
       <Table striped bordered hover responsive>

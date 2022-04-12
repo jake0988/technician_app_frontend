@@ -30,6 +30,7 @@ import React, { Component } from "react";
 
 class App extends Component {
   componentDidMount() {
+    const user = this.props.usersId;
     this.props.getCurrentUser();
     this.props.appointmentsList(this.props.userId);
   }

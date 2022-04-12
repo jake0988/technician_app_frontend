@@ -6,7 +6,11 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 function AppointmentCard({ appointments, appointmentsList, userId }) {
+<<<<<<< HEAD
   useEffect(() => {appointmentsList(userId)}, []);
+=======
+  useEffect(() => appointmentsList(userId), []);
+>>>>>>> parent of 50caa64... Properly implements useEffect.
   const getAppointments = useSelector((state) => state.appointments);
 
   const appointmentList = (
