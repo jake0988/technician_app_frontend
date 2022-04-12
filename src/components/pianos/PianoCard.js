@@ -1,6 +1,5 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
-import { Figure } from "react-bootstrap";
 import { useEffect } from "react";
 
 export const PianoCard = ({
