@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 function AppointmentCard({ appointments, appointmentsList, userId }) {
-  useEffect(() => appointmentsList(userId), []);
+  useEffect(() => {appointmentsList(userId)}, []);
   const getAppointments = useSelector((state) => state.appointments);
 
   const appointmentList = (
