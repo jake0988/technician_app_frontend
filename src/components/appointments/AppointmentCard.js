@@ -7,7 +7,11 @@ import { useEffect } from "react";
 
 function AppointmentCard({ appointments, appointmentsList, userId }) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   useEffect(() => {appointmentsList(userId)}, []);
+=======
+  useEffect(() => appointmentsList(userId), []);
+>>>>>>> parent of 50caa64... Properly implements useEffect.
 =======
   useEffect(() => appointmentsList(userId), []);
 >>>>>>> parent of 50caa64... Properly implements useEffect.
