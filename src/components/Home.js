@@ -35,9 +35,6 @@ export const Home = ({
   appointmentsList,
   currentUser,
 }) => {
-  if (currentUser) {
-    appointmentsList(currentUser);
-  }
   // const [appointments, setMyAppointments] = useState({
   //   events: [
   //     {
@@ -56,6 +53,9 @@ export const Home = ({
   }
 
   useEffect(() => {
+    if (currentUser) {
+      appointmentsList(currentUser);
+    }
     if (appointments !== "0") {
       state.events = appointments.map((appointment) => ({
         start: moment(appointment.attributes.date, "YYYY-MM-DD").toDate(),
@@ -65,7 +65,7 @@ export const Home = ({
 
       // debugger;
     }
-  });
+  }, []);
   const appointmentsChanged = function (appointments) {
     appointments.map((appointment) => {
       const date = dateChanger(appointment.attributes.date);
