@@ -35,6 +35,10 @@ export const Home = ({
   appointmentsList,
   currentUser,
 }) => {
+<<<<<<< HEAD
+=======
+  
+>>>>>>> main
   // const [appointments, setMyAppointments] = useState({
   //   events: [
   //     {
