@@ -38,9 +38,15 @@ export const Home = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   
 >>>>>>> main
+=======
+  if (currentUser) {
+    appointmentsList(currentUser);
+  }
+>>>>>>> parent of 50caa64... Properly implements useEffect.
 =======
   if (currentUser) {
     appointmentsList(currentUser);
