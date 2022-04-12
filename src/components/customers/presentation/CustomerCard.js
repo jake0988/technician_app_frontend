@@ -24,7 +24,11 @@ const CustomerCard = ({
   const length = pianoList.length;
   useEffect(() => {
     setCurrentCustomer(customer.attributes, history);
+<<<<<<< HEAD
   }, [customer.attributes]);
+=======
+  }, []);
+>>>>>>> refs/remotes/origin/main
 
   // const appointmentIds = Object.values(
   //   Object.fromEntries(

@@ -1,13 +1,57 @@
 body {
   margin: 0;
+<<<<<<< HEAD
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+=======
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+>>>>>>> refs/remotes/origin/main
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
+<<<<<<< HEAD
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+=======
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+p {
+  text-align: left;
+}
+
+.button {
+  border-width: thin;
+}
+
+ol {
+  counter-reset: item;
+}
+
+li {
+  display: block;
+}
+
+li:before {
+  content: counters(item, ".") ". ";
+  counter-increment: item;
+}
+
+.li:nth-child(odd) {
+  background-color: white;
+}
+.li:nth-child(even) {
+  background-color: black;
+}
+
+.link {
+  color: blue;
+  text-decoration: underline;
+}
+>>>>>>> refs/remotes/origin/main

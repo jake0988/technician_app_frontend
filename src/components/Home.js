@@ -2,8 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Login from "./users/Login";
 import Signup from "./users/Signup";
+<<<<<<< HEAD
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment, { parseZone } from "moment";
+=======
+import { MyCalendar } from "./MyCalendar";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment, { parseZone } from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+>>>>>>> refs/remotes/origin/main
 import { useState, useEffect } from "react";
 
 const localizer = momentLocalizer(moment);
@@ -35,7 +42,13 @@ export const Home = ({
   appointmentsList,
   currentUser,
 }) => {
+<<<<<<< HEAD
   
+=======
+  if (currentUser) {
+    appointmentsList(currentUser);
+  }
+>>>>>>> refs/remotes/origin/main
   // const [appointments, setMyAppointments] = useState({
   //   events: [
   //     {
@@ -54,9 +67,12 @@ export const Home = ({
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     if (currentUser) {
       appointmentsList(currentUser);
     }
+=======
+>>>>>>> refs/remotes/origin/main
     if (appointments !== "0") {
       state.events = appointments.map((appointment) => ({
         start: moment(appointment.attributes.date, "YYYY-MM-DD").toDate(),
@@ -66,7 +82,11 @@ export const Home = ({
 
       // debugger;
     }
+<<<<<<< HEAD
   }, []);
+=======
+  });
+>>>>>>> refs/remotes/origin/main
   const appointmentsChanged = function (appointments) {
     appointments.map((appointment) => {
       const date = dateChanger(appointment.attributes.date);
