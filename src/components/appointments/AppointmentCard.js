@@ -6,11 +6,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 function AppointmentCard({ appointments, appointmentsList, userId }) {
-<<<<<<< HEAD
   useEffect(() => {appointmentsList(userId)}, []);
-=======
-  useEffect(() => appointmentsList(userId), []);
->>>>>>> refs/remotes/origin/main
   const getAppointments = useSelector((state) => state.appointments);
 
   const appointmentList = (

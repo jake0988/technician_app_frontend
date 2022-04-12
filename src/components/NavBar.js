@@ -21,13 +21,9 @@ const NavBar = ({
           <ArrowLeft
             color="royalblue"
             size={40}
-<<<<<<< HEAD
             onClick={() => {
               history.goBack()
             }}
-=======
-            onClick={() => history.goBack()}
->>>>>>> refs/remotes/origin/main
           />
         ) : null}
 
