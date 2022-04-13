@@ -5,6 +5,7 @@ import { useEffect } from "react";
 export const PianoCard = ({
   piano,
   setCurrentPiano,
+  setCurrentAppointment,
   user,
   customer,
   history,
@@ -12,10 +13,14 @@ export const PianoCard = ({
   match,
   location,
 }) => {
-  const { customer_id, user_id, make, model, year, serial, notes, id } =
+  const { customer_id, user_id, appointment_id, make, model, year, serial, notes, id } =
     piano.attributes;
   const setPiano = piano.attributes;
-  useEffect(() => {setCurrentPiano(setPiano)}, []);
+  useEffect(() => {setCurrentPiano(setPiano)
+  if (setCurrentAppointment) {
+    setCurrentAppointment(appointment_id)
+  }
+  }, []);
   return (
     <div className="PianoCard">
       <Table striped bordered hover responsive>

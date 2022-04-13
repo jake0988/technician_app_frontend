@@ -68,22 +68,6 @@ export const CustomerList = ({
             </tr>
           </tbody>
         </Table>
-        /* <p key={customer.attributes.id}>
-          <Link to={`/users/${userId}/customers/${customer.attributes.id}`}>
-            <span>
-              {index + 1}. {customer.attributes.name}{" "}
-            </span>
-            <span>
-              <DeleteCustomerButton
-                destroyCustomer={destroyCustomer}
-                userId={userId}
-                id={customer.attributes.id}
-                history={history}
-              />
-            </span>
-          </Link>
-        </p> */
-        // ))
       ))
     ) : (
       <h2>No Customers In Database</h2>
@@ -97,7 +81,3 @@ export const CustomerList = ({
     </div>
   );
 };
-
-// export default connect(null, { customerList, setCurrentCustomer })(
-//   CustomerList
-// );

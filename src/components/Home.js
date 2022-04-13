@@ -18,16 +18,6 @@ const state = {
   ],
 };
 
-const OneCalendar = (
-  <Calendar
-    localizer={localizer}
-    events={state.events}
-    defaultDate={new Date()}
-    defaultView="month"
-    endAccessor="end"
-    style={{ height: 500 }}
-  />
-);
 
 export const Home = ({
   loggedIn,
@@ -35,23 +25,7 @@ export const Home = ({
   appointmentsList,
   currentUser,
 }) => {
-  // const [appointments, setMyAppointments] = useState({
-  //   events: [
-  //     {
-  //       start: moment("11-25-2021", "MM-DD-YYYY").toDate(),
-  //       end: moment("11-25-2021", "MM-DD-YYYY").add(1, "hours").toDate(),
-  //       title: "Some title",
-  //     },
-  //   ],
-  // });
-  function dateChanger(date) {
-    date = date.split("-");
-    const dateA = date.shift();
-    date.push(dateA);
-    const dateB = date.join("-");
-    return dateB;
-  }
-
+  
   useEffect(() => {
     if (currentUser) {
       appointmentsList(currentUser);
@@ -65,14 +39,22 @@ export const Home = ({
 
       // debugger;
     }
-  }, []);
+  }, [currentUser]);
+  function dateChanger(date) {
+    date = date.split("-");
+    const dateA = date.shift();
+    date.push(dateA);
+    const dateB = date.join("-");
+    return dateB;
+  }
+
+  
   const appointmentsChanged = function (appointments) {
     appointments.map((appointment) => {
       const date = dateChanger(appointment.attributes.date);
       return (appointment.attributes.date = date);
     });
   };
-  // appointmentsChanged(appointments);
 
   const homeRender = !loggedIn ? (
     <h2>

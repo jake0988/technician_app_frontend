@@ -11,6 +11,8 @@ import pianos from "./reducers/pianos";
 import currentPiano from "./reducers/currentPiano";
 import appointments from "./reducers/appointments";
 import addAppointmentForm from "./reducers/addAppointmentForm";
+import currentAppointment from "./reducers/currentAppointment";
+
 
 const reducer = combineReducers({
   currentUser,
@@ -24,6 +26,7 @@ const reducer = combineReducers({
   currentPiano,
   appointments,
   addAppointmentForm,
+  currentAppointment,
 });
 
 const composeEnhancer =

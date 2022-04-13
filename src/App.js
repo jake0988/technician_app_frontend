@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getCurrentUser } from "./actions/currentUser";
 import { Switch, Route } from "react-router-dom";
@@ -25,8 +26,9 @@ import { addAppointment } from "./actions/appointment";
 import AddAppointmentFormWrapper from "./components/appointments/AddAppointmentFormWrapper";
 import EditAppointmentFormWrapper from "./components/appointments/EditAppointmentFormWrapper";
 import { appointmentsList } from "./actions/appointment";
+import AppointmentList from "./components/appointments/AppointmentList";
+import { setCurrentAppointment } from "./actions/appointment";
 import AppointmentCard from "./components/appointments/AppointmentCard";
-import React, { Component } from "react";
 
 class App extends Component {
   componentDidMount() {
@@ -116,7 +118,6 @@ class App extends Component {
               const appointment = this.props.appointments.find(
                 (appointment) => appointment.id === props.match.params.id
               );
-              console.log(appointment, "appointment");
               return (
                 <EditAppointmentFormWrapper
                   {...props}
@@ -176,12 +177,28 @@ class App extends Component {
                   appointment.attributes.customer_id === parseInt(customerId)
               );
 
-              // this.props.setCurrentCustomer(this.props.location());
               return (
-                <AppointmentCard
+                <AppointmentList
                   appointments={appointments}
                   appointmentsList={this.props.appointmentsList}
                   userId={this.props.userId}
+                />
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/users/:user_id/customers/:customer_id/appointments/:appointment_id/"
+            render={(props) => {
+              console.log("Match Params", props.match.params.appointment_id)
+              return (
+                <AppointmentCard
+                  pianos={this.props.pianos}
+                  userId={this.props.currentUser.id}
+                  customerId={this.props.currentCustomer.id}
+                  destroyPiano={this.props.destroyPiano}
+                  id={props.match.params.appointment_id}
+                  setCurrentAppointment={this.props.setCurrentAppointment}
                 />
               );
             }}
@@ -245,6 +262,7 @@ const mapStateToProps = (state) => {
     pianos: state.pianos,
     currentUser: state.currentUser,
     currentCustomer: state.currentCustomer,
+    currentAppointment: state.currentAppointment
   };
 };
 
@@ -253,6 +271,7 @@ export default withRouter(
     getCurrentUser,
     setCurrentCustomer,
     setCurrentPiano,
+    setCurrentAppointment,
     destroyCustomer,
     destroyPiano,
     customerList,

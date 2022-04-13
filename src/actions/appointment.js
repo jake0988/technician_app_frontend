@@ -5,6 +5,13 @@ export const addAppointmentSuccess = (appointment) => {
   };
 };
 
+export const setCurrentAppointment = (appointmentData) => {
+  return {
+    type: "ADD_CURRENT_APPOINTMENT",
+    appointmentData,
+  };
+};
+
 export const listAppointments = (appoinments) => {
   return {
     type: "LIST_APPOINTMENTS",

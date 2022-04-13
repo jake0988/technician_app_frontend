@@ -9,6 +9,7 @@ const PianoForm = ({
   addPiano,
   currentUser,
   currentCustomer,
+  currentAppointment,
   history,
 }) => {
   const { make, model, year, notes, serial } = formData;
@@ -27,6 +28,7 @@ const PianoForm = ({
       formData,
       userId: currentUser,
       customerId: currentCustomer,
+      appointmentId: currentAppointment,
     };
     addPiano(submitFormData, history);
   };
@@ -78,6 +80,7 @@ const mapStateToProps = (state) => {
     currentUser: state.currentUser.id,
     formData: state.updatePianoForm,
     currentCustomer: state.currentCustomer.id,
+    currentAppointment: state.currentAppointment.id
   };
 };
 export default connect(mapStateToProps, { updatePianoForm, addPiano })(

@@ -33,6 +33,7 @@ export const setCurrentPiano = (pianoData) => {
 };
 
 export const addPiano = (credentials, history) => {
+  debugger
   const pianoFormInfo = {
     make: credentials.formData.make,
     model: credentials.formData.model,
@@ -41,6 +42,7 @@ export const addPiano = (credentials, history) => {
     year: credentials.formData.year,
     user_id: credentials.userId,
     customer_id: credentials.customerId,
+    appointment_id: credentials.customerId,
   };
   return (dispatch) => {
     return fetch(
