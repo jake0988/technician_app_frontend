@@ -44,7 +44,8 @@ export const customerList = (userId) => {
           alert(customers.errors);
         } else {
           dispatch(renderCustomers(customers.data));
-          dispatch(getPianos(userId));
+          // debugger
+          // dispatch(getPianos(userId));
         }
       })
       .catch(console.log);
@@ -69,7 +70,7 @@ export const createCustomer = (formData, userId, history) => {
         } else {
           dispatch(customerList(userId));
           dispatch(setCurrentCustomer(customer.data));
-          dispatch(getPianos(userId));
+          // dispatch(getPianos(userId));
           dispatch(resetCustomerForm());
           history.push(`/users/${userId}/customers/`);
         }
@@ -135,8 +136,8 @@ export const destroyCustomer = (userId, customerId, history) => {
         if (resp.errors) {
           alert(resp.errors);
         } else {
-          dispatch(customerList(userId));
-          dispatch(getPianos(userId));
+          // dispatch(customerList(userId));
+          // dispatch(getPianos(userId));
           dispatch(clearCurrentCustomer());
           history.push(`/users/${userId}/customers`);
         }

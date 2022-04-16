@@ -1,48 +1,32 @@
 import React from "react";
-import { PianoList } from "../../pianos/PianoList";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getPianos } from "../../../actions/addPiano";
 import { appointmentsList } from "../../../actions/appointment";
+import Td from "../../appointments/Td";
+import { UserNavCard } from "../../users/UserNavCard";
+import { Row, Col, Container } from "react-bootstrap";
 
 const CustomerCard = ({
-  customer,
-  pianos,
+  currentCustomer,
   setCurrentCustomer,
   destroyCustomer,
   history,
-  destroyPiano,
-  appointments,
+  userId,
+  id,
 }) => {
-  const { name, address, phone_number, email, id, user_id } =
-    customer.attributes;
-  const pianoList = pianos.filter(
-    (piano) =>
-      piano.attributes.customer_id === id &&
-      piano.attributes.user_id === user_id
-  );
-  const length = pianoList.length;
+  const dispatch = useDispatch()
   useEffect(() => {
-    setCurrentCustomer(customer.attributes, history);
-  }, [customer.attributes]);
-
-  // const appointmentIds = Object.values(
-  //   Object.fromEntries(
-  //     Object.entries(appointments).filter(([key]) => key.includes("id"))
-  //   )
-  // );
-  // // debugger;
-  // const appointmentsLink = appointmentIds.map((appointment, index) => (
-  //   <p key={appointment}>
-  //     <Link
-  //       to={`/users/${user_id}/customers/${id}/appointments/${appointment}`}
-  //     >
-  //       Appointment {index + 1}
-  //     </Link>
-  //   </p>
-  // ));
+      dispatch(setCurrentCustomer(currentCustomer));
+      dispatch(getPianos(userId));
+  }, [currentCustomer]);
+  const customers = useSelector((state)=> state.customers)
   return (
     <div className="customerCard">
+      <Container fluid>
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -55,36 +39,36 @@ const CustomerCard = ({
         </thead>
         <tbody>
           <tr>
-            <td>{name}</td>
-            <td>{address}</td>
-            <td>{phone_number}</td>
-            <td>{email}</td>
-            <td>{length}</td>
-          </tr>
-        </tbody>
-      </Table>
-      {/* <div>{appointmentsLink}</div> */}
-      <ul>
-        <PianoList
-          pianos={pianoList}
-          userId={user_id}
-          customerId={id}
-          destroyPiano={destroyPiano}
-          history={history}
-        />
-      </ul>
-      <Link to={`/users/${user_id}/customers/${id}/edit`}>
-        <button className="button">Edit Customer</button>
-      </Link>{" "}
+            <td>{currentCustomer.attributes.name}</td>
+            <td>{currentCustomer.attributes.address}</td>
+            <td>{currentCustomer.attributes.phone_number}</td>
+            <td>{currentCustomer.attributes.email}</td>
+            <Td to={`/users/${userId}/customers/${currentCustomer.id}/pianos`}>{currentCustomer.attributes.number_of_pianos}</Td>
+          </tr>   
+     <tr>
+       <td colspan="4" align="left">
+        <button className="button" onClick={()=>{history.push(`/users/${currentCustomer.attributes.user_id}/customers/${id}/edit`)}}>
+          Edit Customer</button>
+          </td>
+      <td><UserNavCard userId={userId}
+     currentCustomer={currentCustomer} history={history}/></td>
+      </tr>
+      <tr>
+      <td colspan="5">
       <button
         className="button"
         onClick={(e) => {
           e.preventDefault();
-          destroyCustomer(user_id, id, history);
+          destroyCustomer(currentCustomer.attributes.user_id, id, history);
         }}
       >
         Delete Customer
       </button>
+      </td>
+      </tr>
+      </tbody>
+      </Table>
+      </Container>
     </div>
   );
 };

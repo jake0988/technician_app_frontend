@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { updateAppointmentForm } from "../../actions/updateAppointmentForm";
 import { addAppointment } from "../../actions/appointment";
+import { Form, Row, Col, Button } from "react-bootstrap";
 
 const AppointmentForm = ({
   handleSubmit,
@@ -23,64 +24,87 @@ const AppointmentForm = ({
   // };
 
   return (
-    <form
+    <Form
       onSubmit={(e) => {
         e.preventDefault();
         handleSubmit(formData, id);
       }}
     >
-      <p>
-        <input
-          type="text"
-          value={initial_a4}
-          name="initial_a4"
-          placeholder="Initial A4"
-          onChange={handleChange}
-        />
-      </p>
-      <p>
-        <input
-          type="price"
-          value={price}
-          name="price"
-          placeholder="Price"
-          onChange={handleChange}
-        />
-      </p>
-      <p>
-        <input
-          type="date"
-          value={date}
-          name="date"
-          placeholder={date}
-          onChange={handleChange}
-        />
-      </p>
-      <p>
-        <input
-          type="text"
-          size="75"
-          value={hours}
-          name="hours"
-          placeholder="Hours"
-          onChange={handleChange}
-        />
-      </p>
-      <p>
-        <input
-          type="text"
-          value={work_done}
-          name="work_done"
-          placeholder="Work Done"
-          onChange={handleChange}
-        />
-      </p>
+      <Row>
+        <Col md={1}>
+          <Form.Group className="mb-3" controlId="formA4">
+            <Form.Label>Initial A4</Form.Label>
+            <Form.Control
+              type="text"
+              name="initial_a4"
+              value={initial_a4}
+              placeholder="Enter"
+              onChange={handleChange}
+            />
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
+        </Col>
+        <Col md={1}>
+          <Form.Group className="mb-3" controlId="price">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="text"
+              name="price"
+              value={price}
+              placeholder="Enter"
+              onChange={handleChange}
+            />
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
+        </Col>
+        <Col md={2}>
+          <Form.Group className="mb-3" controlId="date">
+            <Form.Label>Date</Form.Label>
+            <Form.Control
+              type="date"
+              name="date"
+              value={date}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+        <Col md={1}>
+          <Form.Group className="mb-3" controlId="hours">
+            <Form.Label>Hours</Form.Label>
+            <Form.Control
+              type="text"
+              name="hours"
+              value={hours}
+              placeholder="Enter"
+              onChange={handleChange}
+            />
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row>
+        <Form.Group className="mb-3" controlId="workDone">
+          <Form.Label>Work Performed</Form.Label>
+          <Form.Control
+            type="text"
+            name="work_done"
+            value={work_done}
+            placeholder="Enter"
+            onChange={handleChange}
+          />
+          <Form.Text className="text-muted"></Form.Text>
+        </Form.Group>
+      </Row>
       {editMode ? (
-        <input type="submit" value="Edit appointment" />
+        <Button variant="primary" value="Edit appointment" type="submit">
+          Submit
+        </Button>
       ) : (
-        <input type="submit" value="Create appointment" />
+        <Button variant="primary" value="Create appointment" type="submit">
+          Submit
+        </Button>
       )}
-    </form>
+    </Form>
   );
 };
 

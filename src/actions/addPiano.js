@@ -1,4 +1,6 @@
+import { setCurrentCustomer } from "./currentCustomer";
 import { customerList } from "./customerList";
+import { clearCurrentAppointment } from "./appointment";
 
 export const clearcurrentPiano = () => {
   return {
@@ -33,16 +35,16 @@ export const setCurrentPiano = (pianoData) => {
 };
 
 export const addPiano = (credentials, history) => {
-  debugger
   const pianoFormInfo = {
     make: credentials.formData.make,
     model: credentials.formData.model,
     serial: credentials.formData.serial,
     notes: credentials.formData.notes,
     year: credentials.formData.year,
-    user_id: credentials.userId,
+    image: credentials.formData.image,
+    user_id: credentials.userId.id,
     customer_id: credentials.customerId,
-    appointment_id: credentials.customerId,
+    appointment_id: credentials.appointmentId,
   };
   return (dispatch) => {
     return fetch(
@@ -62,10 +64,12 @@ export const addPiano = (credentials, history) => {
           alert(piano.errors);
         } else {
           dispatch(getPianos(credentials.userId));
-          dispatch(customerList(credentials.userId));
+          // dispatch(customerList(credentials.userId));
+          dispatch(setCurrentCustomer(credentials.customerId))
           dispatch(clearPianoForm());
+          dispatch(clearCurrentAppointment())
           history.push(
-            `/users/${credentials.userId}/customers/${credentials.customerId}/pianos/`
+            `/users/${credentials.userId}/customers/${credentials.customerId}`
           );
         }
       })
@@ -110,8 +114,8 @@ export const destroyPiano = (userId, customerId, pianoId, history) => {
       .then((resp) => resp.json())
       .then((resp) => {
         dispatch(getPianos(userId));
-        // dispatch(deletePiano(pianoId));
-        history.push(`/users/${userId}/customers/${customerId}/`);
+        dispatch(customerList(userId))
+        history.goBack()
       });
   };
 };

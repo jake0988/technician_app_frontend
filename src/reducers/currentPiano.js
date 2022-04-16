@@ -3,9 +3,10 @@ const initialState = {
   make: "",
   model: "",
   year: "",
-  images: "",
+  image: "",
   serial: "",
   notes: "",
+  appointment_id:"",
 };
 
 export default (state = initialState, action) => {

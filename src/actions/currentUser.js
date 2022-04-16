@@ -66,8 +66,8 @@ export const login = (credentials, history) => {
           alert(response.error);
         } else {
           dispatch(setCurrentUser(response.data.attributes));
-          dispatch(customerList(response.data.attributes.id));
-          dispatch(getPianos(response.data.attributes.id));
+          // dispatch(customerList(response.data.attributes.id));
+          // dispatch(getPianos(response.data.attributes.id));
           dispatch(resetLoginForm());
           history.push("users/" + response.data.attributes.id);
         }
@@ -92,8 +92,8 @@ export const getCurrentUser = () => {
           alert(user.error);
         } else {
           dispatch(setCurrentUser(user.data.attributes));
-          dispatch(customerList(user.data.attributes.id));
-          dispatch(getPianos(user.data.attributes.id));
+          // dispatch(customerList(user.data.attributes.id));
+          // dispatch(getPianos(user.data.attributes.id));
         }
       })
       .catch(console.log);

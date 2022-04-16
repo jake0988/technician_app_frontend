@@ -23,23 +23,26 @@ export const Home = ({
   loggedIn,
   appointments,
   appointmentsList,
-  currentUser,
+  userId,
+  history
 }) => {
   
   useEffect(() => {
-    if (currentUser) {
-      appointmentsList(currentUser);
+    if (userId) {
+      appointmentsList(userId);
     }
     if (appointments !== "0") {
       state.events = appointments.map((appointment) => ({
         start: moment(appointment.attributes.date, "YYYY-MM-DD").toDate(),
         end: moment(appointment.attributes.date).add(1, "hours").toDate(),
         title: "asdg",
+        customerId: appointment.attributes.customer_id,
+        id: appointment.id
       }));
 
       // debugger;
     }
-  }, [currentUser]);
+  }, [userId]);
   function dateChanger(date) {
     date = date.split("-");
     const dateA = date.shift();
@@ -48,7 +51,10 @@ export const Home = ({
     return dateB;
   }
 
-  
+  function renderAppointmentCard(event) {
+    history.push(`/users/userId/customers/${event.customerId}/appointments/${event.id}`)
+  }
+
   const appointmentsChanged = function (appointments) {
     appointments.map((appointment) => {
       const date = dateChanger(appointment.attributes.date);
@@ -74,6 +80,11 @@ export const Home = ({
       defaultDate={new Date()}
       defaultView="month"
       endAccessor="end"
+      onSelectEvent={(slotInfo) => {
+        renderAppointmentCard(slotInfo)
+    }}
+    selectable
+    popup={true}
       style={{ height: 500 }}
     />
   );

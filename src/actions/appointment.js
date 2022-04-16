@@ -12,6 +12,12 @@ export const setCurrentAppointment = (appointmentData) => {
   };
 };
 
+export const clearCurrentAppointment = () => {
+  return {
+    type: "CLEAR_CURRENT_APPOINTMENT",
+  };
+};
+
 export const listAppointments = (appoinments) => {
   return {
     type: "LIST_APPOINTMENTS",
@@ -40,6 +46,7 @@ function dateChanger(date) {
   return dateB;
 }
 export const addAppointment = (userId, customerId, history, credentials) => {
+  debugger;
   const addAppointmentCred = {
     appointment: { ...credentials, user_id: userId, customer_id: customerId },
   };

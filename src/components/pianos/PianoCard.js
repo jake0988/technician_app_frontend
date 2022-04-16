@@ -1,24 +1,21 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { useEffect } from "react";
+import { DeletePianoButton } from "./DeletePianoButton";
 
 export const PianoCard = ({
   piano,
   setCurrentPiano,
   setCurrentAppointment,
-  user,
-  customer,
-  history,
-  destroyPiano,
-  match,
-  location,
+  history
 }) => {
-  const { customer_id, user_id, appointment_id, make, model, year, serial, notes, id } =
+  const { customerId, userId, appointmentId, make, model, year, serial, notes, id, image } =
     piano.attributes;
   const setPiano = piano.attributes;
-  useEffect(() => {setCurrentPiano(setPiano)
+  useEffect(() => {
+    setCurrentPiano(setPiano)
   if (setCurrentAppointment) {
-    setCurrentAppointment(appointment_id)
+    setCurrentAppointment(appointmentId)
   }
   }, []);
   return (
@@ -40,29 +37,18 @@ export const PianoCard = ({
             <td>{year}</td>
             <td>{serial}</td>
             <td>{notes}</td>
+            <td>{image}</td>
           </tr>
         </tbody>
       </Table>
-      {/* <Figure>
-        <Figure.Image
-          width={171}
-          height={180}
-          alt="171x180"
-          src="holder.js/171x180"
-        />
-      </Figure> */}
-      {/* <Link to={`/pianos/${id}/edit`}>
-        <button className="button">Edit Piano</button>
-      </Link> */}
-      <button
-        className="button"
-        onClick={(e) => {
-          e.preventDefault();
-          destroyPiano(user_id, customer_id, id, history);
-        }}
-      >
-        Delete Piano
-      </button>{" "}
+       <span>
+           <DeletePianoButton
+             userId={userId}
+             customerId={customerId}
+             pianoId={piano.attributes.id}
+             history={history}
+           />
+         </span>
     </div>
   );
 };

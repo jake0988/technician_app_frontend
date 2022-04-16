@@ -29,6 +29,8 @@ import { appointmentsList } from "./actions/appointment";
 import AppointmentList from "./components/appointments/AppointmentList";
 import { setCurrentAppointment } from "./actions/appointment";
 import AppointmentCard from "./components/appointments/AppointmentCard";
+import { clearCurrentAppointment } from "./actions/appointment";
+import currentCustomer from "./reducers/currentCustomer";
 
 class App extends Component {
   componentDidMount() {
@@ -39,7 +41,6 @@ class App extends Component {
   render() {
     const { loggedIn } = this.props;
     const piano = this.props.location.pathname.includes("pianos");
-
     return (
       <div className="App">
         {loggedIn ? (
@@ -47,25 +48,27 @@ class App extends Component {
         ) : null}
         {loggedIn ? (
           <UserNav
-            currentUser={this.props.currentUser}
+            user={this.props.currentUser}
             customers={this.props.customers}
             pianos={this.props.pianos}
-            currentCustomer={this.props.currentCustomer}
+            match={this.props.match}
+            history={this.props.history}
           />
         ) : null}
         <Switch>
           <Route
             exact
             path="/"
-            render={() => {
+            render={(props) => {
               return (
                 <Home
-                  currentUser={this.props.currentUser}
+                  userId={this.props.currentUser}
                   loggedIn={this.props.loggedIn}
                   customers={this.props.customers}
                   pianos={this.props.pianos}
                   appointments={this.props.appointments}
                   appointmentsList={this.props.appointmentsList}
+                  history={props.history}
                 />
               );
             }}
@@ -108,8 +111,16 @@ class App extends Component {
           />
           <Route
             exact
-            path="/users/:user_id/customers/:id/appointments/new"
-            component={AddAppointmentFormWrapper}
+            path="/users/:user_id/customers/:customer_id/appointments/new"
+            render={(props) => {
+              const currentCustomerId = props.match.params.customer_id;
+              return (
+                <AddAppointmentFormWrapper
+                  history={props.history}
+                  currentCustomerId={currentCustomerId}
+                />
+              );
+            }}
           />
           <Route
             exact
@@ -128,37 +139,20 @@ class App extends Component {
           />
           <Route
             exact
-            path="/users/:user_id/customers/:id"
+            path="/users/:user_id/customers/:customer_id"
             render={(props) => {
-              const customer = this.props.customers.find(
-                (customer) => customer.id === props.match.params.id
+              const currentCustomer = this.props.customers.find(
+                (customer) => customer.id === props.match.params.customer_id
               );
-              // const appointments = customer
-              //   ? this.props.appointments.find(
-              //       (appointment) =>
-              //         parseInt(appointment.attributes.customer_id) ===
-              //         parseInt(customer.id)
-              //     )
-              //   : null;
-
-              // let appointments;
-              // if (customer) {
-              //   appointments = (customer) => {
-              //     this.props.appointments.find(
-              //       (appointment) =>
-              //         parseInt(appointment.attributes.customer_id) ===
-              //         parseInt(customer.id)
-              //     );
-              //   };
-              // }
-              return customer ? (
+              return currentCustomer ? (
                 <CustomerCard
-                  customer={customer}
+                  currentCustomer={currentCustomer}
                   {...props}
                   setCurrentCustomer={this.props.setCurrentCustomer}
+                  id={props.match.params.appointment_id}
                   pianos={this.props.pianos}
                   destroyCustomer={this.props.destroyCustomer}
-                  destroyPiano={this.props.destroyPiano}
+                  userId={this.props.userId}
                 />
               ) : (
                 <p>Customer Card is empty.</p>
@@ -190,15 +184,18 @@ class App extends Component {
             exact
             path="/users/:user_id/customers/:customer_id/appointments/:appointment_id/"
             render={(props) => {
-              console.log("Match Params", props.match.params.appointment_id)
+              const appointmentId = props.match.params.appointment_id;
               return (
                 <AppointmentCard
                   pianos={this.props.pianos}
                   userId={this.props.currentUser.id}
-                  customerId={this.props.currentCustomer.id}
                   destroyPiano={this.props.destroyPiano}
                   id={props.match.params.appointment_id}
+                  customerId={props.match.params.customer_id}
+                  currentAppointment={this.props.match.params.appointment_id}
                   setCurrentAppointment={this.props.setCurrentAppointment}
+                  clearCurrentAppointment={this.props.clearCurrentAppointment}
+                  isAppointmentCard="y"
                 />
               );
             }}
@@ -208,13 +205,22 @@ class App extends Component {
             exact
             path="/users/:user_id/customers/:customer_id/pianos"
             render={(props) => {
+              const currentCustomer = props.match.params.customer_id;
+              const currentCustomerPianos = this.props.pianos.filter(
+                (piano) =>
+                  piano.attributes.customer_id === parseInt(currentCustomer)
+              );
+
               return (
                 <PianoList
-                  pianos={this.props.pianos}
-                  userId={this.props.currentUser.id}
-                  customerId={this.props.currentCustomer.id}
+                  props={props}
+                  currentCustomerPianos={currentCustomerPianos}
+                  userId={props.match.params.user_id}
+                  customerId={currentCustomer}
                   destroyPiano={this.props.destroyPiano}
-                  history={this.props.history}
+                  history={props.history}
+                  isCustomerCard="y"
+                  currentAppointment={this.props.match.params.appointmentId}
                 />
               );
             }}
@@ -222,7 +228,29 @@ class App extends Component {
           <Route
             exact
             path="/users/:user_id/customers/:customer_id/pianos/new"
-            component={PianoForm}
+            render={(props) => {
+              return (
+                <PianoForm
+                  history={props.history}
+                  userId={this.props.userId}
+                  customerId={props.match.params.customer_id}
+                />
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/users/:user_id/customers/:customer_id/appointments/:appointment_id/pianos/new"
+            render={(props) => {
+              return (
+                <PianoForm
+                  history={props.history}
+                  userId={props.match.params.user_id}
+                  customerId={props.match.params.customer_id}
+                  appointmentId={props.match.params.appointment_id}
+                />
+              );
+            }}
           />
           <Route
             exact
@@ -233,11 +261,7 @@ class App extends Component {
               );
               return piano ? (
                 <PianoCard
-                  {...props}
-                  user={this.props.currentUser.id}
-                  customer={this.props.currentCustomer.id}
                   history={this.props.history}
-                  destroyPiano={this.props.destroyPiano}
                   piano={piano}
                   setCurrentPiano={this.props.setCurrentPiano}
                 />
@@ -262,7 +286,7 @@ const mapStateToProps = (state) => {
     pianos: state.pianos,
     currentUser: state.currentUser,
     currentCustomer: state.currentCustomer,
-    currentAppointment: state.currentAppointment
+    currentAppointment: state.currentAppointment,
   };
 };
 
@@ -277,5 +301,6 @@ export default withRouter(
     customerList,
     addAppointment,
     appointmentsList,
+    clearCurrentAppointment,
   })(App)
 );

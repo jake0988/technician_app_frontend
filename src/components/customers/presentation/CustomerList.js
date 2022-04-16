@@ -4,6 +4,7 @@ import { DeleteCustomerButton } from "./DeleteCustomerButton";
 import { AddAppointmentButton } from "./AddAppointmentButton";
 import { Table } from "react-bootstrap";
 
+
 export const CustomerList = ({
   userId,
   customers,
@@ -15,10 +16,11 @@ export const CustomerList = ({
   to,
   setCurrentCustomer,
 }) => {
-  const handleClick = (customer) => {
+  const handleClick = (e, customer) => {
+    e.preventDefault()
     history.push(`/users/${userId}/customers/${customer.id}`);
   };
-  const ContentTag = to ? Link : "div";
+  // const ContentTag = to ? Link : "div";
   const customerCard =
     customers.length > 0 ? (
       customers.map((customer, index) => (
@@ -33,7 +35,7 @@ export const CustomerList = ({
           <tbody>
             <tr key={customer.attributes.id}>
               <td>{index + 1}</td>
-              <td className="link" onClick={() => handleClick(customer)}>
+              <td className="link" onClick={(e) => handleClick(e, customer)}>
                 {customer.attributes.name}{" "}
               </td>
               <td>{customer.attributes.number_of_pianos}</td>
@@ -77,7 +79,7 @@ export const CustomerList = ({
       <p className="text-center">
         <strong>Click name to view customer's pianos page</strong>
       </p>
-      <ContentTag>{customerCard}</ContentTag>
+      {customerCard}
     </div>
   );
 };

@@ -1,13 +1,26 @@
 import React from "react";
-import { NavLink, Table } from "react-bootstrap";
-import { useState } from "react";
+import { Table } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import Td from "./Td";
+import { useDispatch } from "react-redux";
+import { setCurrentAppointment } from "../../actions/appointment";
+import { setCurrentCustomer } from "../../actions/currentCustomer";
 
-function AppointmentCard({ setCurrentAppointment, id }) {
-  useEffect(()=>{setCurrentAppointment(id)},[id])
+function AppointmentCard({ id, customerId }) {
+  const dispatch = useDispatch()
+  const currentAppointment = useSelector((state) => {
+    return state.currentAppointment !== id ? id : state.currentAppointment.id
+  })
+  useEffect(()=>{
+  //     clearCurrentAppointment()
+  if (currentAppointment) {
+      dispatch(setCurrentAppointment(currentAppointment))}
+      if (customerId){
+      dispatch(setCurrentCustomer(customerId))}
+    },[])
+  
   const appointment = useSelector((state) => state.appointments.find(appointment => appointment.id === id))
   const appointmentList = ( appointment ?
     <Table>
@@ -28,7 +41,6 @@ function AppointmentCard({ setCurrentAppointment, id }) {
           <th>{appointment.attributes.price}</th>
           <th>{appointment.attributes.created_at}</th>
         </tr>
-<Td><img src='https://faustharrisonpianos.com/wp-content/uploads/2022/03/259372.jpg' alt="Piano" height='100' width='100'/></Td>
       </thead>
       
     </Table> : "No Appointments"

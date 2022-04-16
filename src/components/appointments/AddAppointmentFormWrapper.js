@@ -6,11 +6,11 @@ import { resetAppointmentForm } from "../../actions/appointment";
 
 class AddAppointmentFormWrapper extends Component {
   handleSubmit = (formData) => {
-    const { history, userId, customerId } = this.props;
+    const { history, userId, currentCustomerId } = this.props;
     const newFormData = {
       ...formData,
     };
-    this.props.addAppointment(userId, customerId, history, newFormData);
+    this.props.addAppointment(userId, currentCustomerId, history, newFormData);
   };
 
   render() {
@@ -27,7 +27,6 @@ const mapStateToProps = (state) => {
   return {
     updateFormInfo: state.updateFormInfo,
     userId: state.currentUser.id,
-    customerId: state.currentCustomer.id,
   };
 };
 

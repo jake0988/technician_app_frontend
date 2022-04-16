@@ -1,18 +1,23 @@
 import React from "react";
+import { useDispatch } from 'react-redux'
+import { destroyPiano } from '../../actions/addPiano'
 
 export const DeletePianoButton = ({
-  destroyPiano,
   userId,
   customerId,
-  id,
+  pianoId,
   history,
+  key,
 }) => {
+  const dispatch = useDispatch()
   return (
     <button
+    key={key}
       className="button"
       onClick={(e) => {
         e.preventDefault();
-        destroyPiano(userId, customerId, id, history);
+        dispatch(destroyPiano(userId, customerId, pianoId, history))
+        
       }}
     >
       Delete Piano

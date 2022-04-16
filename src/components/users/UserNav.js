@@ -1,36 +1,34 @@
 import React from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { customerList } from "../../actions/customerList";
+import { UserNavCard } from "./UserNavCard";
+import ErrorBoundary from "../ErrorBoundary";
 import Logout from "./Logout";
-import { Link } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
 
 export const UserNav = ({
-  currentUser,
-  currentCustomer,
-  customers,
+  user,
   pianos,
 }) => {
-  const userCard = (
-    <div className="border border-dark">
-      <h1>Welcome {currentUser.name} </h1>
-      <Logout />
-      <Row>
-        <Col>
-          <p>Customers in Database: {customers.length}</p>
-          <p>Pianos in Database: {pianos.length}</p>
-        </Col>
-        <Col className="d-flex justify-content-end">
-          {currentCustomer.name ? (
-            <Link
-              to={`/users/${currentUser.id}/customers/${currentCustomer.id}/pianos/new`}
-            >
-              <button className="button">
-                Add Piano for Customer: {currentCustomer.name}
-              </button>
-            </Link>
-          ) : null}
-        </Col>
-      </Row>
-    </div>
-  );
-  return <div>{userCard}</div>;
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(customerList(user.id))
+    // dispatch(getuserId(user))
+  },[])
+  const customers = useSelector((state) => state.customers)
+  const currentAppointment = useSelector((state) => state.currentAppointment)
+  const currentCustomerId = useSelector((state) => state.currentCustomer)
+  const currentCustomer = customers.find((customer)=>customer.id === currentCustomerId)
+  const numberOfPianos = () => {
+    if(pianos.length > 0) {
+      return (
+     <p>Pianos in Database: {pianos.length}</p>
+     )
+    }
+  }
+  const un = <UserNavCard user={user} customers={customers} numberOfPianos={numberOfPianos} currentCustomer={currentCustomer} currentAppointment={currentAppointment} />
+  const userRender = <div className="user-nav"><h1>Welcome {user.name} </h1>
+  <Logout /></div>
+
+  return <ErrorBoundary>{userRender}</ErrorBoundary>;
 };

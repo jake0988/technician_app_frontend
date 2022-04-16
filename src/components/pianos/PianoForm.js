@@ -1,18 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { updatePianoForm } from "../../actions/updatePianoForm";
 import { addPiano } from "../../actions/addPiano.js";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { customerList } from "../../actions/customerList";
+import { setCurrentCustomer } from "../../actions/currentCustomer";
+import { setCurrentAppointment } from "../../actions/appointment";
 
 const PianoForm = ({
   updatePianoForm,
   formData,
   addPiano,
-  currentUser,
-  currentCustomer,
-  currentAppointment,
   history,
+  customerId,
+  userId,
+  appointmentId
 }) => {
-  const { make, model, year, notes, serial } = formData;
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(customerList(userId))
+    dispatch(setCurrentCustomer(customerId))
+    if (appointmentId) {
+      dispatch(setCurrentAppointment(appointmentId))
+    }
+  }, [])
+  const currentAppointment = useSelector((state)=>state.currentAppointment)
+  const customers = useSelector((state)=>state.customers)
+  const currentCustomer = customers.find((customer)=>customer.id === customerId)
+  const currentUser = useSelector((state)=>state.currentUser)
+  const { make, model, year, notes, serial, image } = formData;
   const handleChange = (event) => {
     const { name, value } = event.target;
     const updateFormInfo = {
@@ -24,10 +41,11 @@ const PianoForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const submitFormData = {
       formData,
-      userId: currentUser,
-      customerId: currentCustomer,
+      userId: currentUser.id,
+      customerId: currentCustomer.id,
       appointmentId: currentAppointment,
     };
     addPiano(submitFormData, history);
@@ -62,6 +80,14 @@ const PianoForm = ({
         value={year}
         name="year"
       />
+      <input
+        type="text"
+        placeholder="image"
+        onChange={handleChange}
+        value={image}
+        name="image"
+      />
+
       <textarea
         placeholder="notes"
         onChange={handleChange}
@@ -70,6 +96,11 @@ const PianoForm = ({
         value={notes}
         name="notes"
       />
+      <input
+        type="hidden"
+        name="appointment_id"
+        value={currentAppointment}
+        />
       <input type="submit" value="Add Piano" />
     </form>
   );

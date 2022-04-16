@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Table, Container } from "react-bootstrap";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
@@ -15,6 +15,7 @@ function AppointmentList({ appointments, appointmentsList, userId }) {
   const getAppointments = useSelector((state) => state.appointments);
 
   const appointmentList = (
+    <Container fluid>
     <Table>
       <thead>
         <tr>
@@ -24,6 +25,7 @@ function AppointmentList({ appointments, appointmentsList, userId }) {
           <th>hours</th>
           <th>price</th>
           <th>Date Created</th>
+          <th>Piano</th>
         </tr>
       </thead>
       <tbody>
@@ -37,10 +39,12 @@ function AppointmentList({ appointments, appointmentsList, userId }) {
             <td key={uuidv4(appointment.attributes.date)}>
               {appointment.attributes.created_at}
             </td>
+            <Td to={appointment.attributes.piano_id ? `/users/${userId}/customers/${appointment.attributes.customer_id}/pianos/${appointment.attributes.piano_id}` : null}>{appointment.attributes.piano_id ? appointment.attributes.piano_id : null}</Td>
           </tr>
         ))}
       </tbody>
     </Table>
+    </Container>
   );
 
   return <div>{appointmentList}</div>;
