@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import currentCustomer from "../../../reducers/currentCustomer";
+import { Button } from "react-bootstrap";
 
 export const AddAppointmentButton = ({
   addAppointment,
@@ -12,8 +11,8 @@ export const AddAppointmentButton = ({
 }) => {
   return (
     // <Link to={`/users/${userId}/customers/${id}/appointments/new`} id={id}>
-    <button
-      className="button"
+    <Button
+      className="add-button"
       onClick={(e) => {
         e.preventDefault();
         return (
@@ -23,7 +22,7 @@ export const AddAppointmentButton = ({
       }}
     >
       Add Appointment
-    </button>
+    </Button>
     // </Link>
   );
 };

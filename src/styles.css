@@ -1,0 +1,16 @@
+* {
+  font-family: "Lora", serif;
+}
+
+.delete-button {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+}
+.add-button {
+  background-color: rgb(72, 181, 30);
+  color: rgb(255, 255, 255);
+}
+.edit-button {
+  background-color: rgb(255, 247, 10);
+  color: rgb(0, 0, 0);
+}

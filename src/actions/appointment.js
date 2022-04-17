@@ -46,7 +46,6 @@ function dateChanger(date) {
   return dateB;
 }
 export const addAppointment = (userId, customerId, history, credentials) => {
-  debugger;
   const addAppointmentCred = {
     appointment: { ...credentials, user_id: userId, customer_id: customerId },
   };
@@ -99,5 +98,50 @@ export const appointmentsList = (userId) => {
         }
       })
       .catch(console.log());
+  };
+};
+
+export const patchAppointmentInfo = (
+  formData,
+  userId,
+  history,
+  customerId,
+  appointmentId
+) => {
+  return (dispatch) => {
+    const appointmentEditData = {
+      appointment: {
+        id: appointmentId,
+        initial_a4: formData.initial_a4,
+        work_done: formData.work_done,
+        price: formData.price,
+        date: formData.date,
+        hours: formData.hours,
+        user_id: formData.userId,
+      },
+    };
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/appointments/${appointmentId}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(appointmentEditData),
+      }
+    )
+      .then((resp) => resp.json())
+      .then((appointment) => {
+        if (appointment.errors) {
+          alert(appointment.errors);
+        } else {
+          dispatch(editAppointmentInfo(appointment.data));
+          dispatch(appointmentsList(userId));
+          history.push(
+            `/users/${userId}/customers/${customerId}/appointments/${appointmentId}`
+          );
+        }
+      });
   };
 };

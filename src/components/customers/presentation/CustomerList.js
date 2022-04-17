@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { DeleteCustomerButton } from "./DeleteCustomerButton";
 import { AddAppointmentButton } from "./AddAppointmentButton";
 import { Table } from "react-bootstrap";
-
+import Td from "../../appointments/Td";
 
 export const CustomerList = ({
   userId,
@@ -17,7 +17,7 @@ export const CustomerList = ({
   setCurrentCustomer,
 }) => {
   const handleClick = (e, customer) => {
-    e.preventDefault()
+    e.preventDefault();
     history.push(`/users/${userId}/customers/${customer.id}`);
   };
   // const ContentTag = to ? Link : "div";
@@ -35,9 +35,9 @@ export const CustomerList = ({
           <tbody>
             <tr key={customer.attributes.id}>
               <td>{index + 1}</td>
-              <td className="link" onClick={(e) => handleClick(e, customer)}>
+              <Td to={`/users/${userId}/customers/${customer.id}`}>
                 {customer.attributes.name}{" "}
-              </td>
+              </Td>
               <td>{customer.attributes.number_of_pianos}</td>
               <td>
                 <Link
@@ -74,12 +74,5 @@ export const CustomerList = ({
     ) : (
       <h2>No Customers In Database</h2>
     );
-  return (
-    <div className="customerList">
-      <p className="text-center">
-        <strong>Click name to view customer's pianos page</strong>
-      </p>
-      {customerCard}
-    </div>
-  );
+  return <div className="customerList">{customerCard}</div>;
 };

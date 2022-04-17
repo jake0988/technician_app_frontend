@@ -8,7 +8,7 @@ import { getPianos } from "../../../actions/addPiano";
 import { appointmentsList } from "../../../actions/appointment";
 import Td from "../../appointments/Td";
 import { UserNavCard } from "../../users/UserNavCard";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Button, Container } from "react-bootstrap";
 
 const CustomerCard = ({
   currentCustomer,
@@ -16,58 +16,99 @@ const CustomerCard = ({
   destroyCustomer,
   history,
   userId,
-  id,
+  currentCustomerId,
 }) => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-      dispatch(setCurrentCustomer(currentCustomer));
-      dispatch(getPianos(userId));
-  }, [currentCustomer]);
-  const customers = useSelector((state)=> state.customers)
+  function addAppointment(e) {
+    e.preventDefault();
+    history.push(
+      `/users/${userId}/customers/${currentCustomerId}/Appointments/new`
+    );
+  }
+  const appointments = useSelector((state) =>
+    state.appointments.filter(
+      (appointment) =>
+        appointment.attributes.customer_id === parseInt(currentCustomerId)
+    )
+  );
+  const appointmentDates = appointments.map(
+    (appointment) => appointment.attributes.date
+  );
+  console.log(appointments, "Appointments");
   return (
     <div className="customerCard">
       <Container fluid>
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Customer Name</th>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-            <th>Number Of Pianos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{currentCustomer.attributes.name}</td>
-            <td>{currentCustomer.attributes.address}</td>
-            <td>{currentCustomer.attributes.phone_number}</td>
-            <td>{currentCustomer.attributes.email}</td>
-            <Td to={`/users/${userId}/customers/${currentCustomer.id}/pianos`}>{currentCustomer.attributes.number_of_pianos}</Td>
-          </tr>   
-     <tr>
-       <td colspan="4" align="left">
-        <button className="button" onClick={()=>{history.push(`/users/${currentCustomer.attributes.user_id}/customers/${id}/edit`)}}>
-          Edit Customer</button>
-          </td>
-      <td><UserNavCard userId={userId}
-     currentCustomer={currentCustomer} history={history}/></td>
-      </tr>
-      <tr>
-      <td colspan="5">
-      <button
-        className="button"
-        onClick={(e) => {
-          e.preventDefault();
-          destroyCustomer(currentCustomer.attributes.user_id, id, history);
-        }}
-      >
-        Delete Customer
-      </button>
-      </td>
-      </tr>
-      </tbody>
-      </Table>
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>Address</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Number Of Pianos</th>
+              <th>Appointments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{currentCustomer.attributes.name}</td>
+              <td>{currentCustomer.attributes.address}</td>
+              <td>{currentCustomer.attributes.phone_number}</td>
+              <td>{currentCustomer.attributes.email}</td>
+              <Td
+                to={`/users/${userId}/customers/${currentCustomer.id}/pianos`}
+              >
+                {currentCustomer.attributes.number_of_pianos}
+              </Td>
+              <td>{appointmentDates}</td>
+            </tr>
+            <tr>
+              <td colspan="4" align="left">
+                <Button
+                  className="edit-button"
+                  onClick={() => {
+                    history.push(
+                      `/users/${currentCustomer.attributes.user_id}/customers/${currentCustomerId}/edit`
+                    );
+                  }}
+                >
+                  Edit Customer
+                </Button>
+              </td>
+              <td>
+                <UserNavCard
+                  userId={userId}
+                  currentCustomer={currentCustomer}
+                  history={history}
+                />
+              </td>
+              <td>
+                <Button
+                  className="add-button"
+                  onClick={(e) => addAppointment(e)}
+                >
+                  Add Appoointment
+                </Button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <Button
+                  className="delete-button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    destroyCustomer(
+                      currentCustomer.attributes.user_id,
+                      currentCustomerId,
+                      history
+                    );
+                  }}
+                >
+                  Delete Customer
+                </Button>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </Container>
     </div>
   );

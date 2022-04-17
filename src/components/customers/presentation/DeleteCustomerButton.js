@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 
 export const DeleteCustomerButton = ({
   destroyCustomer,
@@ -7,14 +8,14 @@ export const DeleteCustomerButton = ({
   history,
 }) => {
   return (
-    <button
-      className="button"
+    <Button
+      className="delete-button"
       onClick={(e) => {
         e.preventDefault();
         destroyCustomer(userId, id, history);
       }}
     >
       Delete Customer
-    </button>
+    </Button>
   );
 };

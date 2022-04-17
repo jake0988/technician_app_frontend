@@ -1,56 +1,70 @@
-// import React from "react";
-// import AppointmentForm from "./AppointmentForm";
-// import { patchCustomerInfo } from "../../../actions/customerList";
-// import { connect } from "react-redux";
-// import { setCustomerFormForEdit } from "../../../actions/updateCustomerForm";
-// import { resetCustomerForm } from "../../../actions/customerList";
+import React from "react";
+import AppointmentForm from "./AppointmentForm";
+import { patchCustomerInfo } from "../../actions/customerList";
+import { connect } from "react-redux";
+import { setAppointmentFormForEdit } from "../../actions/updateAppointmentForm";
+import { resetCustomerForm } from "../../actions/customerList";
+import { patchAppointmentInfo } from "../../actions/appointment";
+class EditAppointmentFormWrapper extends React.Component {
+  componentDidMount() {
+    const appointment = this.props.appointments.find(
+      (appointment) => appointment.id === this.props.currentAppointmentId
+    );
+    appointment && this.props.setAppointmentFormForEdit(appointment);
+  }
 
-// class EditAppointmentFormWrapper extends React.Component {
-//   componentDidMount() {
-//     this.props.customer &&
-//       this.props.setCustomerFormForEdit(this.props.customer);
-//   }
+  componentDidUpdate(previousProps) {
+    const appointment = this.props.appointments.find(
+      (appointment) => appointment.id === this.props.currentAppointmentId
+    );
+    appointment &&
+      !previousProps.appointment &&
+      this.props.setAppointmentFormForEdit(appointment);
+  }
 
-//   componentDidUpdate(previousProps) {
-//     this.props.customer &&
-//       !previousProps.customer &&
-//       this.props.setCustomerFormForEdit(this.props.customer);
-//   }
+  componentWillUnmount() {
+    this.props.resetCustomerForm();
+  }
 
-//   componentWillUnmount() {
-//     this.props.resetCustomerForm();
-//   }
+  handleSubmit = (formData) => {
+    const {
+      patchAppointmentInfo,
+      history,
+      userId,
+      currentAppointmentId,
+      currentCustomerId,
+    } = this.props;
+    const newFormData = {
+      ...formData,
+      currentAppointmentId,
+      userId,
+    };
+    patchAppointmentInfo(
+      newFormData,
+      this.props.userId,
+      history,
+      this.props.currentCustomerId,
+      this.props.currentAppointmentId
+    );
+  };
 
-//   handleSubmit = (formData) => {
-//     const customerId = this.props.customer.attributes.id;
-//     const { patchCustomerInfo, history, userId } = this.props;
-//     const newFormData = {
-//       ...formData,
-//       customerId: this.props.customer.attributes.id,
-//       userId: this.props.userId,
-//     };
-//     patchCustomerInfo(newFormData, userId, history, customerId);
-//   };
+  render() {
+    return (
+      <div>
+        <AppointmentForm editMode handleSubmit={this.handleSubmit} />
+      </div>
+    );
+  }
+}
 
-//   render() {
-//     return (
-//       <div>
-//         <AppointmentForm editMode handleSubmit={this.handleSubmit} />
-//       </div>
-//     );
-//   }
-// }
+const mapStateToProps = (state) => {
+  return {
+    customers: state.customers,
+  };
+};
 
-// const mapStateToProps = (state) => {
-//   return {
-//     userId: state.currentUser.id,
-//     currentCustomer: state.currentCustomer,
-//     customers: state.customers,
-//   };
-// };
-
-// export default connect(mapStateToProps, {
-//   patchCustomerInfo,
-//   setCustomerFormForEdit,
-//   resetCustomerForm,
-// })(EditAppointmentFormWrapper);
+export default connect(mapStateToProps, {
+  patchAppointmentInfo,
+  setAppointmentFormForEdit,
+  resetCustomerForm,
+})(EditAppointmentFormWrapper);

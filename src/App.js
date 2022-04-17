@@ -31,6 +31,7 @@ import { setCurrentAppointment } from "./actions/appointment";
 import AppointmentCard from "./components/appointments/AppointmentCard";
 import { clearCurrentAppointment } from "./actions/appointment";
 import currentCustomer from "./reducers/currentCustomer";
+import "./styles.css";
 
 class App extends Component {
   componentDidMount() {
@@ -124,15 +125,19 @@ class App extends Component {
           />
           <Route
             exact
-            path="/users/:user_id/appointments/:id/edit"
+            path="/users/:user_id/customers/:customer_id/appointments/:appointment_id/edit"
             render={(props) => {
-              const appointment = this.props.appointments.find(
-                (appointment) => appointment.id === props.match.params.id
-              );
+              const currentAppointmentId = props.match.params.appointment_id;
+              const currentCustomerId = props.match.params.customer_id;
+
+              const userId = props.match.params.user_id;
               return (
                 <EditAppointmentFormWrapper
                   {...props}
-                  appointment={appointment}
+                  appointments={this.props.appointments}
+                  currentAppointmentId={currentAppointmentId}
+                  currentCustomerId={currentCustomerId}
+                  userId={userId}
                 />
               );
             }}
@@ -144,12 +149,13 @@ class App extends Component {
               const currentCustomer = this.props.customers.find(
                 (customer) => customer.id === props.match.params.customer_id
               );
+              const currentCustomerId = props.match.params.customer_id;
               return currentCustomer ? (
                 <CustomerCard
                   currentCustomer={currentCustomer}
                   {...props}
                   setCurrentCustomer={this.props.setCurrentCustomer}
-                  id={props.match.params.appointment_id}
+                  currentCustomerId={currentCustomerId}
                   pianos={this.props.pianos}
                   destroyCustomer={this.props.destroyCustomer}
                   userId={this.props.userId}
@@ -162,13 +168,15 @@ class App extends Component {
 
           <Route
             exact
-            path="/users/:user_id/customers/:id/appointments"
+            path="/users/:user_id/customers/:customer_id/appointments"
             render={(props) => {
-              const customerId = parseInt(props.match.params.id);
-              this.props.setCurrentCustomer(customerId);
+              const currentCustomerId = props.match.params.customer_id;
+              const currentCustomer = this.props.customers.find(
+                (customer) => customer.id === currentCustomerId
+              );
               const appointments = this.props.appointments.filter(
                 (appointment) =>
-                  appointment.attributes.customer_id === parseInt(customerId)
+                  appointment.attributes.customer_id === currentCustomerId
               );
 
               return (
@@ -176,6 +184,7 @@ class App extends Component {
                   appointments={appointments}
                   appointmentsList={this.props.appointmentsList}
                   userId={this.props.userId}
+                  currentCustomer={currentCustomer}
                 />
               );
             }}
@@ -184,18 +193,13 @@ class App extends Component {
             exact
             path="/users/:user_id/customers/:customer_id/appointments/:appointment_id/"
             render={(props) => {
-              const appointmentId = props.match.params.appointment_id;
+              const currentAppointmentId = props.match.params.appointment_id;
               return (
                 <AppointmentCard
-                  pianos={this.props.pianos}
-                  userId={this.props.currentUser.id}
-                  destroyPiano={this.props.destroyPiano}
-                  id={props.match.params.appointment_id}
-                  customerId={props.match.params.customer_id}
-                  currentAppointment={this.props.match.params.appointment_id}
-                  setCurrentAppointment={this.props.setCurrentAppointment}
-                  clearCurrentAppointment={this.props.clearCurrentAppointment}
-                  isAppointmentCard="y"
+                  userId={props.match.params.user_id}
+                  currentAppointmentId={currentAppointmentId}
+                  currentCustomerId={props.match.params.customer_id}
+                  history={props.history}
                 />
               );
             }}

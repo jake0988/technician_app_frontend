@@ -1,6 +1,7 @@
 import { customerList } from "./customerList";
 import { getPianos } from "./addPiano";
 import { clearcurrentPiano, clearPianos } from "./addPiano";
+import { appointmentsList } from "./appointment";
 
 export const updateSignupForm = (formData) => {
   return {
@@ -92,8 +93,7 @@ export const getCurrentUser = () => {
           alert(user.error);
         } else {
           dispatch(setCurrentUser(user.data.attributes));
-          // dispatch(customerList(user.data.attributes.id));
-          // dispatch(getPianos(user.data.attributes.id));
+          dispatch(getPianos(user.data.attributes.id));
         }
       })
       .catch(console.log);

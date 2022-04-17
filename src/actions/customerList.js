@@ -136,7 +136,7 @@ export const destroyCustomer = (userId, customerId, history) => {
         if (resp.errors) {
           alert(resp.errors);
         } else {
-          // dispatch(customerList(userId));
+          dispatch(customerList(userId));
           // dispatch(getPianos(userId));
           dispatch(clearCurrentCustomer());
           history.push(`/users/${userId}/customers`);

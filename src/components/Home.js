@@ -5,6 +5,7 @@ import Signup from "./users/Signup";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment, { parseZone } from "moment";
 import { useState, useEffect } from "react";
+import { customerList } from "../actions/customerList";
 
 const localizer = momentLocalizer(moment);
 
@@ -18,26 +19,33 @@ const state = {
   ],
 };
 
-
 export const Home = ({
   loggedIn,
   appointments,
   appointmentsList,
   userId,
-  history
+  history,
+  customers,
 }) => {
-  
   useEffect(() => {
     if (userId) {
       appointmentsList(userId);
+    }
+    function customerName(appointment) {
+      const customer = customers.find(
+        (customer) =>
+          customer.attributes.id === appointment.attributes.customer_id
+      );
+
+      return customer ? customer.attributes.name : "No Name";
     }
     if (appointments !== "0") {
       state.events = appointments.map((appointment) => ({
         start: moment(appointment.attributes.date, "YYYY-MM-DD").toDate(),
         end: moment(appointment.attributes.date).add(1, "hours").toDate(),
-        title: "asdg",
+        title: customerName(appointment),
         customerId: appointment.attributes.customer_id,
-        id: appointment.id
+        id: appointment.id,
       }));
 
       // debugger;
@@ -52,7 +60,9 @@ export const Home = ({
   }
 
   function renderAppointmentCard(event) {
-    history.push(`/users/userId/customers/${event.customerId}/appointments/${event.id}`)
+    history.push(
+      `/users/${userId.id}/customers/${event.customerId}/appointments/${event.id}`
+    );
   }
 
   const appointmentsChanged = function (appointments) {
@@ -81,10 +91,10 @@ export const Home = ({
       defaultView="month"
       endAccessor="end"
       onSelectEvent={(slotInfo) => {
-        renderAppointmentCard(slotInfo)
-    }}
-    selectable
-    popup={true}
+        renderAppointmentCard(slotInfo);
+      }}
+      selectable
+      popup={true}
       style={{ height: 500 }}
     />
   );

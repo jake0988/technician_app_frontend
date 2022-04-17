@@ -1,6 +1,7 @@
 import React from "react";
-import { useDispatch } from 'react-redux'
-import { destroyPiano } from '../../actions/addPiano'
+import { useDispatch } from "react-redux";
+import { destroyPiano } from "../../actions/addPiano";
+import { Button } from "react-bootstrap";
 
 export const DeletePianoButton = ({
   userId,
@@ -9,18 +10,17 @@ export const DeletePianoButton = ({
   history,
   key,
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
-    <button
-    key={key}
-      className="button"
+    <Button
+      key={key}
+      className="delete-button"
       onClick={(e) => {
         e.preventDefault();
-        dispatch(destroyPiano(userId, customerId, pianoId, history))
-        
+        dispatch(destroyPiano(userId, customerId, pianoId, history));
       }}
     >
       Delete Piano
-    </button>
+    </Button>
   );
 };
