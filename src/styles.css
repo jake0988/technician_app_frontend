@@ -14,3 +14,11 @@
   background-color: rgb(255, 247, 10);
   color: rgb(0, 0, 0);
 }
+
+.container-fluid .jumbotron,
+.container .jumbotron {
+  border-radius: 6px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-family: "Manrope", sans-serif;
+}

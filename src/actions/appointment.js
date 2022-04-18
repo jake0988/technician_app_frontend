@@ -145,3 +145,39 @@ export const patchAppointmentInfo = (
       });
   };
 };
+
+export const destroyAppointment = (
+  userId,
+  appointmentId,
+  currentCustomerId,
+  history
+) => {
+  return (dispatch) => {
+    // debugger;
+
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/appointments/${appointmentId}`,
+      {
+        credentials: "include",
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify({ userId, appointmentId }),
+      }
+    )
+      .then((r) => r.json())
+
+      .then((resp) => {
+        if (resp.errors) {
+          alert(resp.errors);
+        } else {
+          dispatch(appointmentsList(userId));
+          history.push(
+            `/users/${userId}/customers/${currentCustomerId}/appointments`
+          );
+        }
+      })
+      .catch(console.log);
+  };
+};

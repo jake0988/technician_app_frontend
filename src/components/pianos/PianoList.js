@@ -26,7 +26,12 @@ export const PianoList = ({
     dispatch(getPianos(userId));
     render.current = renderPianos();
   }, [userId]);
+  const customer = useSelector((state) =>
+    state.customers.find((customer) => customer.id === customerId)
+  );
+  const customerName = customer.attributes.name;
   const pianos = useSelector((state) => state.pianos);
+
   const currentCustomerPianos = pianos.filter(
     (piano) => piano.attributes.customer_id === parseInt(customerId)
   );
@@ -47,7 +52,8 @@ export const PianoList = ({
         userId={userId}
         image={image}
         history={history}
-        customerId={customerId}
+        currentCustomerId={customerId}
+        customerName={customerName}
         currentCustomerPianos={currentCustomerPianos}
         pianos={pianos}
         isCustomerCard={isCustomerCard}
@@ -55,6 +61,8 @@ export const PianoList = ({
     ) : isAppointmentCard ? (
       <PianoListTable
         userId={userId}
+        customerName={customerName}
+        currentCustomerId={customerId}
         image={image}
         history={history}
         pianos={pianos}

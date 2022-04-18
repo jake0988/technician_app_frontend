@@ -7,44 +7,26 @@ import { useEffect } from "react";
 
 export const UserNavCard = ({
   userId,
-  currentCustomer,
+  currentCustomerId,
   history,
-  currentAppointment,
+  currentAppointmentId,
 }) => {
   const [link, setLink] = useState();
 
   function goToPage(e) {
     e.preventDefault();
-    setLink(linkDestination);
-    history.push(link);
+    history.push(linkDestination());
   }
 
   function linkDestination() {
-    if (currentAppointment) {
-      return `/users/${userId}/customers/${currentCustomer.id}/appointments/${currentAppointment.id}/pianos/new`;
+    if (currentAppointmentId) {
+      return `/users/${userId}/customers/${currentCustomerId}/appointments/${currentAppointmentId}/pianos/new`;
     }
-    return `/users/${userId}/customers/${currentCustomer.id}/pianos/new`;
+    return `/users/${userId}/customers/${currentCustomerId}/pianos/new`;
   }
   return (
-    /* {currentCustomer && currentAppointment ? (
-        <Link
-          to={`/users/${userId}/customers/${currentCustomer}/appointments/${currentAppointment}/pianos/new`}
-        >
-          <button className="button">
-            Add Piano for Customer: {currentCustomer.attributes.name}
-          </button>
-        </Link>
-       ) : currentCustomer ? ( */
-    /* <Link
-          to={`/users/${userId}/customers/${currentCustomer.id}/pianos/new`}
-        >    /* </Link> */
     <Col>
-      <Button
-        type="input"
-        value="button-value"
-        id="addPiano"
-        onClick={(e) => goToPage}
-      >
+      <Button type="input" className="add-button" onClick={(e) => goToPage(e)}>
         Add Piano
       </Button>
     </Col>

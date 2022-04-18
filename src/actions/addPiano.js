@@ -47,6 +47,7 @@ export const addPiano = (credentials, history) => {
     appointment_id: credentials.appointmentId,
   };
   return (dispatch) => {
+    debugger;
     return fetch(
       `http://localhost:3001/api/v1/users/${credentials.user_id}/customers/${credentials.customer_id}/pianos`,
       {
@@ -65,9 +66,9 @@ export const addPiano = (credentials, history) => {
         } else {
           dispatch(getPianos(credentials.userId));
           // dispatch(customerList(credentials.userId));
-          dispatch(setCurrentCustomer(credentials.customerId))
+          dispatch(setCurrentCustomer(credentials.customerId));
           dispatch(clearPianoForm());
-          dispatch(clearCurrentAppointment())
+          dispatch(clearCurrentAppointment());
           history.push(
             `/users/${credentials.userId}/customers/${credentials.customerId}`
           );
@@ -114,8 +115,8 @@ export const destroyPiano = (userId, customerId, pianoId, history) => {
       .then((resp) => resp.json())
       .then((resp) => {
         dispatch(getPianos(userId));
-        dispatch(customerList(userId))
-        history.goBack()
+        dispatch(customerList(userId));
+        history.goBack();
       });
   };
 };

@@ -1,60 +1,117 @@
 import React, { useRef } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Container } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 import { DeletePianoButton } from "./DeletePianoButton";
 import Td from "../appointments/Td";
 import { useEffect } from "react";
+import { UserNavCard } from "../users/UserNavCard";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-export const PianoListTable = ({userId, history, pianos, image, customerId, appointmentId, currentCustomerPianos, currentAppointmentPianos, isCustomerCard, isAppointmentCard}) => {
-  const current = useRef()
-  useEffect(()=>{
-    current.current = currentVariable(isCustomerCard, isAppointmentCard)
-  }, [])
- function currentVariable(isCustomer, isAppointment) {
-    return isCustomer ? currentCustomerPianos                              
-   : isAppointment ? currentAppointmentPianos
-   : null
+export const PianoListTable = ({
+  userId,
+  history,
+  customerName,
+  pianos,
+  image,
+  currentCustomerId,
+  appointmentId,
+  currentCustomerPianos,
+  currentAppointmentPianos,
+  isCustomerCard,
+  isAppointmentCard,
+}) => {
+  const current = useRef();
+  useEffect(() => {
+    current.current = currentVariable(isCustomerCard, isAppointmentCard);
+  }, []);
+  function currentVariable(isCustomer, isAppointment) {
+    return isCustomer
+      ? currentCustomerPianos
+      : isAppointment
+      ? currentAppointmentPianos
+      : null;
   }
-  console.log("curref", current.current, "Curent", currentCustomerPianos, "iscustomer?", isCustomerCard)
-function tableList() { 
- 
-    return(
- <Table striped bordered hover size="sm">
-  <thead>
-    <tr>
-    <th key={uuidv4(1)}>#</th>
-    <th key={uuidv4(1)}>Make</th>
-    <th key={uuidv4(1)}>Model</th>
-    <th key={uuidv4(1)}>picture</th>
-  </tr>
-  </thead>
-  <tbody>
-    {/* {console.log(currentVariable())} */}
-    
-  {currentVariable(isCustomerCard, isAppointmentCard) ? currentVariable(isCustomerCard, isAppointmentCard).map((piano, key) => (
-    <tr>
- 
-  <Td key={uuidv4(key)} to={`/users/${userId}/customers/${customerId}/pianos/${piano.attributes.id}`}>{key + 1}</Td>
-  <Td key={uuidv4(key)}>{piano.attributes.make}</Td>
-  <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
-  <Td key={uuidv4(key)}>{image(piano.attributes.image)}</Td>
-      <td>
-        <div>
-      <DeletePianoButton key={uuidv4(1)}
-        customerId={customerId}
-        pianoId={piano.attributes.id}
-        history={history}
-        userId={userId}
-      />
-      </div>
-      </td>
-    </tr>
-  ))
-  : null}
-</tbody>
-</Table>
-)}
-  return (
-tableList()
-  )
-}
+
+  const appointmentList = useSelector((state) => state.appointments);
+  function appointments() {
+    return appointmentList.filter(
+      (appointment) =>
+        appointment.attributes.customer_id === parseInt(currentCustomerId)
+    );
+  }
+  function tableList() {
+    return (
+      <Container fluid>
+        <Table>
+          <thead>
+            <tr>
+              <div>
+                <strong>Customer Name: {customerName}</strong>
+              </div>
+            </tr>
+            <tr>
+              <th key={uuidv4(1)}>#</th>
+              <th key={uuidv4(1)}>Make</th>
+              <th key={uuidv4(1)}>Model</th>
+              <th key={uuidv4(1)}>Appointment</th>
+              <th key={uuidv4(1)}>Picture</th>
+
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* {console.log(currentVariable())} */}
+
+            {currentVariable(isCustomerCard, isAppointmentCard)
+              ? currentVariable(isCustomerCard, isAppointmentCard).map(
+                  (piano, key) => (
+                    <tr>
+                      <Td
+                        key={uuidv4(key)}
+                        to={`/users/${userId}/customers/${currentCustomerId}/pianos/${piano.attributes.id}`}
+                      >
+                        {key + 1}
+                      </Td>
+                      <Td key={uuidv4(key)}>{piano.attributes.make}</Td>
+                      <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
+                      <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
+                      <td>
+                        {appointments()
+                          ? appointments().map((appointment) => {
+                              return (
+                                <a
+                                  href={`/users/${userId}/customers/${currentCustomerId}/appointments/${appointment.id}`}
+                                  alt="Appointment Date"
+                                >
+                                  {appointment
+                                    ? appointment.attributes.date + ", "
+                                    : null}
+                                </a>
+                              );
+                            })
+                          : null}
+                      </td>
+                      <Td key={uuidv4(key)}>{image(piano.attributes.image)}</Td>
+                      <td>
+                        <div>
+                          <DeletePianoButton
+                            key={uuidv4(1)}
+                            customerId={currentCustomerId}
+                            pianoId={piano.attributes.id}
+                            history={history}
+                            userId={userId}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                )
+              : null}
+          </tbody>
+        </Table>
+      </Container>
+    );
+  }
+  return tableList();
+};

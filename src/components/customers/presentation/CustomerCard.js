@@ -77,7 +77,7 @@ const CustomerCard = ({
               <td>
                 <UserNavCard
                   userId={userId}
-                  currentCustomer={currentCustomer}
+                  currentCustomerId={currentCustomerId}
                   history={history}
                 />
               </td>

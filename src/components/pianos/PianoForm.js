@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { customerList } from "../../actions/customerList";
 import { setCurrentCustomer } from "../../actions/currentCustomer";
 import { setCurrentAppointment } from "../../actions/appointment";
+import { Form, Row, Col, Container, Button } from "react-bootstrap";
 
 const PianoForm = ({
   updatePianoForm,
@@ -15,20 +16,22 @@ const PianoForm = ({
   history,
   customerId,
   userId,
-  appointmentId
+  appointmentId,
 }) => {
-  const dispatch = useDispatch()
-  useEffect(()=>{
-    dispatch(customerList(userId))
-    dispatch(setCurrentCustomer(customerId))
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(customerList(userId));
+    dispatch(setCurrentCustomer(customerId));
     if (appointmentId) {
-      dispatch(setCurrentAppointment(appointmentId))
+      dispatch(setCurrentAppointment(appointmentId));
     }
-  }, [])
-  const currentAppointment = useSelector((state)=>state.currentAppointment)
-  const customers = useSelector((state)=>state.customers)
-  const currentCustomer = customers.find((customer)=>customer.id === customerId)
-  const currentUser = useSelector((state)=>state.currentUser)
+  }, []);
+  const currentAppointment = useSelector((state) => state.currentAppointment);
+  const customers = useSelector((state) => state.customers);
+  const currentCustomer = customers.find(
+    (customer) => customer.id === customerId
+  );
+  const currentUser = useSelector((state) => state.currentUser);
   const { make, model, year, notes, serial, image } = formData;
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -39,70 +42,119 @@ const PianoForm = ({
     return updatePianoForm(updateFormInfo);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (formData) => {
     const submitFormData = {
       formData,
       userId: currentUser.id,
       customerId: currentCustomer.id,
-      appointmentId: currentAppointment,
+      appointmentId: appointmentId,
     };
-    addPiano(submitFormData, history);
+    dispatch(addPiano(submitFormData, history));
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="make"
-        onChange={handleChange}
-        value={make}
-        name="make"
-      />
-      <input
-        type="text"
-        placeholder="model"
-        onChange={handleChange}
-        value={model}
-        name="model"
-      />
-      <input
-        type="text"
-        placeholder="serial"
-        onChange={handleChange}
-        value={serial}
-        name="serial"
-      />
-      <input
-        type="text"
-        placeholder="year"
-        onChange={handleChange}
-        value={year}
-        name="year"
-      />
-      <input
-        type="text"
-        placeholder="image"
-        onChange={handleChange}
-        value={image}
-        name="image"
-      />
-
-      <textarea
-        placeholder="notes"
-        onChange={handleChange}
-        rows="8"
-        cols="50"
-        value={notes}
-        name="notes"
-      />
-      <input
-        type="hidden"
-        name="appointment_id"
-        value={currentAppointment}
-        />
-      <input type="submit" value="Add Piano" />
-    </form>
+    <Container fluid>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(formData);
+        }}
+      >
+        <Row>
+          <Col>
+            <Form.Group className="mb-2" controlId="formMake">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="make"
+                value={make}
+                placeholder="Enter Make"
+                onChange={handleChange}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-2" controlId="formModel">
+              <Form.Label>Model</Form.Label>
+              <Form.Control
+                type="text"
+                name="model"
+                value={model}
+                placeholder="Enter Model"
+                onChange={handleChange}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-2" controlId="formSerial">
+              <Form.Label>Serial</Form.Label>
+              <Form.Control
+                type="text"
+                name="serial"
+                value={serial}
+                placeholder="Enter Serial"
+                onChange={handleChange}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-2" controlId="formYear">
+              <Form.Label>Year</Form.Label>
+              <Form.Control
+                type="text"
+                name="year"
+                value={year}
+                placeholder="Enter Year"
+                onChange={handleChange}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Group className="mb-2" controlId="formImage">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="text"
+                name="image"
+                value={image}
+                placeholder="Enter Image Url"
+                onChange={handleChange}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Group className="mb-2" controlId="formNotes">
+              <Form.Label>Notes</Form.Label>
+              <Form.Control
+                type="text"
+                name="notes"
+                value={notes}
+                placeholder="Enter Notes"
+                onChange={handleChange}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+          </Col>
+          <Form.Group controlId="formAppointmentId">
+            <Form.Control
+              type="hidden"
+              name="appointmentId"
+              value={appointmentId}
+            />
+          </Form.Group>
+        </Row>
+        <Button className="add-button" type="submit">
+          Add Piano
+        </Button>
+      </Form>
+    </Container>
   );
 };
 
@@ -111,7 +163,7 @@ const mapStateToProps = (state) => {
     currentUser: state.currentUser.id,
     formData: state.updatePianoForm,
     currentCustomer: state.currentCustomer.id,
-    currentAppointment: state.currentAppointment.id
+    currentAppointment: state.currentAppointment.id,
   };
 };
 export default connect(mapStateToProps, { updatePianoForm, addPiano })(
