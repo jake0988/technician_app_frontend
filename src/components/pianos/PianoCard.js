@@ -7,16 +7,26 @@ export const PianoCard = ({
   piano,
   setCurrentPiano,
   setCurrentAppointment,
-  history
+  history,
 }) => {
-  const { customerId, userId, appointmentId, make, model, year, serial, notes, id, image } =
-    piano.attributes;
+  const {
+    customer_id,
+    user_id,
+    appointment_id,
+    make,
+    model,
+    year,
+    serial,
+    notes,
+    id,
+    image,
+  } = piano.attributes;
   const setPiano = piano.attributes;
   useEffect(() => {
-    setCurrentPiano(setPiano)
-  if (setCurrentAppointment) {
-    setCurrentAppointment(appointmentId)
-  }
+    setCurrentPiano(setPiano);
+    if (setCurrentAppointment) {
+      setCurrentAppointment(appointment_id);
+    }
   }, []);
   return (
     <div className="PianoCard">
@@ -41,14 +51,14 @@ export const PianoCard = ({
           </tr>
         </tbody>
       </Table>
-       <span>
-           <DeletePianoButton
-             userId={userId}
-             customerId={customerId}
-             pianoId={piano.attributes.id}
-             history={history}
-           />
-         </span>
+      <span>
+        <DeletePianoButton
+          userId={user_id}
+          customerId={customer_id}
+          pianoId={piano.attributes.id}
+          history={history}
+        />
+      </span>
     </div>
   );
 };

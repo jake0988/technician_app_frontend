@@ -12,7 +12,15 @@ import currentPiano from "./reducers/currentPiano";
 import appointments from "./reducers/appointments";
 import addAppointmentForm from "./reducers/addAppointmentForm";
 import currentAppointment from "./reducers/currentAppointment";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
+// import rootReducer from "./reducers";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
 
 const reducer = combineReducers({
   currentUser,
@@ -28,10 +36,14 @@ const reducer = combineReducers({
   addAppointmentForm,
   currentAppointment,
 });
+const persistedReducer = persistReducer(persistConfig, reducer);
 
 const composeEnhancer =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true }) || compose;
 
-const store = createStore(reducer, composeEnhancer(applyMiddleware(thunk)));
-
-export default store;
+// let persistor = persistStore(store);
+export const store = createStore(
+  persistedReducer,
+  composeEnhancer(applyMiddleware(thunk))
+);
+export const persistor = persistStore(store);

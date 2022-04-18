@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { UserNavCard } from "../users/UserNavCard";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { Link } from "react-bootstrap-icons";
 
 export const PianoListTable = ({
   userId,
@@ -34,10 +35,10 @@ export const PianoListTable = ({
   }
 
   const appointmentList = useSelector((state) => state.appointments);
-  function appointments() {
+  function appointments(piano) {
     return appointmentList.filter(
       (appointment) =>
-        appointment.attributes.customer_id === parseInt(currentCustomerId)
+        appointment.attributes.customer_id === piano.attributes.appointment_id
     );
   }
   function tableList() {
@@ -75,22 +76,22 @@ export const PianoListTable = ({
                       </Td>
                       <Td key={uuidv4(key)}>{piano.attributes.make}</Td>
                       <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
-                      <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
                       <td>
-                        {appointments()
-                          ? appointments().map((appointment) => {
-                              return (
-                                <a
-                                  href={`/users/${userId}/customers/${currentCustomerId}/appointments/${appointment.id}`}
-                                  alt="Appointment Date"
-                                >
-                                  {appointment
-                                    ? appointment.attributes.date + ", "
-                                    : null}
-                                </a>
-                              );
-                            })
-                          : null}
+                        <div style={{ overflow: "auto" }}>
+                          {appointments(piano)
+                            ? appointments(piano).map((appointment) => {
+                                return (
+                                  <Td
+                                    to={`/users/${userId}/customers/${currentCustomerId}/appointments/${appointment.id}`}
+                                  >
+                                    {appointment
+                                      ? appointment.attributes.date + ", "
+                                      : null}
+                                  </Td>
+                                );
+                              })
+                            : null}
+                        </div>
                       </td>
                       <Td key={uuidv4(key)}>{image(piano.attributes.image)}</Td>
                       <td>

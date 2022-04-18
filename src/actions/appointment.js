@@ -106,7 +106,8 @@ export const patchAppointmentInfo = (
   userId,
   history,
   customerId,
-  appointmentId
+  appointmentId,
+  pianoId
 ) => {
   return (dispatch) => {
     const appointmentEditData = {
@@ -117,7 +118,8 @@ export const patchAppointmentInfo = (
         price: formData.price,
         date: formData.date,
         hours: formData.hours,
-        user_id: formData.userId,
+        user_id: userId,
+        piano_id: pianoId,
       },
     };
     return fetch(

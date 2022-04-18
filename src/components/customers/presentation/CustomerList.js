@@ -38,7 +38,9 @@ export const CustomerList = ({
               <Td to={`/users/${userId}/customers/${customer.id}`}>
                 {customer.attributes.name}{" "}
               </Td>
-              <td>{customer.attributes.number_of_pianos}</td>
+              <Td to={`/users/${userId}/customers/${customer.id}/pianos`}>
+                {customer.attributes.number_of_pianos}
+              </Td>
               <td>
                 <Link
                   to={`/users/${userId}/customers/${customer.attributes.id}/appointments`}

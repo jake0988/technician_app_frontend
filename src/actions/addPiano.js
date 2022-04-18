@@ -100,6 +100,51 @@ export const getPianos = (user) => {
   };
 };
 
+export const patchPianoInfo = (
+  formData,
+  userId,
+  history,
+  customerId,
+  pianoId,
+  appointmentId
+) => {
+  return (dispatch) => {
+    const pianoEditData = {
+      piano: {
+        id: pianoId,
+        make: formData.make,
+        model: formData.model,
+        year: formData.year,
+        notes: formData.notes,
+        serial: formData.serial,
+        image: formData.image,
+        user_id: formData.userId,
+        appointment_id: formData.appointmentId,
+      },
+    };
+    return fetch(
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos/${pianoId}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pianoEditData),
+      }
+    )
+      .then((resp) => resp.json())
+      .then((piano) => {
+        if (piano.errors) {
+          alert(piano.errors);
+        } else {
+          dispatch(getPianos(userId));
+          history.push(`/users/${userId}/customers/${customerId}/pianos`);
+        }
+      });
+  };
+};
+
 export const destroyPiano = (userId, customerId, pianoId, history) => {
   return (dispatch) => {
     return fetch(
