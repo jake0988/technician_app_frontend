@@ -41,7 +41,6 @@ const CustomerCard = ({
           <thead>
             <tr>
               <th>Customer Name</th>
-              <th>Address</th>
               <th>Phone Number</th>
               <th>Email</th>
               <th>Number Of Pianos</th>
@@ -51,7 +50,7 @@ const CustomerCard = ({
           <tbody>
             <tr>
               <td>{currentCustomer.attributes.name}</td>
-              <td>{currentCustomer.attributes.address}</td>
+              
               <td>{currentCustomer.attributes.phone_number}</td>
               <td>{currentCustomer.attributes.email}</td>
               <Td
@@ -61,6 +60,12 @@ const CustomerCard = ({
               </Td>
               <td>{appointmentDates}</td>
             </tr>
+            <th>Address</th>
+            <tr>{currentCustomer.attributes.address}</tr>
+            </tbody>
+            </Table>
+            <Table>
+              <tbody>
             <tr>
               <td colspan="4" align="left">
                 <Button
@@ -94,6 +99,7 @@ const CustomerCard = ({
               <td >
                 <Button
                   className="delete-button"
+                  style={{display:"flex"}}
                   onClick={(e) => {
                     e.preventDefault();
                     destroyCustomer(

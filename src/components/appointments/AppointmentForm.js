@@ -13,11 +13,11 @@ const AppointmentForm = ({
   currentCustomer,
 }) => {
   const { initial_a4, work_done, price, hours, date } = formData;
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     updateAppointmentForm(name, value);
   };
+  
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -43,25 +43,25 @@ const AppointmentForm = ({
           </h2>
         </Row>
         <Row>
-          <Col md={1}>
+          <Col md={2}>
             <Form.Group className="mb-3" controlId="formA4">
               <Form.Label>A4</Form.Label>
               <Form.Control
                 type="text"
                 name="initial_a4"
-                value={initial_a4}
+                value={initial_a4 ?? ""}
                 onChange={handleChange}
               />
               <Form.Text className="text-muted"></Form.Text>
             </Form.Group>
           </Col>
-          <Col md={1}>
+          <Col md={2}>
             <Form.Group className="mb-3" controlId="price">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="text"
                 name="price"
-                value={price}
+                value={price ?? ""}
                 placeholder="$"
                 onChange={handleChange}
               />
@@ -74,7 +74,7 @@ const AppointmentForm = ({
               <Form.Control
                 type="date"
                 name="date"
-                value={date}
+                value={date ?? ""}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -85,7 +85,7 @@ const AppointmentForm = ({
               <Form.Control
                 type="text"
                 name="hours"
-                value={hours}
+                value={hours ?? ""}
                 onChange={handleChange}
               />
               <Form.Text className="text-muted"></Form.Text>
@@ -98,7 +98,7 @@ const AppointmentForm = ({
             <Form.Control
               type="text"
               name="work_done"
-              value={work_done}
+              value={work_done ?? ""}
               placeholder="Enter"
               onChange={handleChange}
             />
@@ -107,18 +107,16 @@ const AppointmentForm = ({
         </Row>
         {editMode ? (
           <Button
-            classname="edit-button"
+            className="edit-button"
             variant="primary"
-            value="Edit appointment"
             type="submit"
           >
             Edit
           </Button>
         ) : (
           <Button
-            classname="add-button"
+            className="add-button"
             variant="primary"
-            value="Create appointment"
             type="submit"
           >
             Submit

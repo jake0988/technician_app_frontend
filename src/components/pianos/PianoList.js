@@ -38,7 +38,6 @@ export const PianoList = ({
   const currentAppointmentPianos = pianos.filter(
     (piano) => piano.attributes.appointment_id === parseInt(appointmentId)
   );
-  console.log("currentcustomerpianos", currentCustomerPianos);
   function image(piano) {
     return piano ? (
       <img src={piano} alt="Piano" height="100" width="100"></img>

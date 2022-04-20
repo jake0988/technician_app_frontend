@@ -32,7 +32,6 @@ class EditAppointmentFormWrapper extends React.Component {
       history,
       userId,
       currentAppointmentId,
-      currentCustomerId,
     } = this.props;
     const newFormData = {
       ...formData,

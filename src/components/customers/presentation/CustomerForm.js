@@ -4,6 +4,8 @@ import { updateCustomerForm } from "../../../actions/updateCustomerForm";
 import { createCustomer } from "../../../actions/customerList";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { useRef } from "react";
+import { states } from "./usaStates";
+import { useEffect } from "react";
 
 const CustomerForm = ({
   handleSubmit,
@@ -14,11 +16,19 @@ const CustomerForm = ({
   const { name, email, address0, address1, address2, address3, address4, phone_number } =
     formData;
 
+  const state = useRef()
+  useEffect(()=>{
+
+  },[state.current])
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     updateCustomerForm(name, value);
   };
 
+  const handleChangeState = (e) =>{
+    state.current = e.target.value
+  }
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   createCustomer(formData, userId, history);
@@ -77,54 +87,118 @@ const CustomerForm = ({
         </Row>
         <Row>
           <Form.Group className="mb-3" controlId="formGridAddress1">
-    <Form.Label>Address</Form.Label>
-    <Form.Control type="address"
-                name="address0"
-                value={address0}
-                onChange={handleChange} placeholder="1234 Main St" />
-  </Form.Group>
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              type="address"
+              name="address0"
+              value={address0}
+              onChange={handleChange}
+              placeholder="1234 Main St"
+            />
+          </Form.Group>
 
-  <Form.Group className="mb-3" controlId="formGridAddress2">
-    <Form.Label>Address 2</Form.Label>
-    <Form.Control placeholder="Apartment, studio, or floor"
-    type="address"
-    name="address1"
-    value={address1} />
-  </Form.Group>
+          <Form.Group className="mb-3" controlId="formGridAddress2">
+            <Form.Label>Address 2</Form.Label>
+            <Form.Control
+              placeholder="Apartment, studio, or floor"
+              type="address"
+              name="address1"
+              value={address1}
+            />
+          </Form.Group>
 
-  <Row className="mb-3">
-    <Form.Group as={Col} controlId="formGridAddress3">
-      <Form.Label>City</Form.Label>
-      <Form.Control type="address"
+          <Row className="mb-3">
+            <Form.Group as={Col} controlId="formGridAddress3">
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                type="address"
                 name="address2"
                 value={address2}
-                onChange={handleChange}/>
-    </Form.Group>
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-    <Form.Group as={Col} controlId="formGridAddress4">
-      <Form.Label>State</Form.Label>
-      <Form.Select defaultValue="Choose...">
-        <option>Choose...</option>
-        <option>...</option>
-      </Form.Select>
-      <Form.Control type="address"
+            <Form.Group as={Col} controlId="formGridAddress4">
+              <Form.Label>State</Form.Label>
+              <Form.Select onChange={handleChangeState} defaultValue="Choose...">
+                <option>Choose...</option>
+                <option value="">N/A</option>
+                <option value="AK">Alaska</option>
+                <option value="AL">Alabama</option>
+                <option value="AR">Arkansas</option>
+                <option value="AZ">Arizona</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DC">District of Columbia</option>
+                <option value="DE">Delaware</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option>
+                <option value="IA">Iowa</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MD">Maryland</option>
+                <option value="ME">Maine</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MO">Missouri</option>
+                <option value="MS">Mississippi</option>
+                <option value="MT">Montana</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="NE">Nebraska</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NV">Nevada</option>
+                <option value="NY">New York</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="PR">Puerto Rico</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VA">Virginia</option>
+                <option value="VT">Vermont</option>
+                <option value="WA">Washington</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WV">West Virginia</option>
+                <option value="WY">Wyoming</option>
+                
+              </Form.Select>
+              <Form.Control
+                type="address"
                 name="address3"
-                value={address3}
-                onChange={handleChange}/>
-    </Form.Group>
+                value={state.current ?? address3}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-    <Form.Group as={Col} controlId="formGridZip">
-      <Form.Label>Zip</Form.Label>
-      <Form.Control type="address"
+            <Form.Group as={Col} controlId="formGridZip">
+              <Form.Label>Zip</Form.Label>
+              <Form.Control
+                type="address"
                 name="address4"
                 value={address4}
-                onChange={handleChange}/>
-    </Form.Group>
-  </Row>
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Row>
         </Row>
         {editMode ? (
           <Button
-            classname="edit-button"
+            className="edit-button"
             variant="primary"
             value="Edit Customer"
             type="submit"
@@ -133,7 +207,7 @@ const CustomerForm = ({
           </Button>
         ) : (
           <Button
-            classname="add-button"
+            className="add-button"
             variant="primary"
             value="Create Customer"
             type="submit"

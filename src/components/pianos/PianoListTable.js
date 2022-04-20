@@ -8,6 +8,7 @@ import { UserNavCard } from "../users/UserNavCard";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-bootstrap-icons";
+import { appointmentsList } from "../../actions/appointment";
 
 export const PianoListTable = ({
   userId,
@@ -35,10 +36,10 @@ export const PianoListTable = ({
   }
 
   const appointmentList = useSelector((state) => state.appointments);
-  function appointments(piano) {
+  function appointments(piano) { 
     return appointmentList.filter(
       (appointment) =>
-        appointment.attributes.customer_id === piano.attributes.appointment_id
+        appointment.attributes.piano_id === piano.attributes.id
     );
   }
   function tableList() {
@@ -77,9 +78,11 @@ export const PianoListTable = ({
                       <Td key={uuidv4(key)}>{piano.attributes.make}</Td>
                       <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
                       <td>
+                        {appointments(piano) ?
                         <div style={{ overflow: "auto" }}>
-                          {appointments(piano)
-                            ? appointments(piano).map((appointment) => {
+                          {appointments(piano).map((appointment) => {
+                              console.log(appointment)
+                              
                                 return (
                                   <Td
                                     to={`/users/${userId}/customers/${currentCustomerId}/appointments/${appointment.id}`}
@@ -89,9 +92,10 @@ export const PianoListTable = ({
                                       : null}
                                   </Td>
                                 );
-                              })
-                            : null}
+                              })}
+                           
                         </div>
+                         : null}
                       </td>
                       <Td key={uuidv4(key)}>{image(piano.attributes.image)}</Td>
                       <td>
