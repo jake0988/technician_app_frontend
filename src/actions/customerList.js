@@ -79,7 +79,11 @@ export const createCustomer = (formData, userId, history) => {
   };
 };
 
+
 export const patchCustomerInfo = (formData, userId, history, customerId) => {
+  
+
+  debugger
   return (dispatch) => {
     const customerEditData = {
       customer: {

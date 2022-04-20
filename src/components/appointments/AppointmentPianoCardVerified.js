@@ -1,5 +1,6 @@
 import React from "react";
-import { Fragment } from "react";
+import { Row } from "react-bootstrap";
+import { v4 as uuidv4 } from "uuid";
 
 export const AppointmentPianoCardVerified = ({
   piano,
@@ -15,22 +16,25 @@ export const AppointmentPianoCardVerified = ({
   //   appointment.attributes;
 
   return (
-    <Fragment>
-      <tr>
-        <td>Make</td>
-        <td>Model</td>
-        <td>Year</td>
-        <td>Serial</td>
-        <td>Notes</td>
+    <>
+      <tr key={uuidv4(make)} syle= {{border: "groove"}}>
+        <th key={uuidv4(make)}>Make</th>
+        <th key={uuidv4(model)}>Model</th>
+        <th key={uuidv4(year)}>Year</th>
+        <th key={uuidv4(serial)}>Serial</th>
+        <th key={uuidv4(notes)}>Notes</th>
       </tr>
       <tr>
-        <td>{make}</td>
-        <td>{model}</td>
-        <td>{year}</td>
-        <td>{serial}</td>
-        <td>{notes}</td>
-        <img src={image} alt="piano" height="100" width="100" />
-      </tr>
-    </Fragment>
+    <td key={uuidv4(make)}>{make}</td>
+    <td key={uuidv4(model)}>{model}</td>
+    <td key={uuidv4(year)}>{year}</td>
+    <td key={uuidv4(serial)}>{serial}</td>
+    <td key={uuidv4(notes)}>{notes}</td>
+        
+        <td>
+        <img src={image} id="piano-image" alt="piano" height="100" width="100" />
+        </td>
+        </tr>
+    </>
   );
 };

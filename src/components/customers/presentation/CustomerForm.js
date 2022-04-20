@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { updateCustomerForm } from "../../../actions/updateCustomerForm";
 import { createCustomer } from "../../../actions/customerList";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
+import { useRef } from "react";
 
 const CustomerForm = ({
   handleSubmit,
@@ -10,7 +11,8 @@ const CustomerForm = ({
   updateCustomerForm,
   editMode,
 }) => {
-  const { name, address, email, phone_number } = formData;
+  const { name, email, address0, address1, address2, address3, address4, phone_number } =
+    formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +48,7 @@ const CustomerForm = ({
           </Col>
         </Row>
         <Row>
-          <Col md={2}>
+          <Col md={3}>
             <Form.Group className="mb-3" controlId="formPhoneNumber">
               <Form.Label>Phone Number</Form.Label>
               <Form.Control
@@ -59,7 +61,7 @@ const CustomerForm = ({
               <Form.Text className="text-muted"></Form.Text>
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={6}>
             <Form.Group className="mb-3" controlId="formEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
@@ -74,19 +76,51 @@ const CustomerForm = ({
           </Col>
         </Row>
         <Row>
-          <Col>
-            <Form.Group className="mb-3" controlId="formAddress">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                type="address"
-                name="address"
-                value={address}
-                placeholder="Enter Address"
-                onChange={handleChange}
-              />
-              <Form.Text className="text-muted"></Form.Text>
-            </Form.Group>
-          </Col>
+          <Form.Group className="mb-3" controlId="formGridAddress1">
+    <Form.Label>Address</Form.Label>
+    <Form.Control type="address"
+                name="address0"
+                value={address0}
+                onChange={handleChange} placeholder="1234 Main St" />
+  </Form.Group>
+
+  <Form.Group className="mb-3" controlId="formGridAddress2">
+    <Form.Label>Address 2</Form.Label>
+    <Form.Control placeholder="Apartment, studio, or floor"
+    type="address"
+    name="address1"
+    value={address1} />
+  </Form.Group>
+
+  <Row className="mb-3">
+    <Form.Group as={Col} controlId="formGridAddress3">
+      <Form.Label>City</Form.Label>
+      <Form.Control type="address"
+                name="address2"
+                value={address2}
+                onChange={handleChange}/>
+    </Form.Group>
+
+    <Form.Group as={Col} controlId="formGridAddress4">
+      <Form.Label>State</Form.Label>
+      <Form.Select defaultValue="Choose...">
+        <option>Choose...</option>
+        <option>...</option>
+      </Form.Select>
+      <Form.Control type="address"
+                name="address3"
+                value={address3}
+                onChange={handleChange}/>
+    </Form.Group>
+
+    <Form.Group as={Col} controlId="formGridZip">
+      <Form.Label>Zip</Form.Label>
+      <Form.Control type="address"
+                name="address4"
+                value={address4}
+                onChange={handleChange}/>
+    </Form.Group>
+  </Row>
         </Row>
         {editMode ? (
           <Button

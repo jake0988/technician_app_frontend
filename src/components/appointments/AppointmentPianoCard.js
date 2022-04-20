@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Form, Col } from "react-bootstrap";
 import { patchAppointmentInfo } from "../../actions/appointment";
-import { Fragment } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export const AppointmentPianoCard = ({
   piano,
@@ -17,38 +17,33 @@ export const AppointmentPianoCard = ({
   //   appointment.attributes;
 
   return (
-    <Fragment>
-      <thead>
-        <tr>
-          <th colSpan="1"></th>
-          <th>Make</th>
-          <th>Model</th>
-          <th>Year</th>
-          <th>Serial</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>
-            {" "}
-            <Form.Check
-              aria-label="option 1"
-              name="piano-id"
-              value={piano.id}
-              onClick={handleChange}
-            />
-          </th>
-          <td>{make}</td>
-          <td>{model}</td>
-          <td>{year}</td>
-          <td>{serial}</td>
-          <td>{notes}</td>
-        </tr>
-        <tr>
+    <>
+      <tr key={uuidv4(make)}>
+        <th key={uuidv4(model)}></th>
+        <th key={uuidv4(make)}>Make</th>
+        <th key={uuidv4(model)}>Model</th>
+        <th key={uuidv4(year)}>Year</th>
+        <th key={uuidv4(serial)}>Serial</th>
+        <th key={uuidv4(notes)}>Notes</th>
+      </tr>
+      <tr>
+        <th>
+          <Form.Check
+            aria-label="option 1"
+            name="piano-id"
+            value={piano.id}
+            onClick={handleChange}
+          />
+        </th>
+        <td key={uuidv4(make)}>{make}</td>
+        <td key={uuidv4(model)}>{model}</td>
+        <td key={uuidv4(year)}>{year}</td>
+        <td key={uuidv4(serial)}>{serial}</td>
+        <td key={uuidv4(notes)}>{notes}</td>
+        <td key={uuidv4(image)}>
           <img src={image} alt="piano" height="200" width="200" />
-        </tr>
-      </tbody>
-    </Fragment>
+        </td>
+      </tr>
+    </>
   );
 };

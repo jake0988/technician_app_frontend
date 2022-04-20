@@ -4,7 +4,6 @@ import { Table, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-bootstrap-icons";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Fragment } from "react";
 
 export const UserNavCard = ({
   userId,
@@ -26,10 +25,10 @@ export const UserNavCard = ({
     return `/users/${userId}/customers/${currentCustomerId}/pianos/new`;
   }
   return (
-    <Fragment>
+  
       <Button type="input" className="add-button" onClick={(e) => goToPage(e)}>
         Create New Piano
       </Button>
-    </Fragment>
+  
   );
 };

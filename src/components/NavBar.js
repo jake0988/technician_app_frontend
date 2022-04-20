@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Navbar, Container } from "react-bootstrap";
 import { destroyCustomer } from "../actions/customerList";
-import { ArrowLeft } from "react-bootstrap-icons";
+import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 
 const NavBar = ({
   currentUser,
@@ -63,6 +63,12 @@ const NavBar = ({
         >
           Add A Customer
         </NavLink>
+        <ArrowRight
+            color="royalblue"
+            size={40}
+            onClick={() => {
+              history.goForward()
+            }}/>
       </Container>
     </Navbar>
   );

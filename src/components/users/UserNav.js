@@ -26,7 +26,6 @@ export const UserNav = ({
      )
     }
   }
-  const un = <UserNavCard user={user} customers={customers} numberOfPianos={numberOfPianos} currentCustomer={currentCustomer} currentAppointment={currentAppointment} />
   const userRender = <div className="user-nav"><h1>Welcome {user.name} </h1>
   <Logout /></div>
 

@@ -45,12 +45,11 @@ const AppointmentForm = ({
         <Row>
           <Col md={1}>
             <Form.Group className="mb-3" controlId="formA4">
-              <Form.Label>Initial A4</Form.Label>
+              <Form.Label>A4</Form.Label>
               <Form.Control
                 type="text"
                 name="initial_a4"
                 value={initial_a4}
-                placeholder="Enter"
                 onChange={handleChange}
               />
               <Form.Text className="text-muted"></Form.Text>
@@ -63,7 +62,7 @@ const AppointmentForm = ({
                 type="text"
                 name="price"
                 value={price}
-                placeholder="Enter"
+                placeholder="$"
                 onChange={handleChange}
               />
               <Form.Text className="text-muted"></Form.Text>
@@ -87,7 +86,6 @@ const AppointmentForm = ({
                 type="text"
                 name="hours"
                 value={hours}
-                placeholder="Enter"
                 onChange={handleChange}
               />
               <Form.Text className="text-muted"></Form.Text>

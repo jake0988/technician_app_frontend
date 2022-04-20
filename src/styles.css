@@ -3,14 +3,17 @@
 }
 
 .delete-button {
+  width: max-content;
   background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
 }
 .add-button {
+  width: max-content;
   background-color: rgb(72, 181, 30);
   color: rgb(255, 255, 255);
 }
 .edit-button {
+  width: max-content;
   background-color: rgb(255, 247, 10);
   color: rgb(0, 0, 0);
 }
@@ -21,4 +24,15 @@
   padding-left: 15px;
   padding-right: 15px;
   font-family: "Manrope", sans-serif;
+}
+
+#piano-image{
+  display: flex;
+}
+#piano-row {
+  display: flex;
+  width:"%100";
+}
+#piano-th {
+  border:none;
 }

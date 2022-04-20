@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button, Row, Col, Container, Form } from "react-bootstrap";
+import { Table, Button, Row, Col, Container, Form, Collapse } from "react-bootstrap";
 
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { patchAppointmentInfo } from "../../actions/appointment";
 import { useRef } from "react";
 import { AppointmentPianoCardVerified } from "./AppointmentPianoCardVerified";
 import { useState } from "react";
+
 function AppointmentCard({
   currentAppointmentId,
   currentCustomerId,
@@ -30,7 +31,7 @@ function AppointmentCard({
       )
     );
   }
-  const [show, toggleShow] = "none";
+  const [open, setOpen] = useState(false);
   const appointment = useSelector((state) =>
     state.appointments.find(
       (appointment) => appointment.id === currentAppointmentId
@@ -70,9 +71,7 @@ function AppointmentCard({
       )
     );
   }
-  function hideTable() {
-    debugger;
-  }
+
   function handleChange(e) {
     const { value } = e.target;
     e.target.checked ? (pianoId.current = value) : (pianoId.current = "");
@@ -83,32 +82,44 @@ function AppointmentCard({
       <h2>
         <strong>Customer Name: {customer.attributes.name}</strong>
       </h2>
-      <Table>
+      <Table bordered striped>
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Initial A4</th>
-            <th>Work Performed</th>
-            <th>Hours</th>
-            <th>Price</th>
-            <th>Date Created</th>
+            <th key={uuidv4(appointment.attributes.date)}>Date</th>
+            <th key={uuidv4(appointment.attributes.date)}>Initial A4</th>
+            <th key={uuidv4(appointment.attributes.date)}>Work Performed</th>
+            <th key={uuidv4(appointment.attributes.date)}>Hours</th>
+            <th key={uuidv4(appointment.attributes.date)}>Price</th>
+            <th key={uuidv4(appointment.attributes.date)}>Date Created</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{appointment.attributes.date}</td>
-            <td>{appointment.attributes.initial_a4}</td>
-            <td>{appointment.attributes.work_done}</td>
-            <td>{appointment.attributes.hours}</td>
-            <td>{appointment.attributes.price}</td>
-            <td>{appointment.attributes.created_at}</td>
+            <td key={uuidv4(appointment.attributes.date)}>
+              {appointment.attributes.date}
+            </td>
+            <td key={uuidv4(appointment.attributes.initial_a4)}>
+              {appointment.attributes.initial_a4}
+            </td>
+            <td key={uuidv4(appointment.attributes.work_done)}>
+              {appointment.attributes.work_done}
+            </td>
+            <td key={uuidv4(appointment.attributes.hours)}>
+              {appointment.attributes.hours}
+            </td>
+            <td key={uuidv4(appointment.attributes.price)}>
+              {appointment.attributes.price}
+            </td>
+            <td key={uuidv4(appointment.attributes.created_at)}>
+              {appointment.attributes.created_at}
+            </td>
           </tr>
 
           {piano ? (
             <>
-              <Row>
-                <th>Pianos: </th>
-              </Row>{" "}
+              <rw id="piano-row">
+                <th id="piano-th">Pianos: </th>
+              </rw>
               <AppointmentPianoCardVerified
                 piano={piano}
                 currentAppointmentId={currentAppointmentId}
@@ -118,13 +129,17 @@ function AppointmentCard({
               />
             </>
           ) : null}
-          <Row>
+        </tbody>
+        </Table>
+        <Table>
+        <tbody>
+          <Row style={{ display: "flex" }}>
             <Col>
               <Button className="edit-button" onClick={(e) => handleClick(e)}>
                 Edit Appointment
               </Button>
             </Col>
-            <Col colspan="3">
+            <Col>
               <Button className="delete-button" onClick={(e) => destroyer(e)}>
                 Delete Appointment
               </Button>
@@ -141,38 +156,64 @@ function AppointmentCard({
           </Row>
         </tbody>
       </Table>
-      {customerPianos !== [] ? (
-        <Form onSubmit={(e) => handleSubmit(e)}>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <td onClick={hideTable}>Associate Piano with Appointment</td>
-              </tr>
-              <Button varaint="primary" type="submit">
-                Click here to add checked piano to the appointment
-              </Button>
-            </thead>
-            {customerPianos.map((piano) => {
-              return (
-                <AppointmentPianoCard
-                  piano={piano}
-                  currentAppointmentId={currentAppointmentId}
-                  userId={userId}
-                  history={history}
-                  currentCustomerId={currentCustomerId}
-                  handleChange={handleChange}
-                />
-              );
-            })}
-          </Table>
-        </Form>
-      ) : null}
+      <>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            setOpen(!open);
+          }}
+          aria-controls="example-collapse-text"
+          aria-expanded={open}
+        >
+          {!open ? "View Customer's Other Pianos" : "Close Other Pianos"}
+        </Button>
+        <Collapse in={open}>
+          {customerPianos !== [] ? (
+            <Form onSubmit={(e) => handleSubmit(e)}>
+              <Table striped bordered hover style={{marginTop:"10px"}}>
+                <thead>
+                  <tr>
+                    <td align="center" colSpan="7" >
+                      <b>Associate Piano with Appointment</b>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <Button
+                        varaint="primary"
+                        type="submit"
+                        style={{ display: "flex" }}
+                      >
+                        Click here to add checked piano to the appointment
+                      </Button>
+                    </td>
+                  </tr>
+                  {customerPianos.map((piano) => {
+                    return (
+                      <AppointmentPianoCard
+                        piano={piano}
+                        currentAppointmentId={currentAppointmentId}
+                        userId={userId}
+                        history={history}
+                        currentCustomerId={currentCustomerId}
+                        handleChange={handleChange}
+                      />
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Form>
+          ) : null}
+        </Collapse>
+      </>
     </Container>
   ) : (
     "No Appointments"
   );
 
-  return <div>{appointmentList}</div>;
+  return <>{appointmentList}</>;
 }
 
 export default AppointmentCard;

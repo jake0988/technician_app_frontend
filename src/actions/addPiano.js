@@ -47,7 +47,6 @@ export const addPiano = (credentials, history) => {
     appointment_id: credentials.appointmentId,
   };
   return (dispatch) => {
-    debugger;
     return fetch(
       `http://localhost:3001/api/v1/users/${credentials.user_id}/customers/${credentials.customer_id}/pianos`,
       {
