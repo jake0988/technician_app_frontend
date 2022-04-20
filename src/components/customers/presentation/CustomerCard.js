@@ -33,7 +33,6 @@ const CustomerCard = ({
   const appointmentDates = appointments.map(
     (appointment) => appointment.attributes.date
   );
-  console.log(appointments, "Appointments");
   return (
     <div className="customerCard">
       <Container fluid>
@@ -50,7 +49,6 @@ const CustomerCard = ({
           <tbody>
             <tr>
               <td>{currentCustomer.attributes.name}</td>
-              
               <td>{currentCustomer.attributes.phone_number}</td>
               <td>{currentCustomer.attributes.email}</td>
               <Td
@@ -60,14 +58,17 @@ const CustomerCard = ({
               </Td>
               <td>{appointmentDates}</td>
             </tr>
-            <th>Address</th>
-            <tr>{currentCustomer.attributes.address}</tr>
-            </tbody>
-            </Table>
-            <Table>
-              <tbody>
             <tr>
-              <td colspan="4" align="left">
+              <td>
+                <b>Address</b>
+              </td>
+            <td colSpan={5}>{currentCustomer.attributes.address}</td></tr>
+          </tbody>
+        </Table>
+        <Table>
+          <tbody>
+            <tr style={{ display: "flex" }}>
+              <td>
                 <Button
                   className="edit-button"
                   onClick={() => {
@@ -94,12 +95,10 @@ const CustomerCard = ({
                   Add Appoointment
                 </Button>
               </td>
-            </tr>
-            <tr>
-              <td >
+              <td>
                 <Button
                   className="delete-button"
-                  style={{display:"flex"}}
+                  style={{ display: "flex" }}
                   onClick={(e) => {
                     e.preventDefault();
                     destroyCustomer(

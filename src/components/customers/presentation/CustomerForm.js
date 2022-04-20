@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { updateCustomerForm } from "../../../actions/updateCustomerForm";
 import { createCustomer } from "../../../actions/customerList";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
-import { useRef } from "react";
-import { states } from "./usaStates";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
 
 const CustomerForm = ({
@@ -16,10 +15,11 @@ const CustomerForm = ({
   const { name, email, address0, address1, address2, address3, address4, phone_number } =
     formData;
 
-  const state = useRef()
+    const [state, toggleState] = useState("")
   useEffect(()=>{
 
-  },[state.current])
+    
+  },[])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +27,7 @@ const CustomerForm = ({
   };
 
   const handleChangeState = (e) =>{
-    state.current = e.target.value
+    toggleState(e.target.value)
   }
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -180,7 +180,7 @@ const CustomerForm = ({
               <Form.Control
                 type="address"
                 name="address3"
-                value={state.current ?? address3}
+                value={state ?? address3}
                 onChange={handleChange}
               />
             </Form.Group>
