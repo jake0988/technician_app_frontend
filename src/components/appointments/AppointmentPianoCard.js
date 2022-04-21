@@ -27,7 +27,7 @@ export const AppointmentPianoCard = ({
         <th key={uuidv4(notes)}>Notes</th>
       </tr>
       <tr>
-        <th>
+        <th key={uuidv4(4)}>
           <Form.Check
             aria-label="option 1"
             name="piano-id"

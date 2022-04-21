@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button, Row, Col, Container, Form, Collapse } from "react-bootstrap";
+import { Table, Button, Row, Col, Modal, Container, Form, Collapse } from "react-bootstrap";
 
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import { useRef } from "react";
 import { AppointmentPianoCardVerified } from "./AppointmentPianoCardVerified";
 import { useState } from "react";
 
+
 function AppointmentCard({
   currentAppointmentId,
   currentCustomerId,
@@ -20,6 +21,10 @@ function AppointmentCard({
 }) {
   const pianoId = useRef();
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   function destroyer(e) {
     e.preventDefault();
     dispatch(
@@ -79,11 +84,13 @@ function AppointmentCard({
   pianoId.current = handleChange;
   const appointmentList = appointment ? (
     <Container fluid>
-      <h2>
-        <strong>Customer Name: {customer.attributes.name}</strong>
-      </h2>
       <Table bordered striped>
         <thead>
+          <tr>
+            <td colSpan="6">
+              <b>Customer Name: {customer.attributes.name}</b>
+            </td>
+          </tr>
           <tr>
             <th key={uuidv4(appointment.attributes.date)}>Date</th>
             <th key={uuidv4(appointment.attributes.date)}>Initial A4</th>
@@ -102,7 +109,13 @@ function AppointmentCard({
               {appointment.attributes.initial_a4}
             </td>
             <td key={uuidv4(appointment.attributes.work_done)}>
-              {appointment.attributes.work_done}
+              {appointment.attributes.work_done ? <><Button size="small" style={{backgroundColor:"brown"}} onClick={handleShow}>
+              {appointment.attributes.work_done.slice(0,10)}</Button>
+              <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Body>{appointment.attributes.work_done}</Modal.Body>
+                </Modal.Header>
+              </Modal></> : null} 
             </td>
             <td key={uuidv4(appointment.attributes.hours)}>
               {appointment.attributes.hours}
@@ -117,63 +130,77 @@ function AppointmentCard({
 
           {piano ? (
             <>
-              <rw id="piano-row">
-                <th id="piano-th">Pianos: </th>
-              </rw>
+              <tr id="piano-row">
+                <th key={uuidv4(piano.id)} id="piano-th">
+                  Pianos:{" "}
+                </th>
+              </tr>
               <AppointmentPianoCardVerified
                 piano={piano}
                 currentAppointmentId={currentAppointmentId}
                 userId={userId}
                 history={history}
                 currentCustomerId={currentCustomerId}
+                s
               />
             </>
           ) : null}
         </tbody>
-        </Table>
-        <Table>
+      </Table>
+      <Table bordered>
         <tbody>
-          <Row style={{ display: "flex" }}>
-            <Col>
+          <tr>
+            <td colSpan="4">
               <Button className="edit-button" onClick={(e) => handleClick(e)}>
                 Edit Appointment
               </Button>
-            </Col>
-            <Col>
+            </td>
+            <td colSpan="4">
               <Button className="delete-button" onClick={(e) => destroyer(e)}>
                 Delete Appointment
               </Button>
-            </Col>
+            </td>
 
-            <Col>
+            <td colSpan="4">
               <UserNavCard
                 userId={userId}
                 history={history}
                 currentCustomerId={currentCustomerId}
                 currentAppointmentId={currentAppointmentId}
               />
-            </Col>
-          </Row>
+            </td>
+          </tr>
         </tbody>
       </Table>
       <>
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            setOpen(!open);
-          }}
-          aria-controls="example-collapse-text"
-          aria-expanded={open}
-        >
-          {!open ? "View Customer's Other Pianos" : "Close Other Pianos"}
-        </Button>
+        <Table bordered>
+          <thead>
+            <tr>
+              <td>
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setOpen(!open);
+                  }}
+                  style={{ backgroundColor: "#31abb5" }}
+                  aria-controls="example-collapse-text"
+                  aria-expanded={open}
+                >
+                  {!open
+                    ? "View Customer's Other Pianos"
+                    : "Close Other Pianos"}
+                </Button>
+              </td>
+            </tr>
+          </thead>
+        </Table>
         <Collapse in={open}>
           {customerPianos !== [] ? (
             <Form onSubmit={(e) => handleSubmit(e)}>
-              <Table striped bordered hover style={{marginTop:"10px"}}>
+              <Table striped bordered hover style={{ marginTop: "10px" }}>
                 <thead>
                   <tr>
-                    <td align="center" colSpan="7" >
+                    <td align="center" colSpan="7">
                       <b>Associate Piano with Appointment</b>
                     </td>
                   </tr>

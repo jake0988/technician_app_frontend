@@ -20,8 +20,9 @@ function AppointmentList({ currentCustomer, appointmentsList, userId }) {
     <Container fluid>
       <Table>
         <thead>
-          <tr align="center">
-            <b>Customer Name: {currentCustomer.attributes.name}</b>
+          <tr style={{display: "flex",
+    width: "max-content"}}>
+            <td><b>Customer Name: {currentCustomer.attributes.name}</b></td>
           </tr>
           <tr>
             <th>Date</th>
