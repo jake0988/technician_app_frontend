@@ -35,6 +35,7 @@ export const setCurrentPiano = (pianoData) => {
 };
 
 export const addPiano = (credentials, history) => {
+
   const pianoFormInfo = {
     make: credentials.formData.make,
     model: credentials.formData.model,
@@ -42,13 +43,15 @@ export const addPiano = (credentials, history) => {
     notes: credentials.formData.notes,
     year: credentials.formData.year,
     image: credentials.formData.image,
-    user_id: credentials.userId.id,
+    user_id: credentials.userId,
     customer_id: credentials.customerId,
     appointment_id: credentials.appointmentId,
+    images: credentials.images
   };
+  debugger
   return (dispatch) => {
     return fetch(
-      `http://localhost:3001/api/v1/users/${credentials.user_id}/customers/${credentials.customer_id}/pianos`,
+      `http://localhost:3001/api/v1/users/${credentials.userId}/customers/${credentials.customerId}/pianos`,
       {
         credentials: "include",
         method: "POST",

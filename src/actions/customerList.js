@@ -108,6 +108,7 @@ export const patchCustomerInfo = (formData, userId, history, customerId) => {
     )
       .then((resp) => resp.json())
       .then((customer) => {
+        debugger
         if (customer.errors) {
           alert(customer.errors);
         } else {

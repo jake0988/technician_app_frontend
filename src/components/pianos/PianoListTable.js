@@ -6,9 +6,6 @@ import Td from "../appointments/Td";
 import { useEffect } from "react";
 import { UserNavCard } from "../users/UserNavCard";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { Link } from "react-bootstrap-icons";
-import { appointmentsList } from "../../actions/appointment";
 
 export const PianoListTable = ({
   userId,
@@ -48,9 +45,12 @@ export const PianoListTable = ({
         <Table>
           <thead>
             <tr>
-              <div>
+              <td>
                 <strong>Customer Name: {customerName}</strong>
-              </div>
+              </td>
+              <td><UserNavCard userId={userId}
+                  currentCustomerId={currentCustomerId}
+                  history={history}/></td>
             </tr>
             <tr>
               <th key={uuidv4(1)}>#</th>
@@ -97,7 +97,7 @@ export const PianoListTable = ({
                         </div>
                          : null}
                       </td>
-                      <Td key={uuidv4(key)}>{image(piano.attributes.image)}</Td>
+                      <Td key={uuidv4(key)}>{image ? image(piano.attributes.image) : null}</Td>
                       <td>
                         <div>
                           <DeletePianoButton

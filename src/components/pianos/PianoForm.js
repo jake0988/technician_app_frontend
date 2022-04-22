@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { updatePianoForm } from "../../actions/updatePianoForm";
 import { addPiano } from "../../actions/addPiano.js";
@@ -8,6 +8,7 @@ import { customerList } from "../../actions/customerList";
 import { setCurrentCustomer } from "../../actions/currentCustomer";
 import { setCurrentAppointment } from "../../actions/appointment";
 import { Form, Row, Col, Container, Button } from "react-bootstrap";
+import UploadButton from "./UploadButton";
 
 const PianoForm = ({
   updatePianoForm,
@@ -17,6 +18,7 @@ const PianoForm = ({
   customerId,
   userId,
   appointmentId,
+  
 }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -26,6 +28,12 @@ const PianoForm = ({
       dispatch(setCurrentAppointment(appointmentId));
     }
   }, []);
+  const returnedImage = useRef()
+  function imagesUpload(file) {
+   
+    returnedImage.current = file
+  }
+  
   const currentAppointment = useSelector((state) => state.currentAppointment);
   const customers = useSelector((state) => state.customers);
   const currentCustomer = customers.find(
@@ -45,6 +53,7 @@ const PianoForm = ({
   const handleSubmit = (formData) => {
     const submitFormData = {
       formData,
+      images: returnedImage,
       userId: currentUser.id,
       customerId: currentCustomer.id,
       appointmentId: appointmentId,
@@ -66,7 +75,7 @@ const PianoForm = ({
               <Form.Control
                 type="text"
                 name="make"
-                value={make}
+                value={make ?? ""}
                 placeholder="Enter Make"
                 onChange={handleChange}
               />
@@ -79,7 +88,7 @@ const PianoForm = ({
               <Form.Control
                 type="text"
                 name="model"
-                value={model}
+                value={model ?? ""}
                 placeholder="Enter Model"
                 onChange={handleChange}
               />
@@ -92,7 +101,7 @@ const PianoForm = ({
               <Form.Control
                 type="text"
                 name="serial"
-                value={serial}
+                value={serial ?? ""}
                 placeholder="Enter Serial"
                 onChange={handleChange}
               />
@@ -105,7 +114,7 @@ const PianoForm = ({
               <Form.Control
                 type="text"
                 name="year"
-                value={year}
+                value={year ?? ""}
                 placeholder="Enter Year"
                 onChange={handleChange}
               />
@@ -120,7 +129,7 @@ const PianoForm = ({
               <Form.Control
                 type="text"
                 name="image"
-                value={image}
+                value={image ?? ""}
                 placeholder="Enter Image Url"
                 onChange={handleChange}
               />
@@ -135,7 +144,7 @@ const PianoForm = ({
               <Form.Control
                 type="text"
                 name="notes"
-                value={notes}
+                value={notes ?? ""}
                 placeholder="Enter Notes"
                 onChange={handleChange}
               />
@@ -150,6 +159,7 @@ const PianoForm = ({
             />
           </Form.Group>
         </Row>
+        <UploadButton imagesUpload={imagesUpload}/>
         <Button className="add-button" type="submit">
           Add Piano
         </Button>

@@ -139,6 +139,7 @@ export const patchAppointmentInfo = (
           alert(appointment.errors);
         } else {
           dispatch(editAppointmentInfo(appointment.data));
+          resetAppointmentForm()
           dispatch(appointmentsList(userId));
           history.push(
             `/users/${userId}/customers/${customerId}/appointments/${appointmentId}`

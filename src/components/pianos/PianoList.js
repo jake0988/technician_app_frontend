@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { PianoListTable } from "./PianoListTable";
 import { useRef } from "react";
 import { Buttons } from "bootstrap";
+import { UserNavCard } from "../users/UserNavCard";
 
 export const PianoList = ({
   userId,
@@ -49,7 +50,7 @@ export const PianoList = ({
     ) : isCustomerCard ? (
       <PianoListTable
         userId={userId}
-        image={image}
+        image={image ? image : null}
         history={history}
         currentCustomerId={customerId}
         customerName={customerName}
