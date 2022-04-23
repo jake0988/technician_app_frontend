@@ -34,20 +34,22 @@ export const setCurrentPiano = (pianoData) => {
   };
 };
 
-export const addPiano = (credentials, history) => {
-
-  const pianoFormInfo = {
-    make: credentials.formData.make,
-    model: credentials.formData.model,
-    serial: credentials.formData.serial,
-    notes: credentials.formData.notes,
-    year: credentials.formData.year,
-    image: credentials.formData.image,
-    user_id: credentials.userId,
-    customer_id: credentials.customerId,
-    appointment_id: credentials.appointmentId,
-    images: credentials.images
-  };
+export const addPiano = (credentials, history, form) => {
+  const plainFormData = Object.fromEntries(form.entries());
+	const formDataJsonString = JSON.stringify(plainFormData);
+  credentials = { piano: credentials}
+  // const pianoFormInfo = { piano: {
+  //   make: credentials.formData.make,
+  //   model: credentials.formData.model,
+  //   serial: credentials.formData.serial,
+  //   notes: credentials.formData.notes,
+  //   year: credentials.formData.year,
+  //   image: credentials.formData.image,
+  //   user_id: credentials.userId,
+  //   customer_id: credentials.customerId,
+  //   appointment_id: credentials.appointmentId,
+  //   form
+  // },};
   debugger
   return (dispatch) => {
     return fetch(
@@ -55,10 +57,11 @@ export const addPiano = (credentials, history) => {
       {
         credentials: "include",
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(pianoFormInfo),
+         headers: { 'Content-Type': 'multipart/form-data' } ,
+        // headers: {
+        //   "Content-type": "application/json",
+        // },
+        body: JSON.stringify(credentials),
       }
     )
       .then((resp) => resp.json())

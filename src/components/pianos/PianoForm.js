@@ -9,6 +9,7 @@ import { setCurrentCustomer } from "../../actions/currentCustomer";
 import { setCurrentAppointment } from "../../actions/appointment";
 import { Form, Row, Col, Container, Button } from "react-bootstrap";
 import UploadButton from "./UploadButton";
+import Uploader from "./Uploader";
 
 const PianoForm = ({
   updatePianoForm,
@@ -32,7 +33,9 @@ const PianoForm = ({
   function imagesUpload(file) {
    
     returnedImage.current = file
+    // <Uploader file=returnedImage.current />
   }
+ 
   
   const currentAppointment = useSelector((state) => state.currentAppointment);
   const customers = useSelector((state) => state.customers);
@@ -51,14 +54,30 @@ const PianoForm = ({
   };
 
   const handleSubmit = (formData) => {
+    // let reader = new FileReader();
+    // const r =returnedImage.current
+    // const c = reader.readAsArrayBuffer(r)
+    const form = new FormData()
+    const obj = {images: returnedImage.current}
+    for (const property in obj) {
+      form.set(
+        property, obj[property]
+      )
+    }
+    form.set('make', formData.make)
+    form.set('model', formData.model)
+    form.set('year', formData.year)
+    form.set('notes', formData.notes)
+    form.set('serial', formData.serial)
+    
+    // ReadFile(returnedImage);
     const submitFormData = {
-      formData,
-      images: returnedImage,
+      form,
       userId: currentUser.id,
       customerId: currentCustomer.id,
       appointmentId: appointmentId,
     };
-    dispatch(addPiano(submitFormData, history));
+    dispatch(addPiano(submitFormData, history, form));
   };
   return (
     <Container fluid>
