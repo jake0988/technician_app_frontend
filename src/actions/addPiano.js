@@ -34,7 +34,7 @@ export const setCurrentPiano = (pianoData) => {
   };
 };
 
-export const addPiano = (credentials, history) => {
+export const addPiano = (credentials, history, formData) => {
 
   const pianoFormInfo = {
     make: credentials.formData.make,
@@ -58,7 +58,8 @@ export const addPiano = (credentials, history) => {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(pianoFormInfo),
+        body: JSON.stringify(formData),
+        
       }
     )
       .then((resp) => resp.json())

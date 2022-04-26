@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { updatePianoForm } from "../../actions/updatePianoForm";
 import { addPiano } from "../../actions/addPiano.js";
@@ -9,6 +9,7 @@ import { setCurrentCustomer } from "../../actions/currentCustomer";
 import { setCurrentAppointment } from "../../actions/appointment";
 import { Form, Row, Col, Container, Button } from "react-bootstrap";
 import UploadButton from "./UploadButton";
+// import { post } from "axios";
 
 const PianoForm = ({
   updatePianoForm,
@@ -20,6 +21,7 @@ const PianoForm = ({
   appointmentId,
   
 }) => {
+  const formD = new FormData()
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(customerList(userId));
@@ -29,8 +31,8 @@ const PianoForm = ({
     }
   }, []);
   const returnedImage = useRef()
+
   function imagesUpload(file) {
-   
     returnedImage.current = file
   }
   
@@ -40,7 +42,7 @@ const PianoForm = ({
     (customer) => customer.id === customerId
   );
   const currentUser = useSelector((state) => state.currentUser);
-  const { make, model, year, notes, serial, image } = formData;
+  const { make, model, year, notes, serial} = formData;
   const handleChange = (event) => {
     const { name, value } = event.target;
     const updateFormInfo = {
@@ -50,16 +52,56 @@ const PianoForm = ({
     return updatePianoForm(updateFormInfo);
   };
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = (form) => {
+    formD.set("piano[make]", formData.make)
+    formD.set("piano[model]", formData.model)
+    formD.set("piano[year]", formData.year)
+    formD.set("piano[notes]", formData.notes)
+    formD.set("piano[images]", returnedImage.current)
+    formD.set("piano[user_id]", currentUser.id)
+    formD.set("piano[customer_id]", currentCustomer.id)
+    formD.set("piano[appointment_id]", appointmentId)
+
+    const tempBlah = {make: formData.make,
+      model: formData.model,
+      year: formData.year,
+      notes: formData.notes,
+    images: returnedImage.current}
+// formD.set("pianos", tempBlah)
     const submitFormData = {
-      formData,
-      images: returnedImage,
+      formD,
       userId: currentUser.id,
       customerId: currentCustomer.id,
       appointmentId: appointmentId,
     };
-    dispatch(addPiano(submitFormData, history));
+
+    add(formD)
+    // dispatch(addPiano(submitFormData, history, formD));
+  //   const config = {
+  //    headers: { "content-type": "multipart/form-data" }
+  //  };
+  }
+  function add(data) {
+   const url = `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`;
+   
+   return fetch(url,
+    {
+    credentials: "include",
+    method: "POST",
+    body: (data),
+    // headers: {
+    //   "Content-type": "multipart/form-data",
+    // },
+    
+  })
+     .then(function(response) {
+        console.log("FILE UPLOADED SUCCESSFULLY");
+     })
+     .catch(function(error) {
+       console.log("ERROR WHILE UPLOADING FILE");
+    })
   };
+  
   return (
     <Container fluid>
       <Form
@@ -122,7 +164,7 @@ const PianoForm = ({
             </Form.Group>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col>
             <Form.Group className="mb-2" controlId="formImage">
               <Form.Label>Image</Form.Label>
@@ -136,7 +178,7 @@ const PianoForm = ({
               <Form.Text className="text-muted"></Form.Text>
             </Form.Group>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col>
             <Form.Group className="mb-2" controlId="formNotes">
