@@ -19,9 +19,8 @@ const PianoForm = ({
   customerId,
   userId,
   appointmentId,
-  
 }) => {
-  const formD = new FormData()
+  const formD = new FormData();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(customerList(userId));
@@ -30,19 +29,19 @@ const PianoForm = ({
       dispatch(setCurrentAppointment(appointmentId));
     }
   }, []);
-  const returnedImage = useRef()
+  const returnedImage = useRef();
 
   function imagesUpload(file) {
-    returnedImage.current = file
+    returnedImage.current = file;
   }
-  
+
   const currentAppointment = useSelector((state) => state.currentAppointment);
   const customers = useSelector((state) => state.customers);
   const currentCustomer = customers.find(
     (customer) => customer.id === customerId
   );
   const currentUser = useSelector((state) => state.currentUser);
-  const { make, model, year, notes, serial} = formData;
+  const { make, model, year, notes, serial } = formData;
   const handleChange = (event) => {
     const { name, value } = event.target;
     const updateFormInfo = {
@@ -53,21 +52,23 @@ const PianoForm = ({
   };
 
   const handleSubmit = (form) => {
-    formD.set("piano[make]", formData.make)
-    formD.set("piano[model]", formData.model)
-    formD.set("piano[year]", formData.year)
-    formD.set("piano[notes]", formData.notes)
-    formD.set("piano[images]", returnedImage.current)
-    formD.set("piano[user_id]", currentUser.id)
-    formD.set("piano[customer_id]", currentCustomer.id)
-    formD.set("piano[appointment_id]", appointmentId)
+    formD.set("piano[make]", formData.make);
+    formD.set("piano[model]", formData.model);
+    formD.set("piano[year]", formData.year);
+    formD.set("piano[notes]", formData.notes);
+    formD.set("piano[image]", returnedImage.current);
+    formD.set("piano[user_id]", currentUser.id);
+    formD.set("piano[customer_id]", currentCustomer.id);
+    // formD.set("piano[appointment_id]", appointmentId);
 
-    const tempBlah = {make: formData.make,
+    const tempBlah = {
+      make: formData.make,
       model: formData.model,
       year: formData.year,
       notes: formData.notes,
-    images: returnedImage.current}
-// formD.set("pianos", tempBlah)
+      images: returnedImage.current,
+    };
+    // formD.set("pianos", tempBlah)
     const submitFormData = {
       formD,
       userId: currentUser.id,
@@ -75,33 +76,34 @@ const PianoForm = ({
       appointmentId: appointmentId,
     };
 
-    add(formD)
+    dispatch(addPiano(userId, customerId, formD));
     // dispatch(addPiano(submitFormData, history, formD));
-  //   const config = {
-  //    headers: { "content-type": "multipart/form-data" }
-  //  };
-  }
-  function add(data) {
-   const url = `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`;
-   
-   return fetch(url,
-    {
-    credentials: "include",
-    method: "POST",
-    body: (data),
-    // headers: {
-    //   "Content-type": "multipart/form-data",
-    // },
-    
-  })
-     .then(function(response) {
-        console.log("FILE UPLOADED SUCCESSFULLY");
-     })
-     .catch(function(error) {
-       console.log("ERROR WHILE UPLOADING FILE");
-    })
+    //   const config = {
+    //    headers: { "content-type": "multipart/form-data" }
+    //  };
   };
-  
+
+  // function add(data) {
+  //   const url = `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`;
+
+  //   return fetch(url, {
+  //     credentials: "include",
+  //     method: "POST",
+  //     body: data,
+  //     // headers: {
+  //     //   "Content-type": "multipart/form-data",
+  //     // },
+  //   })
+  //     .then((resp) => resp.json())
+  //     .then(function (response) {
+  //       // debugger;
+  //       console.log("FILE UPLOADED SUCCESSFULLY");
+  //     })
+  //     .catch(function (error) {
+  //       console.log("ERROR WHILE UPLOADING FILE");
+  //     });
+  // }
+
   return (
     <Container fluid>
       <Form
@@ -201,7 +203,7 @@ const PianoForm = ({
             />
           </Form.Group>
         </Row>
-        <UploadButton imagesUpload={imagesUpload}/>
+        <UploadButton imagesUpload={imagesUpload} />
         <Button className="add-button" type="submit">
           Add Piano
         </Button>

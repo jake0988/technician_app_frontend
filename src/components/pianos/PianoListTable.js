@@ -33,10 +33,9 @@ export const PianoListTable = ({
   }
 
   const appointmentList = useSelector((state) => state.appointments);
-  function appointments(piano) { 
+  function appointments(piano) {
     return appointmentList.filter(
-      (appointment) =>
-        appointment.attributes.piano_id === piano.attributes.id
+      (appointment) => appointment.attributes.piano_id === piano.attributes.id
     );
   }
   function tableList() {
@@ -48,9 +47,13 @@ export const PianoListTable = ({
               <td>
                 <strong>Customer Name: {customerName}</strong>
               </td>
-              <td><UserNavCard userId={userId}
+              <td>
+                <UserNavCard
+                  userId={userId}
                   currentCustomerId={currentCustomerId}
-                  history={history}/></td>
+                  history={history}
+                />
+              </td>
             </tr>
             <tr>
               <th key={uuidv4(1)}>#</th>
@@ -68,7 +71,7 @@ export const PianoListTable = ({
             {currentVariable(isCustomerCard, isAppointmentCard)
               ? currentVariable(isCustomerCard, isAppointmentCard).map(
                   (piano, key) => (
-                    <tr>
+                    <tr key={uuidv4(key)}>
                       <Td
                         key={uuidv4(key)}
                         to={`/users/${userId}/customers/${currentCustomerId}/pianos/${piano.attributes.id}`}
@@ -78,30 +81,37 @@ export const PianoListTable = ({
                       <Td key={uuidv4(key)}>{piano.attributes.make}</Td>
                       <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
                       <td>
-                        {appointments(piano) ?
-                        <div style={{ overflow: "auto" }}>
-                          {appointments(piano).map((appointment) => {
-                              console.log(appointment)
-                              
-                                return (
-                                  <Td
-                                    to={`/users/${userId}/customers/${currentCustomerId}/appointments/${appointment.id}`}
-                                  >
-                                    {appointment
-                                      ? appointment.attributes.date + ", "
-                                      : null}
-                                  </Td>
-                                );
-                              })}
-                           
-                        </div>
-                         : null}
+                        {appointments(piano) ? (
+                          <div style={{ overflow: "auto" }}>
+                            {appointments(piano).map((appointment) => {
+                              console.log(appointment);
+
+                              return (
+                                <Td
+                                  to={`/users/${userId}/customers/${currentCustomerId}/appointments/${appointment.id}`}
+                                >
+                                  {appointment
+                                    ? appointment.attributes.date + ", "
+                                    : null}
+                                </Td>
+                              );
+                            })}
+                          </div>
+                        ) : null}
                       </td>
-                      <Td key={uuidv4(key)}>{image ? image(piano.attributes.image) : null}</Td>
+                      <Td key={uuidv4(key)}>
+                        {piano.attributes.image_url ? (
+                          <img
+                            src={piano.attributes.image_url}
+                            alt="Piano"
+                            height="100"
+                            width="100"
+                          />
+                        ) : null}
+                      </Td>
                       <td>
                         <div>
                           <DeletePianoButton
-                            key={uuidv4(1)}
                             customerId={currentCustomerId}
                             pianoId={piano.attributes.id}
                             history={history}

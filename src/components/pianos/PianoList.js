@@ -50,7 +50,7 @@ export const PianoList = ({
     ) : isCustomerCard ? (
       <PianoListTable
         userId={userId}
-        image={image ? image : null}
+        // image={image ? image : null}
         history={history}
         currentCustomerId={customerId}
         customerName={customerName}
@@ -63,7 +63,7 @@ export const PianoList = ({
         userId={userId}
         customerName={customerName}
         currentCustomerId={customerId}
-        image={image}
+        // image={image}
         history={history}
         pianos={pianos}
         currentAppointmentPianos={currentAppointmentPianos}

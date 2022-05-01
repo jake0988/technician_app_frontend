@@ -34,52 +34,78 @@ export const setCurrentPiano = (pianoData) => {
   };
 };
 
-export const addPiano = (credentials, history, formData) => {
-
-  const pianoFormInfo = {
-    make: credentials.formData.make,
-    model: credentials.formData.model,
-    serial: credentials.formData.serial,
-    notes: credentials.formData.notes,
-    year: credentials.formData.year,
-    image: credentials.formData.image,
-    user_id: credentials.userId,
-    customer_id: credentials.customerId,
-    appointment_id: credentials.appointmentId,
-    images: credentials.images
-  };
-  debugger
-  return (dispatch) => {
+export function addPiano(userId, customerId, data) {
+  // const url = `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`;
+  return function (dispatch) {
     return fetch(
-      `http://localhost:3001/api/v1/users/${credentials.userId}/customers/${credentials.customerId}/pianos`,
+      `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`,
       {
         credentials: "include",
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        
+        body: data,
+        // headers: {
+        //   "Content-type": "multipart/form-data",
+        // },
       }
     )
-      .then((resp) => resp.json())
-      .then((piano) => {
-        if (piano.errors) {
-          alert(piano.errors);
-        } else {
-          dispatch(getPianos(credentials.userId));
-          // dispatch(customerList(credentials.userId));
-          dispatch(setCurrentCustomer(credentials.customerId));
-          dispatch(clearPianoForm());
-          dispatch(clearCurrentAppointment());
-          history.push(
-            `/users/${credentials.userId}/customers/${credentials.customerId}`
-          );
-        }
+      .then((resp) => dispatch(resp.json()))
+      .then((resp) => {
+        // debugger;
+        dispatch(getPianos(resp.data.attributes.userId));
+        console.log("FILE UPLOADED SUCCESSFULLY");
       })
-      .catch((errors) => console.log(errors));
+      .catch(function (error) {
+        console.log("ERROR WHILE UPLOADING FILE");
+      });
   };
-};
+}
+
+// export const addPiano = (credentials, history, formData) => {
+
+//   const pianoFormInfo = {
+//     make: credentials.formData.make,
+//     model: credentials.formData.model,
+//     serial: credentials.formData.serial,
+//     notes: credentials.formData.notes,
+//     year: credentials.formData.year,
+//     image: credentials.formData.image,
+//     user_id: credentials.userId,
+//     customer_id: credentials.customerId,
+//     appointment_id: credentials.appointmentId,
+//     images: credentials.images
+//   };
+//   debugger
+//   return (dispatch) => {
+//     return fetch(
+//       `http://localhost:3001/api/v1/users/${credentials.userId}/customers/${credentials.customerId}/pianos`,
+//       {
+//         credentials: "include",
+//         method: "POST",
+//         headers: {
+//           "Content-type": "application/json",
+//         },
+//         body: JSON.stringify(formData),
+
+//       }
+//     )
+//       .then((resp) => resp.json())
+//       .then((piano) => {
+//         if (piano.errors) {
+//           alert(piano.errors);
+//         } else {
+//           dispatch(getPianos(credentials.userId));
+//           // dispatch(customerList(credentials.userId));
+//           dispatch(setCurrentCustomer(credentials.customerId));
+//           dispatch(clearPianoForm());
+//           dispatch(clearCurrentAppointment());
+//           history.push(
+//             `/users/${credentials.userId}/customers/${credentials.customerId}`
+//           );
+//         }
+//       })
+//       .catch((errors) => console.log(errors));
+//   };
+// };
 
 export const getPianos = (user) => {
   return (dispatch) => {
