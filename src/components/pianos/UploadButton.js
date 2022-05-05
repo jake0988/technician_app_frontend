@@ -1,18 +1,21 @@
 import React, { useState, useRef } from "react";
 
-function UploadButton({imagesUpload}) {
+function UploadButton({ imagesUpload, imageName, imageBlob }) {
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const inputRef = useRef(HTMLInputElement);
 
-  const handleUpload = (e) => {
-    e.preventDefault()
+  function handleUpload(e) {
+    e.preventDefault();
+
     inputRef.current?.click();
-    
-  };
+    imageBlob(inputRef.current.files["0"]);
+  }
   const handleDisplayFileDetails = () => {
-    inputRef.current?.files &&
-      setUploadedFileName(inputRef.current.files[0].name);
-      imagesUpload(inputRef.current.files['0'])
+    // debugger;
+    // inputRef.current?.files &&
+    // setUploadedFileName(inputRef.current.files[0].name);
+    // imagesUpload(inputRef.current.files["0"]);
+    setUploadedFileName(imageBlob(inputRef.current.files["0"].name));
   };
   return (
     <div className="m-3">

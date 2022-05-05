@@ -21,7 +21,7 @@ export const renderPianos = (pianos) => {
   };
 };
 
-const clearPianoForm = () => {
+export const clearPianoForm = () => {
   return {
     type: "CLEAR_PIANO_FORM",
   };
@@ -36,7 +36,7 @@ export const setCurrentPiano = (pianoData) => {
 
 export function addPiano(userId, customerId, data) {
   // const url = `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`;
-  return function (dispatch) {
+  return (dispatch) => {
     return fetch(
       `http://localhost:3001/api/v1/users/${userId}/customers/${customerId}/pianos`,
       {
@@ -48,7 +48,9 @@ export function addPiano(userId, customerId, data) {
         // },
       }
     )
-      .then((resp) => dispatch(resp.json()))
+      .then((resp) => {
+        resp.json();
+      })
       .then((resp) => {
         // debugger;
         dispatch(getPianos(resp.data.attributes.userId));

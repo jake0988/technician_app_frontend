@@ -4,13 +4,14 @@ const initialState = {
   serial: "",
   notes: "",
   year: "",
-  images: "",
+  appointment_id: "",
+  imageBlob: "",
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case "UPDATE_PIANO_FORM":
-      return action.pianoForm;
+      return { ...state, [action.formData.name]: action.formData.value };
     case "CLEAR_PIANO_FORM":
       return initialState;
     default:

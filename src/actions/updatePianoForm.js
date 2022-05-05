@@ -1,6 +1,6 @@
-export const updatePianoForm = (pianoForm) => {
+export const updatePianoForm = (name, value) => {
   return {
     type: "UPDATE_PIANO_FORM",
-    pianoForm,
+    formData: { name, value },
   };
 };
