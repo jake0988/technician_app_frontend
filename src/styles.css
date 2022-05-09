@@ -9,6 +9,7 @@
 }
 .add-button {
   width: max-content;
+  
   background-color: rgb(72, 181, 30);
   color: rgb(255, 255, 255);
 }

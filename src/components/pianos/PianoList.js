@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { DeletePianoButton } from "./DeletePianoButton";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getPianos } from "../../actions/addPiano";
 import { Table } from "react-bootstrap";
 import Td from "../appointments/Td";
@@ -21,36 +21,34 @@ export const PianoList = ({
   isAppointmentCard,
   appointmentId,
 }) => {
-  const dispatch = useDispatch();
+  const [showPianos, setShowPianos] = useState() 
+  const pianos = useSelector((state) => state.pianos)
   const render = useRef();
   useEffect(() => {
-    dispatch(getPianos(userId));
     render.current = renderPianos();
-  }, [userId]);
+    setShowPianos(...pianos)
+  }, [pianos, showPianos]);
   const customer = useSelector((state) =>
     state.customers.find((customer) => customer.id === customerId)
   );
+  
+ 
   const customerName = customer.attributes.name;
-  const pianos = useSelector((state) => state.pianos);
-
+  
   const currentCustomerPianos = pianos.filter(
     (piano) => piano.attributes.customer_id === parseInt(customerId)
   );
+  
   const currentAppointmentPianos = pianos.filter(
     (piano) => piano.attributes.appointment_id === parseInt(appointmentId)
   );
-  function image(piano) {
-    return piano ? (
-      <img src={piano} alt="Piano" height="100" width="100"></img>
-    ) : null;
-  }
-  function renderPianos() {
+  
+  const renderPianos = () => {
     return !pianos ? (
       <h1>"No Pianos in Database"</h1>
     ) : isCustomerCard ? (
       <PianoListTable
         userId={userId}
-        // image={image ? image : null}
         history={history}
         currentCustomerId={customerId}
         customerName={customerName}
@@ -63,7 +61,6 @@ export const PianoList = ({
         userId={userId}
         customerName={customerName}
         currentCustomerId={customerId}
-        // image={image}
         history={history}
         pianos={pianos}
         currentAppointmentPianos={currentAppointmentPianos}

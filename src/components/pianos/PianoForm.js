@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { updatePianoForm } from "../../actions/updatePianoForm";
-import { addPiano } from "../../actions/addPiano.js";
+import { addPiano, getPianos } from "../../actions/addPiano.js";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { customerList } from "../../actions/customerList";
@@ -22,20 +22,21 @@ const PianoForm = ({
   appointmentId,
 }) => {
   const formD = new FormData();
+  const returnedImageRef = useRef();
   const dispatch = useDispatch();
   useEffect(() => {
-    // dispatch(clearPianoForm);
     dispatch(customerList(userId));
     dispatch(setCurrentCustomer(customerId));
-
     if (appointmentId) {
       dispatch(setCurrentAppointment(appointmentId));
     }
   }, []);
-  const returnedImage = useRef();
+
+  
+  // debugger
 
   function imagesUpload(file) {
-    returnedImage.current = file;
+    returnedImageRef.current = file;
   }
   const formData = useSelector((state) => state.updatePianoForm);
   const currentAppointment = useSelector((state) => state.currentAppointment);
@@ -45,41 +46,31 @@ const PianoForm = ({
   );
   const currentUser = useSelector((state) => state.currentUser);
   const { make, model, year, notes, serial, imageName } = formData;
+  
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
-    // debugger;
-    const updateFormInfo = {
-      ...formData,
-      [name]: value,
-    };
     dispatch(updatePianoForm(name, value));
+
   };
-  const imageBlob = (file) => {
-    // debugger;
-    const object = { target: { name: "image", value: file } };
-    handleChange(object);
-    return object.target.value;
-  };
+ 
   const handleSubmit = (form) => {
-    formD.set("piano[make]", formData.make);
-    formD.set("piano[model]", formData.model);
-    formD.set("piano[year]", formData.year);
-    formD.set("piano[notes]", formData.notes);
-    returnedImage.current !== undefined ??
-      formD.set("piano[image]", returnedImage.current);
+    !!formData.make ? formD.set("piano[make]", formData.make) : formD.set("", null);
+    !!formData.model ? formD.set("piano[model]", formData.model) : formD.set("", null);
+    !!formData.serial ? formD.set("piano[serial]", formData.serail) : formD.set("", null);
+    !!formData.year ? formD.set("piano[year]", formData.year) : formD.set("", null);
+    !!formData.notes ? formD.set("piano[notes]", formData.notes) : formD.set("", null);
+    !!returnedImageRef.current ? formD.set("piano[image]", returnedImageRef.current) : formD.set("", null);
     formD.set("piano[user_id]", currentUser.id);
     formD.set("piano[customer_id]", currentCustomer.id);
     appointmentId !== undefined ??
-      formD.set("piano[appointment_id]", appointmentId);
+    formD.set("piano[appointment_id]", appointmentId);
     dispatch(newPiano(userId, customerId, formD, history));
 
     dispatch(clearPianoForm());
   };
-  // dispatch(addPiano(submitFormData, history, formD));
-  //   const config = {
-  //    headers: { "content-type": "multipart/form-data" }
-  //  };
-
+  
+// debugger
   return (
     <PianoFormCard
       handleChange={handleChange}
@@ -89,8 +80,6 @@ const PianoForm = ({
       userId={userId}
       customerId={customerId}
       formData={formData}
-      imageBlob={imageBlob}
-      imageName={imageName}
     />
   );
 };

@@ -1,4 +1,4 @@
-import { getPianos } from "../../actions/addPiano";
+import { clearPianoForm, getPianos } from "../../actions/addPiano";
 
 export function newPiano(userId, customerId, data, history) {
   return (dispatch) => {
@@ -18,6 +18,8 @@ export function newPiano(userId, customerId, data, history) {
       })
       .then((resp) => {
         dispatch(getPianos(userId));
+        dispatch(clearPianoForm())
+        history.push(`/users/${userId}/customers/${customerId}/pianos`)
         console.log("FILE UPLOADED SUCCESSFULLY");
       })
       .catch(function (error) {

@@ -1,21 +1,29 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updatePianoForm } from "../../actions/updatePianoForm";
+import { Button } from "react-bootstrap";
 
-function UploadButton({ imagesUpload, imageName, imageBlob }) {
-  const [uploadedFileName, setUploadedFileName] = useState(null);
+const UploadButton = ({ imagesUpload }) => {
+  // const [uploadedFileName, setUploadedFileName] = useState(imageName);
+  const imageName = useSelector(state => state.updatePianoForm.imageName)
   const inputRef = useRef(HTMLInputElement);
+  useEffect (() => {
 
-  function handleUpload(e) {
-    e.preventDefault();
+  },[imageName, inputRef])
+ 
+  const dispatch = useDispatch()
+  
+const handleUpload = (e) => {
+  e.preventDefault()
+   inputRef.current?.click();
+  //  inputRef.current.files['0'] ?? imagesUpload(inputRef.current.files['0']);
+  //  debugger
+}
 
-    inputRef.current?.click();
-    imageBlob(inputRef.current.files["0"]);
-  }
+  
   const handleDisplayFileDetails = () => {
-    // debugger;
-    // inputRef.current?.files &&
-    // setUploadedFileName(inputRef.current.files[0].name);
-    // imagesUpload(inputRef.current.files["0"]);
-    setUploadedFileName(imageBlob(inputRef.current.files["0"].name));
+    dispatch(updatePianoForm("imageName", inputRef.current.files["0"].name))
+    imagesUpload(inputRef.current.files['0'])
   };
   return (
     <div className="m-3">
@@ -26,14 +34,11 @@ function UploadButton({ imagesUpload, imageName, imageBlob }) {
         className="d-none"
         type="file"
       />
-      <button
+      <Button
         onClick={handleUpload}
-        className={`btn btn-outline-${
-          uploadedFileName ? "success" : "primary"
-        }`}
       >
-        {uploadedFileName ? uploadedFileName : "Upload"}
-      </button>
+        {imageName ? imageName : "Upload"}
+      </Button>
     </div>
   );
 }

@@ -1,7 +1,5 @@
-import { customerList } from "./customerList";
 import { getPianos } from "./addPiano";
 import { clearcurrentPiano, clearPianos } from "./addPiano";
-import { appointmentsList } from "./appointment";
 
 export const updateSignupForm = (formData) => {
   return {
@@ -65,12 +63,13 @@ export const login = (credentials, history) => {
       .then((response) => {
         if (response.error) {
           alert(response.error);
+          history.push("/");
         } else {
           dispatch(setCurrentUser(response.data.attributes));
           // dispatch(customerList(response.data.attributes.id));
           // dispatch(getPianos(response.data.attributes.id));
           dispatch(resetLoginForm());
-          history.push("users/" + response.data.attributes.id);
+          history.push("/users/" + response.data.attributes.id);
         }
       })
 

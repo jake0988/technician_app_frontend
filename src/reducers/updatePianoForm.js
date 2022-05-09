@@ -5,7 +5,7 @@ const initialState = {
   notes: "",
   year: "",
   appointment_id: "",
-  imageBlob: "",
+  imageName: "",
 };
 
 export default (state = initialState, action) => {

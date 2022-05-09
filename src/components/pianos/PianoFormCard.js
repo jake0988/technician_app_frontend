@@ -3,6 +3,8 @@ import { Container, Form, Col, Row, Button } from "react-bootstrap";
 import UploadButton from "./UploadButton";
 import { useDispatch } from "react-redux";
 import { updatePianoForm } from "../../actions/updatePianoForm";
+import { Field, reduxForm } from "redux-form";
+import { ResetButton } from "./ResetButton";
 
 export const PianoFormCard = ({
   handleSubmit,
@@ -10,19 +12,12 @@ export const PianoFormCard = ({
   imagesUpload,
   appointmentId,
   handleChange,
-  imageName,
   imageBlob,
+  
 }) => {
-  const { make, model, year, notes, serial } = formData;
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   const updateFormInfo = {
-  //     ...formData,
-  //     [name]: value,
-  //   };
-  //   dispatch(updatePianoForm(name, value));
-  // };
 
+  const { make, model, year, notes, serial, imageName } = formData;
+  
   return (
     <Container fluid>
       <Form
@@ -34,7 +29,7 @@ export const PianoFormCard = ({
         <Row>
           <Col>
             <Form.Group className="mb-2" controlId="formMake">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>Make</Form.Label>
               <Form.Control
                 type="text"
                 name="make"
@@ -108,12 +103,22 @@ export const PianoFormCard = ({
             />
           </Form.Group>
         </Row>
+       
+            {/* <Form.Group>
+              <Form.Control
+              type="file"
+              onChange={onFileChange}
+            />
+              {imageName ?? "Upload"} */}
+              {/* </Form.Group> */}
         <UploadButton
           imagesUpload={imagesUpload}
           imageBlob={imageBlob}
           handleChange={handleChange}
           imageName={imageName}
         />
+        <ResetButton>
+        </ResetButton>
         <Button className="add-button" type="submit">
           Add Piano
         </Button>

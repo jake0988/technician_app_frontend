@@ -62,53 +62,6 @@ export function addPiano(userId, customerId, data) {
   };
 }
 
-// export const addPiano = (credentials, history, formData) => {
-
-//   const pianoFormInfo = {
-//     make: credentials.formData.make,
-//     model: credentials.formData.model,
-//     serial: credentials.formData.serial,
-//     notes: credentials.formData.notes,
-//     year: credentials.formData.year,
-//     image: credentials.formData.image,
-//     user_id: credentials.userId,
-//     customer_id: credentials.customerId,
-//     appointment_id: credentials.appointmentId,
-//     images: credentials.images
-//   };
-//   debugger
-//   return (dispatch) => {
-//     return fetch(
-//       `http://localhost:3001/api/v1/users/${credentials.userId}/customers/${credentials.customerId}/pianos`,
-//       {
-//         credentials: "include",
-//         method: "POST",
-//         headers: {
-//           "Content-type": "application/json",
-//         },
-//         body: JSON.stringify(formData),
-
-//       }
-//     )
-//       .then((resp) => resp.json())
-//       .then((piano) => {
-//         if (piano.errors) {
-//           alert(piano.errors);
-//         } else {
-//           dispatch(getPianos(credentials.userId));
-//           // dispatch(customerList(credentials.userId));
-//           dispatch(setCurrentCustomer(credentials.customerId));
-//           dispatch(clearPianoForm());
-//           dispatch(clearCurrentAppointment());
-//           history.push(
-//             `/users/${credentials.userId}/customers/${credentials.customerId}`
-//           );
-//         }
-//       })
-//       .catch((errors) => console.log(errors));
-//   };
-// };
-
 export const getPianos = (user) => {
   return (dispatch) => {
     return fetch(`http://localhost:3001/api/v1/users/${user}/pianos`, {
@@ -190,9 +143,9 @@ export const destroyPiano = (userId, customerId, pianoId, history) => {
     )
       .then((resp) => resp.json())
       .then((resp) => {
+        history.push(`/users/${userId}/customers/${customerId}/pianos`)
         dispatch(getPianos(userId));
-        dispatch(customerList(userId));
-        history.goBack();
+        dispatch(customerList(userId)); 
       });
   };
 };

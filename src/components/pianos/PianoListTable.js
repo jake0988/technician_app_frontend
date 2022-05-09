@@ -5,7 +5,8 @@ import { DeletePianoButton } from "./DeletePianoButton";
 import Td from "../appointments/Td";
 import { useEffect } from "react";
 import { UserNavCard } from "../users/UserNavCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getPianos } from "../../actions/addPiano";
 
 export const PianoListTable = ({
   userId,
@@ -20,6 +21,7 @@ export const PianoListTable = ({
   isCustomerCard,
   isAppointmentCard,
 }) => {
+  const dispatch = useDispatch()
   const current = useRef();
   useEffect(() => {
     current.current = currentVariable(isCustomerCard, isAppointmentCard);
@@ -59,6 +61,7 @@ export const PianoListTable = ({
               <th key={uuidv4(1)}>#</th>
               <th key={uuidv4(1)}>Make</th>
               <th key={uuidv4(1)}>Model</th>
+              <th key={uuidv4(1)}>Serial</th>
               <th key={uuidv4(1)}>Appointment</th>
               <th key={uuidv4(1)}>Picture</th>
 
@@ -66,8 +69,6 @@ export const PianoListTable = ({
             </tr>
           </thead>
           <tbody>
-            {/* {console.log(currentVariable())} */}
-
             {currentVariable(isCustomerCard, isAppointmentCard)
               ? currentVariable(isCustomerCard, isAppointmentCard).map(
                   (piano, key) => (
@@ -80,6 +81,7 @@ export const PianoListTable = ({
                       </Td>
                       <Td key={uuidv4(key)}>{piano.attributes.make}</Td>
                       <Td key={uuidv4(key)}>{piano.attributes.model}</Td>
+                      <Td key={uuidv4(key)}>{piano.attributes.serial}</Td>
                       <td>
                         {appointments(piano) ? (
                           <div style={{ overflow: "auto" }}>
