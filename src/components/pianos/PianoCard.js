@@ -19,7 +19,7 @@ export const PianoCard = ({
     serial,
     notes,
     id,
-    image,
+    image_url,
   } = piano.attributes;
   const setPiano = piano.attributes;
   useEffect(() => {
@@ -47,7 +47,7 @@ export const PianoCard = ({
             <td>{year}</td>
             <td>{serial}</td>
             <td>{notes}</td>
-            <td>{image}</td>
+            <td><img src={image_url} height="100" width="100" alt="Piano"/></td>
           </tr>
         </tbody>
       </Table>

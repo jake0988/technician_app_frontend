@@ -57,7 +57,7 @@ function AppointmentList({ currentCustomer, appointmentsList, userId }) {
                 }
               >
                 {appointment.attributes.piano_id
-                  ? appointment.attributes.piano_id
+                  ? <p>{`Piano ID: ${appointment.attributes.piano_id}`}</p>
                   : null}
               </Td>
             </tr>

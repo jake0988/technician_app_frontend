@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { customerList } from "../../actions/customerList";
 import { setCurrentCustomer } from "../../actions/currentCustomer";
 import { setCurrentAppointment } from "../../actions/appointment";
-import { newPiano } from "./newPiano";
+import { newPiano } from "../../actions/addPiano.js";
 import { PianoFormCard } from "./PianoFormCard";
 import { clearPianoForm } from "../../actions/addPiano.js";
 // import { post } from "axios";
