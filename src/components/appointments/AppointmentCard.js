@@ -130,7 +130,7 @@ function AppointmentCard({
 
           {piano ? (
             <>
-              <tr id="piano-row">
+              <tr key={uuidv4(appointment.attributes.date)} id="piano-row">
                 <th key={uuidv4(piano.id)} id="piano-th">
                   Pianos:{" "}
                 </th>
@@ -149,19 +149,19 @@ function AppointmentCard({
       </Table>
       <Table bordered>
         <tbody>
-          <tr>
-            <td colSpan="4">
+          <tr key={uuidv4(appointment.attributes.date)}>
+            <td colSpan="4" key={uuidv4(appointment.attributes.date)}>
               <Button className="edit-button" onClick={(e) => handleClick(e)}>
                 Edit Appointment
               </Button>
             </td>
-            <td colSpan="4">
+            <td colSpan="4" key={uuidv4(appointment.attributes.date)}>
               <Button className="delete-button" onClick={(e) => destroyer(e)}>
                 Delete Appointment
               </Button>
             </td>
 
-            <td colSpan="4">
+            <td colSpan="4" key={uuidv4(appointment.attributes.date)}>
               <UserNavCard
                 userId={userId}
                 history={history}
@@ -175,7 +175,7 @@ function AppointmentCard({
       <>
         <Table bordered>
           <thead>
-            <tr>
+            <tr key={uuidv4(appointment.attributes.date)}>
               <td>
                 <Button
                   onClick={(e) => {
@@ -199,14 +199,14 @@ function AppointmentCard({
             <Form onSubmit={(e) => handleSubmit(e)}>
               <Table striped bordered hover style={{ marginTop: "10px" }}>
                 <thead>
-                  <tr>
+                  <tr key={uuidv4(appointment.attributes.date)}>
                     <td align="center" colSpan="7">
                       <b>Associate Piano with Appointment</b>
                     </td>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr key={uuidv4(appointment.attributes.date)}>
                     <td>
                       <Button
                         varaint="primary"
